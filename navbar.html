@@ -6,7 +6,10 @@
     </div>
     <div class="flex-none gap-2">
         <div class="form-control">
-            <input type="text" placeholder="Search" class="input input-bordered w-24 md:w-auto" />
+            <label class="input input-bordered flex items-center gap-2">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" placeholder="Search" class="grow w-24 md:w-auto" />
+              </label>
         </div>
         <div role="button" class="btn btn-ghost btn-circle avatar">
             <div class="w-10 rounded-full">
@@ -33,7 +36,7 @@
 
                     <div class="border-b-2 border-base-600 my-2"></div>
 
-                    <li><a><i class="fa-solid fa-gear"></i> Settings</a></li>
+                    <li><a href="./settings.html"><i class="fa-solid fa-gear"></i> Settings</a></li>
                     <li><a><i class="fa-solid fa-circle-check"></i> Verification</a></li>
                     <li><a><i class="fa-solid fa-wand-magic-sparkles"></i> Feature Request</a></li>
                     <li><a><i class="fa-solid fa-circle-question"></i> Help</a></li>
@@ -41,7 +44,7 @@
 
                     <div class="border-b-2 border-base-600 my-2"></div>
 
-                    <li><a><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
+                    <li onclick="handleLogout(event)"><a><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
 
                 </ul>
             </div>

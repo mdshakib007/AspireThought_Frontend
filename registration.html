@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - JuicyCart-Tropicals</title>
+    <!-- tailwind, daisy-UI, font-awesome, favicon -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.19/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="./styles/style.css">
+</head>
+
+<body>
+    <header>
+        <nav class="pb-16" id="nav-component">
+        </nav>
+    </header>
+
+    <main class="min-h-screen">
+        <!-- registration form  -->
+        <div class="flex justify-center items-center min-h-screen h-auto py-10 bg-base-100">
+            <div class="card w-96 bg-base-300 shadow-xl mx-4">
+                <div class="card-body">
+                    <h2 class="text-2xl font-bold text-center text-base-900 mb-4">Register</h2>
+                    <form action="" method="post" class="space-y-4" onsubmit="handleRegister(event)">
+
+                        <!-- Username -->
+                        <div class="form-control">
+                            <label for="username" class="label">
+                                <span class="label-text font-medium text-base-800">Enter Your Username</span>
+                            </label>
+                            <input type="text" name="username" id="username" placeholder="Username"
+                                class="input input-bordered w-full" required />
+                        </div>
+
+                        <!-- Email -->
+                        <div class="form-control">
+                            <label for="username" class="label">
+                                <span class="label-text font-medium text-base-800">Enter Email Address</span>
+                            </label>
+                            <input type="email" name="email" id="email" placeholder="Email Address"
+                                class="input input-bordered w-full" required />
+                        </div>
+
+                        <!-- Password -->
+                        <div class="form-control">
+                            <label for="username" class="label">
+                                <span class="label-text font-medium text-base-800">Enter Password</span>
+                            </label>
+                            <input type="password" name="password" id="password" placeholder="Password"
+                                class="input input-bordered w-full" required />
+                        </div>
+
+                        <p class="text-red-600 italic my-2 text-sm font-bold" id="error-message"></p>
+                        <!-- Submit Button -->
+                        <button id="register-btn"
+                            class="btn bg-slate-500 border-none hover:bg-slate-600 btn-block text-white"
+                            type="submit">Register</button>
+                    </form>
+                    <div class="text-center mt-4">
+                        <a href="login.html" class="text-sm text-base-900 hover:underline">Already have an
+                            account?</a>
+                    </div>
+                    <h1 id="register-success" class="text-xl font-bold m-2 text-center"></h1>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer id="footer-component" class="footer bg-base-200 text-black p-10 md:flex md:justify-evenly text-md">
+
+    </footer>
+
+    <script src="src/register.js"></script>
+    <script src="src/common.js"></script>
+</body>
+
+</html>

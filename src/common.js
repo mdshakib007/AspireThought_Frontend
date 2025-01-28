@@ -10,22 +10,25 @@ const loadComponent = async (url, elementId) => {
 };
 
 const handleLogout = (event) => {
+    event.preventDefault();
+
     const token = localStorage.getItem("token");
     const user_id = localStorage.getItem("user_id");
 
     if (!token || !user_id) {
-        window.location.href = "./login.html"
+        window.location.href = "./login.html";
         return;
-    };
+    }
 
-    const info = { token, user_id };
-    fetch("https://juicycart-tropicals.onrender.com/user/logout/", {
+    fetch("http://127.0.0.1:8000/user/logout/", {
         method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify(info),
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Token ${token}`
+        }
     })
-        .then(res => res.json())
-        .then(data => {
+        .then((res) => res.json())
+        .then((data) => {
             if (data.success) {
                 localStorage.removeItem("token");
                 localStorage.removeItem("user_id");
@@ -35,11 +38,12 @@ const handleLogout = (event) => {
                 alert("Logout failed. Please try again.");
             }
         })
-        .catch(error => {
+        .catch((error) => {
             console.error("Error during logout:", error);
         });
 };
 
 
-loadComponent('navbar.html', 'nav-component', );
+
+loadComponent('navbar.html', 'nav-component',);
 loadComponent('footer.html', 'footer-component');

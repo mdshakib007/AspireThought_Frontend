@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - AspireThought</title>
+    <!-- tailwind, daisy-UI, font-awesome, favicon -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.19/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="./styles/style.css">
+</head>
+
+<body class="font-serif">
+    <header>
+        <nav class="pb-16" id="nav-component">
+        </nav>
+    </header>
+
+    <main class="min-h-screen">
+        <h1 class="text-4xl m-5 font-bold">Settings</h1>
+        <div role="tablist" class="tabs tabs-bordered m-5 md:w-2/3">
+            <input type="radio" name="my_tabs_1" role="tab" class="tab" aria-label="Account" checked="checked" />
+            <div role="tabpanel" class="tab-content">
+                <div class="flex justify-between text-xl m-5 bg-slate-100 p-2 rounded-lg">
+                    <p>Username</p>
+                    <p id="username">mdshakib007</p>
+                </div>
+                <div class="flex justify-between text-xl m-5 bg-slate-100 p-2 rounded-lg">
+                    <p>First Name</p>
+                    <p id="first-name">MD</p>
+                </div>
+                <div class="flex justify-between text-xl m-5 bg-slate-100 p-2 rounded-lg">
+                    <p>Last Name</p>
+                    <p id="last-name">Shakib</p>
+                </div>
+                <div class="flex justify-between text-xl m-5 bg-slate-100 p-2 rounded-lg">
+                    <p>Email</p>
+                    <p id="email">shakibahmed.528874@gmail.com</p>
+                </div>
+                <div class="flex justify-between text-xl m-5 bg-slate-100 p-2 rounded-lg">
+                    <p>Phone Number</p>
+                    <p id="phone">01608897980</p>
+                </div>
+                <div class="flex justify-between text-xl m-5 bg-slate-100 p-2 rounded-lg">
+                    <p>Date of Birth</p>
+                    <p id="date-of-birth">12/03/2003</p>
+                </div>
+
+            </div>
+
+            <input type="radio" name="my_tabs_1" role="tab" class="tab" aria-label="Notifications" />
+            <div role="tabpanel" class="tab-content">Comming Soon!</div>
+
+            <input type="radio" name="my_tabs_1" role="tab" class="tab" aria-label="Publish" />
+            <div role="tabpanel" class="tab-content">Comming Soon!</div>
+        </div>
+    </main>
+
+    <footer id="footer-component" class="footer bg-base-200 p-5 md:flex md:justify-evenly text-md">
+    </footer>
+
+    <script src="./src/settings.js"></script>
+    <script src="./src/common.js"></script>
+</body>
+
+</html>
