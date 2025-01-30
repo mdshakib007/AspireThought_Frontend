@@ -23,43 +23,115 @@
         <div role="tablist" class="tabs tabs-bordered m-5 md:w-2/3">
             <input type="radio" name="my_tabs_1" role="tab" class="tab" aria-label="Account" checked="checked" />
             <div role="tabpanel" class="tab-content">
-                <div class="flex justify-between text-xl m-5 bg-slate-100 p-2 rounded-lg">
-                    <p>Username</p>
-                    <p id="username">mdshakib007</p>
-                </div>
-                <div class="flex justify-between text-xl m-5 bg-slate-100 p-2 rounded-lg">
-                    <p>First Name</p>
-                    <p id="first-name">MD</p>
-                </div>
-                <div class="flex justify-between text-xl m-5 bg-slate-100 p-2 rounded-lg">
-                    <p>Last Name</p>
-                    <p id="last-name">Shakib</p>
-                </div>
-                <div class="flex justify-between text-xl m-5 bg-slate-100 p-2 rounded-lg">
-                    <p>Email</p>
-                    <p id="email">shakibahmed.528874@gmail.com</p>
-                </div>
-                <div class="flex justify-between text-xl m-5 bg-slate-100 p-2 rounded-lg">
-                    <p>Phone Number</p>
-                    <p id="phone">01608897980</p>
-                </div>
-                <div class="flex justify-between text-xl m-5 bg-slate-100 p-2 rounded-lg">
-                    <p>Date of Birth</p>
-                    <p id="date-of-birth">12/03/2003</p>
-                </div>
+                <div class="max-w-2xl my-3 p-6 bg-slate-100 rounded-lg shadow text-black">
+                    <!-- Profile Picture -->
+                    <div class="flex flex-col items-center mb-6">
+                        <div class="avatar">
+                            <div class="w-24 rounded-full ring ring-slate-300 ring-offset-2">
+                                <img src="./images/nav/default-user.png" alt="Profile Picture" id="profile-picture">
+                            </div>
+                        </div>
+                        <button class="btn btn-sm btn-outline hover:bg-slate-600 mt-3"
+                            onclick="openUpdateModal('Change Profile Picture', 'profile-picture')">Change
+                            Picture</button>
+                    </div>
 
+                    <!-- User Details -->
+                    <div class="space-y-4">
+
+                        <div class="flex justify-between items-center bg-slate-200 p-3 rounded-lg shadow-md">
+                            <p class="text-lg font-semibold">Username:</p>
+                            <div class="flex gap-3 items-center">
+                                <p id="username" class=""></p>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-between items-center bg-slate-200 p-3 rounded-lg shadow-md">
+                            <p class="text-lg font-semibold">Email:</p>
+                            <div class="flex gap-3 items-center">
+                                <p id="email" class=""></p>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-between items-center bg-slate-200 p-3 rounded-lg shadow-md">
+                            <p class="text-lg font-semibold">Full Name:</p>
+                            <div class="flex gap-3 items-center">
+                                <p id="full-name" class=""></p>
+                                <button onclick="openUpdateModal('Full Name', 'full-name')"
+                                    class="btn btn-xs btn-circle btn-outline hover:bg-slate-600">
+                                    <i class="fa-solid fa-pen"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-between items-center bg-slate-200 p-3 rounded-lg shadow-md">
+                            <p class="text-lg font-semibold">Phone Number:</p>
+                            <div class="flex gap-3 items-center">
+                                <p id="phone" class=""></p>
+                                <button onclick="openUpdateModal('Phone Number', 'phone')"
+                                    class="btn btn-xs btn-circle btn-outline hover:bg-slate-600">
+                                    <i class="fa-solid fa-pen"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-between items-center bg-slate-200 p-3 rounded-lg shadow-md">
+                            <p class="text-lg font-semibold">Date of Birth:</p>
+                            <div class="flex gap-3 items-center">
+                                <p id="date-of-birth" class=""></p>
+                                <button onclick="openUpdateModal('Date of Birth', 'date-of-birth')"
+                                    class="btn btn-xs btn-circle btn-outline hover:bg-slate-600">
+                                    <i class="fa-solid fa-pen"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <input type="radio" name="my_tabs_1" role="tab" class="tab" aria-label="Notifications" />
-            <div role="tabpanel" class="tab-content">Comming Soon!</div>
+            <div role="tabpanel" class="tab-content">
+                <div class="max-w-2xl my-3 p-6 bg-slate-100 rounded-lg shadow text-black">
+                    Coming soon!
+                </div>
+            </div>
 
             <input type="radio" name="my_tabs_1" role="tab" class="tab" aria-label="Publish" />
-            <div role="tabpanel" class="tab-content">Comming Soon!</div>
+            <div role="tabpanel" class="tab-content">
+                <div class="max-w-2xl my-3 p-6 bg-slate-100 rounded-lg shadow text-black">
+                    Coming soon!
+                </div>
+            </div>
         </div>
     </main>
 
     <footer id="footer-component" class="footer bg-base-200 p-5 md:flex md:justify-evenly text-md">
     </footer>
+
+    <!-- Universal Modal -->
+    <dialog id="universal_modal" class="modal">
+        <div class="modal-box">
+            <form method="dialog">
+                <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+            </form>
+            <h3 id="universal-modal-title" class="text-2xl text-center my-4 font-bold"></h3>
+            <form enctype="multipart/form-data">
+                <label id="universal-modal-input-label" for="universal-modal-input"
+                    class="block text-black font-semibold mb-2"></label>
+                <input id="universal-modal-input" type="text" class="input input-bordered w-full" placeholder=""
+                    required>
+
+                <p class="text-red-600 italic" id="form-error-field"></p>
+                <div class="flex justify-between mt-4">
+                    <button type="submit" id="update-info-btn"
+                        class="btn bg-slate-500 text-white hover:bg-slate-600 w-1/2 mr-2"
+                        onclick="updateUserInformation(event)">Update</button>
+                    <button type="button" class="btn bg-slate-400 text-white hover:bg-slate-400 w-1/2"
+                        onclick="document.getElementById('universal_modal').close()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </dialog>
 
     <script src="./src/settings.js"></script>
     <script src="./src/common.js"></script>

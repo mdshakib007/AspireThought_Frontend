@@ -43,7 +43,31 @@ const handleLogout = (event) => {
         });
 };
 
+const loadNavProfilePicture = () => {
+    const user_id = localStorage.getItem("user_id");
+    if(!user_id){
+        return;
+    }
+
+    fetch(`http://127.0.0.1:8000/user/list/${user_id}`)
+    .then(res => res.json())
+    .then(data => {
+        if(data.username){
+            document.getElementById("nav-profile-name").innerText = data.username;
+        } else{
+            document.getElementById("nav-profile-name").innerText = "Unknown";
+        }
+        if(data.profile_picture){
+            document.getElementById("nav-profile-image-1").src = data.profile_picture;
+            document.getElementById("nav-profile-image-2").src = data.profile_picture;
+        } else{
+            document.getElementById("nav-profile-image-1").src = "../images/nav/default-user.png";
+            document.getElementById("nav-profile-image-2").src = "../images/nav/default-user.png";
+        }
+    })
+};
 
 
 loadComponent('navbar.html', 'nav-component',);
 loadComponent('footer.html', 'footer-component');
+loadNavProfilePicture();

@@ -3,29 +3,105 @@ const getValue = (id) => {
     return value;
 };
 
-const loadUserInformation = () =>{
+const loadUserInformation = () => {
     user_id = localStorage.getItem("user_id")
 
-    if(!user_id){
+    if (!user_id) {
         window.location.href = "./login.html";
     }
 
     fetch(`http://127.0.0.1:8000/user/list/?user_id=${user_id}`)
-    .then(res => res.json())
-    .then(data => {
-        if(data.length > 0){
-            user = data[0];
-            console.log(user);
-            document.getElementById("username").innerText = user.username;
-            document.getElementById("first-name").innerText = user.first_name;
-            document.getElementById("last-name").innerText = user.last_name;
-            document.getElementById("email").innerText = user.email;
-            document.getElementById("phone").innerText = user.phone;
-            document.getElementById("date-of-birth").innerText = user.date_of_birth;
-        } else{
-            window.location.href = "./login.html";
+        .then(res => res.json())
+        .then(data => {
+            if (data.length > 0) {
+                user = data[0];
+                if(user.profile_picture){
+                    document.getElementById("profile-picture").src = user.profile_picture;
+                } else{
+                    document.getElementById("profile-picture").src = "../images/nav/default-user.png";
+                }
+                document.getElementById("username").innerHTML = ` ${user.username}`;
+                document.getElementById("full-name").innerHTML = ` ${user.first_name} ${user.last_name}`;
+                document.getElementById("email").innerHTML = ` ${user.email}`;
+                document.getElementById("phone").innerHTML = ` ${user.phone_number}`;
+                document.getElementById("date-of-birth").innerHTML = ` ${user.date_of_birth}`;
+            } else {
+                window.location.href = "./login.html";
+            }
+        })
+};
+
+const openUpdateModal = (title, id) => {
+    document.getElementById("universal-modal-title").innerText = title;
+    document.getElementById("universal-modal-input-label").innerText = title;
+    document.getElementById("universal-modal-input").placeholder = title;
+
+    if (id === "date-of-birth") {
+        document.getElementById("universal-modal-input").type = "date";
+    } else if (id == "profile-picture") {
+        document.getElementById("universal-modal-input").type = "file";
+        document.getElementById("universal-modal-input").accept = "image/*";
+        document.getElementById("universal-modal-input").classList.add("file-input");
+    } else {
+        document.getElementById("universal-modal-input").type = "text";
+    }
+    
+    document.getElementById("universal_modal").setAttribute("requested_id", id);
+    document.getElementById("universal_modal").showModal();
+};
+
+const updateUserInformation = (event) => {
+    event.preventDefault();
+    const token = localStorage.getItem("token");
+    const id = document.getElementById("universal_modal").getAttribute("requested_id");
+    const updatedValue = document.getElementById("universal-modal-input").value;
+
+    if(!updatedValue){
+        alert("Please fill out the input field!");
+        return;
+    }
+
+    let title = "";
+    if (id === "full-name") {
+        title = "first_name";
+    } else if (id === "username") {
+        title = "username";
+    } else if (id === "phone") {
+        title = "phone_number";
+    } else if (id === "date-of-birth") {
+        title = "date_of_birth";
+    } else if (id === "profile-picture") {
+        title = "profile_picture";
+    }
+
+    const formData = new FormData();
+    if (id === "profile-picture") {
+        const fileInput = document.getElementById("universal-modal-input");
+        if (!fileInput || fileInput.files.length === 0) {
+            alert("No file selected for profile picture update.");
+            return;
         }
+        formData.append(title, fileInput.files[0]); 
+    } else {
+        formData.append(title, updatedValue);
+    }
+
+    fetch("http://127.0.0.1:8000/user/update/", {
+        method: "POST",
+        headers: {
+            "Authorization": `Token ${token}`,
+        },
+        body: formData,
     })
+        .then(res => res.json())
+        .then(data => {
+            if(data.success){
+                window.location.href = "settings.html";
+            } else{
+                document.getElementById("form-error-field").innerText = "An Error Occurred";
+            }
+        })
+        .catch(error => console.error("Update failed:", error));
 };
 
 loadUserInformation();
