@@ -47,25 +47,15 @@
                 <div>
                     <label class="block text-lg font-medium text-slate-700 mb-2">Post Content</label>
                     <div id="editor"></div>
+                    <p class="text-red-600 italic" id="editor-error-msg"></p>
                 </div>
 
-                <!-- Tag Input -->
-                <div>
-                    <p>Select most relevent tag or type one.</p>
-                    <div class="flex w-full">
-                        <div class="card rounded-box grid flex-grow place-items-center">
-                            <select class="select select-bordered w-full max-w-xs">
-                                <option disabled selected>Who shot first?</option>
-                                <option>Han Solo</option>
-                                <option>Greedo</option>
-                            </select>
-                        </div>
-                        <div class="divider divider-horizontal">OR</div>
-                        <div class="card rounded-box grid flex-grow place-items-center">
-                            <input type="text" placeholder="Type here" class="input input-bordered w-full max-w-xs" />
-                        </div>
-                    </div>
+                <!-- Tag select -->
+                <p class="text-lg font-medium text-slate-700">Select Tags(Optional)</p>
+                <div id="tag-list-div" class="flex flex-col md:flex-row justify-evenly gap-2">
+                    <!-- here tag selection input will appear -->
                 </div>
+
 
                 <!-- Publish Button -->
                 <button type="submit"
@@ -78,11 +68,18 @@
         <!-- Toast UI Editor Script -->
         <script>
             const editor = new toastui.Editor({
-                el: document.querySelector('#editor'),
+                el: document.querySelector("#editor"),
                 height: '400px',
                 initialEditType: 'markdown',
                 previewStyle: 'vertical',
+                hooks: {
+                    addImageBlobHook: (blob, callback) => {
+                        alert("Image uploads are disabled!");
+                        return false;
+                    }
+                }
             });
+
         </script>
 
     </main>
