@@ -19,33 +19,116 @@
     </header>
 
     <main class="min-h-screen">
-        <div id="bottom-post-btn" class="fixed bottom-2 right-2">
-            <button onclick="hideBottomPostBtn(event)" class="border border-slate-500 p-1 rounded-full h-9 w-9"><i class="fa-solid fa-xmark"></i></button>
+        <div id="bottom-post-btn" class="fixed bottom-2 right-2 hidden md:block">
+            <button onclick="hideBottomPostBtn(event)" class="border border-slate-500 p-1 rounded-full h-9 w-9"><i
+                    class="fa-solid fa-xmark"></i></button>
             <div class="flex gap-3 items-center p-3 bg-slate-600 text-white rounded-full shadow-lg">
                 <span class="text-md font-medium"> Write an awesome thought?</span>
-                <a href="./create_post.html" class="btn btn-circle btn-outline border-slate-400 text-white hover:bg-slate-600">
+                <a href="./create_post.html"
+                    class="btn btn-circle btn-outline border-slate-400 text-white hover:bg-slate-600">
                     <i class="fa-solid fa-pen-to-square text-2xl"></i>
                 </a>
             </div>
         </div>
 
         <div role="tablist" class="tabs tabs-bordered mt-5">
-            <input type="radio" name="my_tabs_1" role="tab" class="tab" aria-label="Recomendations" checked="checked" />
-            <div role="tabpanel" class="tab-content">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Inventore
-                corporis alias quia quisquam cum est quam omnis molestias corrupti distinctio architecto officia
-                aliquid, accusantium saepe quaerat praesentium. Eum repudiandae ut rerum sequi eius laborum dolorem
-                corrupti, eos eveniet deserunt a ipsa nulla optio consectetur fugit, sit repellendus impedit? Commodi et
-                iste aperiam, aspernatur nesciunt vitae, repellat tenetur fugit atque quidem veniam. Id laudantium earum
-                sequi nostrum est officia quibusdam aperiam nihil nam esse animi iusto natus ullam, architecto commodi
-                atque vero. Magni architecto, autem, molestias ducimus voluptatibus cumque ipsa a nesciunt ab laudantium
-                enim similique ex accusantium deserunt dolor odio?</div>
+            <input id="recomendation-tab-selection" type="radio" name="my_tabs_1" role="tab" class="tab"
+                aria-label="Recomendations" checked="checked" />
 
-            <input type="radio" name="my_tabs_1" role="tab" class="tab" aria-label="Following" />
-            <div role="tabpanel" class="tab-content">Coming soon!</div>
+            <input id="recent-tab-selection" type="radio" name="my_tabs_1" role="tab" class="tab" aria-label="Recent" />
 
-            <input type="radio" name="my_tabs_1" role="tab" class="tab" aria-label="Stories" />
-            <div role="tabpanel" class="tab-content">Coming soon!</div>
+            <input id="following-tab-selection" type="radio" name="my_tabs_1" role="tab" class="tab"
+                aria-label="Following" />
+
+            <input id="story-tab-selection" type="radio" name="my_tabs_1" role="tab" class="tab" aria-label="Stories" />
         </div>
+
+        <!-- skeleton -->
+        <section id="skeleton-lazy" class="flex flex-col gap-5 py-6 px-4">
+            <div class="flex max-w-4xl flex-col gap-4">
+                <div class="flex items-center gap-4">
+                    <div class="skeleton h-16 w-16 shrink-0 rounded-full"></div>
+                    <div class="flex flex-col gap-4">
+                        <div class="skeleton h-4 w-20"></div>
+                        <div class="skeleton h-4 w-28"></div>
+                    </div>
+                </div>
+                <div class="skeleton h-32 w-full"></div>
+            </div>
+
+            <div class="flex max-w-4xl flex-col gap-4">
+                <div class="flex items-center gap-4">
+                    <div class="skeleton h-16 w-16 shrink-0 rounded-full"></div>
+                    <div class="flex flex-col gap-4">
+                        <div class="skeleton h-4 w-20"></div>
+                        <div class="skeleton h-4 w-28"></div>
+                    </div>
+                </div>
+                <div class="skeleton h-32 w-full"></div>
+            </div>
+        </section>
+
+        <!-- not found -->
+        <section id="not-found" class="max-w-4xl my-5 text-2xl">
+            <h1 class="text-2xl text-center"><i class="fa-solid fa-ban"></i> No Results Found</h1>
+        </section>
+
+        <!-- posts -->
+        <section id="posts-section" class="py-6 px-4">
+            <div class="max-w-4xl bg-slate-50 p-3 rounded-lg mb-5">
+                <!-- Author Info -->
+                <div class="flex items-center gap-3 mb-2">
+                    <img src="./images/nav/default-user.png" alt="User Avatar"
+                        class="w-10 h-10 object-cover rounded-full border border-slate-400">
+                    <div>
+                        <p class="text-sm font-medium text-black">username</p>
+                        <p class="text-xs text-slate-500">12 Nov, 2024 <i class="fa-solid fa-earth-americas"></i></p>
+                    </div>
+                </div>
+
+                <div class="">
+                    <div class="flex justify-between">
+                        <!-- Blog Title -->
+                        <h1 class="text-2xl font-bold text-slate-900 leading-snug mb-3 hover:underline">Here the title
+                            of the blog will appear.</h1>
+                        <!-- Blog image -->
+                        <div class="w-40 md:w-52 flex-shrink-0">
+                            <img src="./images/sf2-wasp.png" alt="Blog Image"
+                                class="w-full h-auto rounded-lg object-cover">
+                        </div>
+                    </div>
+
+                    <!-- Tags -->
+                    <div class="mt-2 flex gap-2">
+                        <span
+                            class="text-xs font-semibold px-3 py-1 bg-slate-200 text-slate-800 rounded-full cursor-pointer">Tag
+                            1</span>
+                        <span
+                            class="text-xs font-semibold px-3 py-1 bg-slate-200 text-slate-800 rounded-full cursor-pointer">Tag
+                            2</span>
+                    </div>
+
+                    <!-- Actions (Likes, Comments, Bookmark) -->
+                    <div class="mt-4 flex justify-between items-center text-slate-600">
+                        <p class="flex items-center gap-3 text-lg">
+                            <span class="flex items-center gap-1 tooltip" data-tip="Like"><i
+                                    class="fa-solid fa-thumbs-up"></i> 54</span>
+                            <span class="flex items-center gap-1 tooltip" data-tip="Comments"><i
+                                    class="fa-solid fa-comment"></i> 25</span>
+                        </p>
+                        <p class="flex items-center gap-3 text-lg">
+                            <span class="cursor-pointer me-3 tooltip" data-tip="Bookmark"><i
+                                    class="fa-solid fa-bookmark"></i></span>
+                            <span class="cursor-pointer tooltip" data-tip="More"><i
+                                    class="fa-solid fa-ellipsis"></i></span>
+                        </p>
+                    </div>
+                </div>
+
+
+            </div>
+        </section>
+
     </main>
 
     <footer id="footer-component" class="footer bg-base-200 p-5 md:flex md:justify-evenly text-md">
