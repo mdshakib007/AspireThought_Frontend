@@ -19,12 +19,12 @@ const displayTags = () => {
 
             const option1 = document.createElement("option");
             option1.textContent = "--Type or Select Tag--";
-            option1.value = 0;
+            option1.value = "None";
             select1.appendChild(option1);
 
             const option2 = document.createElement("option");
             option2.textContent = "--Type or Select Tag--";
-            option2.value = 0;
+            option2.value = "None";
             select2.appendChild(option2);
 
             data.forEach(tag => {
@@ -32,11 +32,11 @@ const displayTags = () => {
                 const option2 = document.createElement("option");
 
                 option1.textContent = tag.name;
-                option1.value = tag.id;
+                option1.value = tag.slug;
                 select1.appendChild(option1);
 
                 option2.textContent = tag.name;
-                option2.value = tag.id;
+                option2.value = tag.slug;
                 select2.appendChild(option2);
             });
 
@@ -69,8 +69,8 @@ const createPost = async (event) => {
     }
 
     let tags = [];
-    if (select_tag1 > 0) tags.push(select_tag1);
-    if (select_tag2 > 0) tags.push(select_tag2);
+    if (select_tag1 != "None") tags.push(select_tag1);
+    if (select_tag2 > "None") tags.push(select_tag2);
 
     const formData = new FormData();
     formData.append("title", title);
