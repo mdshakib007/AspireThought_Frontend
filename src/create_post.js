@@ -1,12 +1,16 @@
+const params = new URLSearchParams(window.location.search);
+const mode = params.get('mode');
+const post_slug = params.get('post');
+const user_id = localStorage.getItem("user_id");
+const token = localStorage.getItem("token");
+
 const displayTags = () => {
-    const user_id = localStorage.getItem("user_id");
-    const token = localStorage.getItem("token");
     if (!user_id || !token) {
         window.location.href = "login.html";
         return;
     }
 
-    fetch("http://127.0.0.1:8000/tag/list/")
+    fetch("https://aspirethought-backend.onrender.com/tag/list/")
         .then(res => res.json())
         .then(data => {
             const parent = document.getElementById("tag-list-div");
@@ -45,12 +49,97 @@ const displayTags = () => {
         });
 };
 
+const displayForEditing = async () => {
+    if (!mode || !post_slug) return;
+
+    try {
+        const res = await fetch(`https://aspirethought-backend.onrender.com/blog/list/?post_slug=${post_slug}`);
+        const data = await res.json();
+
+        if (data.results.length > 0) {
+            const post = data.results[0];
+
+            document.getElementById("title-input").value = post.title;
+            document.getElementById("title-input").readOnly = true;
+            editor.setMarkdown(post.body);
+
+            if (post.image) {
+                const imgPreview = document.createElement("img");
+                imgPreview.src = post.image;
+                imgPreview.alt = "Current Cover Image";
+                imgPreview.classList.add("w-full", "max-h-60", "object-cover", "mt-3", "rounded-lg");
+                document.getElementById("cover-image").insertAdjacentElement("afterend", imgPreview);
+            }
+
+            setTimeout(() => {
+                document.getElementById("select-tag-input-1").value = post.tags[0] || "None";
+                document.getElementById("select-tag-input-2").value = post.tags[1] || "None";
+            }, 500);
+        } else {
+            alert("Post not found!");
+        }
+    } catch (error) {
+        console.error("Error fetching post data:", error);
+    }
+};
+
+
+const editPost = async (event) => {
+    event.preventDefault();
+
+    if (!user_id || !token) {
+        window.location.href = "login.html";
+        return;
+    }
+
+    const title = document.getElementById("title-input").value;
+    const cover_image = document.getElementById("cover-image").files[0];
+    const markdown_body = editor.getMarkdown();
+    const select_tag1 = document.getElementById("select-tag-input-1").value;
+    const select_tag2 = document.getElementById("select-tag-input-2").value;
+
+    if (markdown_body.length < 20) {
+        document.getElementById("editor-error-msg").innerText = "Post body must contain at least 20 characters.";
+        return;
+    }
+
+    let tags = [];
+    if (select_tag1 !== "None") tags.push(select_tag1);
+    if (select_tag2 !== "None") tags.push(select_tag2);
+
+    const formData = new FormData();
+    formData.append("slug", post_slug); // Slug is required for identifying the post
+
+    if (title) formData.append("title", title);
+    if (cover_image) formData.append("image", cover_image);
+    if (markdown_body) formData.append("body", markdown_body);
+    tags.forEach(tag => formData.append("tags", tag));
+
+    try {
+        const response = await fetch("https://aspirethought-backend.onrender.com/blog/edit/", {
+            method: "POST",
+            headers: {
+                "Authorization": `Token ${token}`,
+            },
+            body: formData,
+        });
+
+        const data = await response.json();
+        if (data.success) {
+            alert("Post updated successfully!");
+            window.location.href = "profile.html";
+        } else {
+            console.log(data);
+            alert("Failed to update post!");
+        }
+    } catch (error) {
+        console.error("Error updating post:", error);
+    }
+};
+
 
 const createPost = async (event) => {
     event.preventDefault();
-
-    const user_id = localStorage.getItem("user_id");
-    const token = localStorage.getItem("token");
 
     if (!user_id || !token) {
         window.location.href = "login.html";
@@ -79,7 +168,7 @@ const createPost = async (event) => {
     tags.forEach(tag => formData.append("tags", tag));
 
     try {
-        const postResponse = await fetch("http://127.0.0.1:8000/blog/create/", {
+        const postResponse = await fetch("https://aspirethought-backend.onrender.com/blog/create/", {
             method: "POST",
             headers: {
                 "Authorization": `Token ${token}`,
@@ -100,3 +189,4 @@ const createPost = async (event) => {
 };
 
 displayTags();
+displayForEditing();

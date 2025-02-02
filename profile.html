@@ -19,11 +19,13 @@
     </header>
 
     <main class="min-h-screen flex justify-center items-center">
-        <div class="w-full max-w-md bg-slate-100 shadow-lg rounded-2xl p-6 border border-slate-200">
-            <div class="flex flex-col items-center border-b-2 border-slate-300">
-                <img id="profile-profile-picture" src="./images/nav/default-user.png" alt="Profile Picture" class="w-24 h-24 rounded-full border-4 border-slate-300 object-cover">
-                <h2 id="profile-username" class="mt-4 text-xl font-semibold text-slate-700"></h2>
-                <p id="profile-full-name" class="text-slate-500"></p>
+
+        <div class="w-full max-w-3xl bg-slate-50 p-6 border border-slate-100">
+            <div class="flex flex-col items-center border-b-2 border-slate-200">
+                <img id="profile-profile-picture" src="./images/nav/default-user.png" alt="Profile Picture"
+                    class="w-32 h-32 rounded-full border-2 border-slate-300 object-cover">
+                <h2 id="profile-username" class="mt-4 text-2xl font-bold text-slate-700"></h2>
+                <p id="profile-full-name" class="text-slate-500 font-semibold"></p>
             </div>
 
             <div class="mt-6 space-y-2 text-center">
@@ -31,15 +33,21 @@
                 <p class="text-slate-600"><strong>Phone:</strong> <span id="profile-phone"></span></p>
                 <p class="text-slate-600"><strong>Date of Birth:</strong> <span id="profile-date-of-birth"></span></p>
             </div>
-    
+
             <div class="mt-6 flex justify-center">
                 <a href="./settings.html" class="btn btn-outline rounded-full hover:bg-slate-500 border-slate-500">
-                    Edit Profile
+                    <i class="fa-solid fa-pen"></i> Edit Profile
                 </a>
             </div>
+
+            <!-- post section -->
+            <h1 class="text-3xl mt-6 font-bold border-b-2">My Posts</h1>
+            <div id="my-posts-section" class="flex flex-col justify-center">
+            </div>
         </div>
+
     </main>
-    
+
 
     <footer id="footer-component" class="footer bg-base-200 p-5 md:flex md:justify-evenly text-md">
     </footer>

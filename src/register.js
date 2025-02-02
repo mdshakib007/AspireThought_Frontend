@@ -16,7 +16,7 @@ const handleRegister = (event) => {
     document.getElementById("register-success").innerText = "";
 
     if (password.length >= 8) {
-        fetch("http://127.0.0.1:8000/user/register/", {
+        fetch("https://aspirethought-backend.onrender.com/user/register/", {
             method: "POST",
             headers: { "content-type": "application/json" },
             body: JSON.stringify(info),

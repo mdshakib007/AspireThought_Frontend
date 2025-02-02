@@ -66,7 +66,7 @@ const fetchPosts = (url, displayCallback) => {
 };
 
 const fetchRecentPosts = () => {
-    const url = "http://127.0.0.1:8000/blog/list/";
+    const url = "https://aspirethought-backend.onrender.com/blog/list/";
     fetchPosts(url, displayRecentPosts);
 };
 
@@ -86,13 +86,14 @@ const displayRecentPosts = (posts) => {
         const tag1 = post.tags[0] ? post.tags[0] : "None";
         const tag2 = post.tags[1] ? post.tags[1] : "None";
 
-        fetch(`http://127.0.0.1:8000/user/list/?user_id=${post.author}`)
+        fetch(`https://aspirethought-backend.onrender.com/user/list/?user_id=${post.author}`)
             .then(res => res.json())
             .then(data => {
                 if (data.length > 0) {
                     const author = data[0];
                     const author_name = author.first_name ? author.first_name : author.username;
                     const author_image = author.profile_picture ? author.profile_picture : "./images/nav/default-user.png";
+                    const post_image = post.image ? post.image : "./images/up-aspireThought.png";
 
                     div.innerHTML = `
                         <div class="flex items-center gap-3 mb-2">
@@ -104,11 +105,11 @@ const displayRecentPosts = (posts) => {
                             </div>
                         </div>
             
-                        <div>
+                        <div onclick="redirectToSinglePost('${post.slug}')" class="cursor-pointer" >
                             <div class="flex justify-between">
-                                <h1 onclick="redirectToSinglePost('${post.slug}')" class="text-2xl font-bold text-slate-900 leading-snug mb-3 hover:underline cursor-pointer">${post.title}</h1>
+                                <h1 class="text-2xl font-bold text-slate-900 leading-snug mb-3 hover:underline cursor-pointer">${post.title}</h1>
                                 <div class="w-40 md:w-52 flex-shrink-0">
-                                    <img src="${post.image}" alt="Blog Image"
+                                    <img src="${post_image}" alt="Blog Image"
                                         class="w-full h-auto rounded-lg object-cover">
                                 </div>
                             </div>
@@ -162,7 +163,7 @@ document.querySelectorAll('input[name="my_tabs_1"]').forEach(tab => {
 });
 
 const fetchRecomendations = () => {
-    const url = "http://127.0.0.1:8000/blog/list/";
+    const url = "https://aspirethought-backend.onrender.com/blog/list/";
     fetchPosts(url, (posts) => {
         const postsSection = document.getElementById("posts-section");
         postsSection.innerHTML = "Coming Soon!";
@@ -172,7 +173,7 @@ const fetchRecomendations = () => {
 };
 
 const fetchFollowingPosts = () => {
-    const url = "http://127.0.0.1:8000/blog/list/";
+    const url = "https://aspirethought-backend.onrender.com/blog/list/";
     fetchPosts(url, (posts) => {
         const postsSection = document.getElementById("posts-section");
         postsSection.innerHTML = "Coming Soon!";
@@ -182,7 +183,7 @@ const fetchFollowingPosts = () => {
 };
 
 const fetchStories = () => {
-    const url = "http://127.0.0.1:8000/blog/list/";
+    const url = "https://aspirethought-backend.onrender.com/blog/list/";
     fetchPosts(url, (posts) => {
         const postsSection = document.getElementById("posts-section");
         postsSection.innerHTML = "Coming Soon!";
