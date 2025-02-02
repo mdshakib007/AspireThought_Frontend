@@ -19,6 +19,7 @@
     </header>
 
     <main class="min-h-screen">
+        <!-- bottom post button -->
         <div id="bottom-post-btn" class="fixed bottom-2 right-2 hidden md:block">
             <button onclick="hideBottomPostBtn(event)" class="border border-slate-500 p-1 rounded-full h-9 w-9"><i
                     class="fa-solid fa-xmark"></i></button>
@@ -30,12 +31,14 @@
                 </a>
             </div>
         </div>
+        
 
         <div role="tablist" class="tabs tabs-bordered mt-5">
             <input id="recomendation-tab-selection" type="radio" name="my_tabs_1" role="tab" class="tab"
                 aria-label="Recomendations" />
 
-            <input id="recent-tab-selection" type="radio" name="my_tabs_1" role="tab" class="tab" aria-label="Recent" checked="checked" />
+            <input id="recent-tab-selection" type="radio" name="my_tabs_1" role="tab" class="tab" aria-label="Recent"
+                checked="checked" />
 
             <input id="following-tab-selection" type="radio" name="my_tabs_1" role="tab" class="tab"
                 aria-label="Following" />

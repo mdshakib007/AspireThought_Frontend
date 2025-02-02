@@ -2,6 +2,8 @@ const params = new URLSearchParams(window.location.search);
 const slug = params.get('slug');
 const postSection = document.getElementById("post-section");
 const skeleton = document.getElementById("skeleton-lazy");
+const token = localStorage.getItem("token");
+const user_id = localStorage.getItem("user_id");
 
 const showSkeleton = () => {
     skeleton.style.display = "flex";
@@ -57,10 +59,10 @@ const setPostDetails = (post) => {
         </div>
         <div class="mt-6 flex justify-between items-center text-slate-600 border-t border-b border-slate-300 py-2 px-4">
             <p class="flex items-center gap-2 text-xl">
-                <span class="flex items-center gap-1 tooltip" data-tip="Like"><i class="fa-solid fa-thumbs-up"></i> ${post.like_count}</span>
+                <span onclick="likePost(event)" class="flex items-center gap-1 tooltip" data-tip="Like"><i class="fa-solid fa-thumbs-up"></i> ${post.like_count}</span>
             </p>
             <p class="flex items-center gap-2 text-lg">
-                <span class="cursor-pointer tooltip" data-tip="Bookmark"><i class="fa-solid fa-bookmark"></i></span>
+                <span onclick="bookmarkPost(event)" class="cursor-pointer tooltip" data-tip="Bookmark"><i class="fa-solid fa-bookmark"></i></span>
                 <span class="cursor-pointer tooltip ml-4" data-tip="More"><i class="fa-solid fa-ellipsis"></i></span>
             </p>
         </div>
@@ -166,10 +168,14 @@ const fetchComments = (slug) => {
         });
 };
 
-const postComment = function (event) {
+const postComment = (event) => {
     event.preventDefault();
 
-    const token = localStorage.getItem("token");
+    if(!token || !user_id){
+        window.location.href = "login.html";
+        return;
+    }
+
     const content = document.getElementById("comment-input").value;
 
     fetch(`http://127.0.0.1:8000/blog/${slug}/comments/add/`, {
@@ -180,15 +186,68 @@ const postComment = function (event) {
         },
         body: JSON.stringify({ content: content })
     })
-    .then(response => response.json().then(data => ({ data, response })))
-    .then(({ data, response }) => {
-        if (response.ok) {
-            window.location.href = `single_post.html?slug=${slug}`;
-        } else {
-            console.error("Error posting comment:", data);
+        .then(response => response.json().then(data => ({ data, response })))
+        .then(({ data, response }) => {
+            if (response.ok) {
+                alert("Comment added successfully!");
+                window.location.href = `single_post.html?slug=${slug}`;
+            } else {
+                console.error("Error posting comment:", data);
+            }
+        })
+        .catch(error => console.error("Network error:", error));
+};
+
+const likePost = (event) => {
+    event.preventDefault();
+
+    if(!token || !user_id){
+        window.location.href = "login.html";
+        return;
+    }
+
+    fetch(`http://127.0.0.1:8000/blog/${slug}/like/`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Token ${token}`,
         }
     })
-    .catch(error => console.error("Network error:", error));
+    .then(res => res.json())
+    .then(data => {
+        if(data.success){
+            alert(data.success);
+            window.location.href = `single_post.html?slug=${slug}`;
+        } else{
+
+        }
+    });
+};
+
+const bookmarkPost = (event) => {
+    event.preventDefault();
+
+    if(!token || !user_id){
+        window.location.href = "login.html";
+        return;
+    }
+
+    fetch("http://127.0.0.1:8000/user/bookmark/add/", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Token ${token}`,
+        },
+        body : JSON.stringify({"slug" : slug}),
+    })
+    .then(res => res.json())
+    .then(data => {
+        if(data.success){
+            alert(data.success);
+        } else if(data.error){
+            alert(data.error);
+        }
+    });
 };
 
 fetchPostData();

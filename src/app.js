@@ -92,7 +92,7 @@ const displayRecentPosts = (posts) => {
                 if (data.length > 0) {
                     const author = data[0];
                     const author_name = author.first_name ? author.first_name : author.username;
-                    const author_image = author.profile_picture ? author.profile_picture : "../images/nav/default-user.png";
+                    const author_image = author.profile_picture ? author.profile_picture : "./images/nav/default-user.png";
 
                     div.innerHTML = `
                         <div class="flex items-center gap-3 mb-2">
@@ -121,7 +121,7 @@ const displayRecentPosts = (posts) => {
                             <div class="mt-4 flex justify-between items-center text-slate-600">
                                 <p class="flex items-center gap-3 text-lg">
                                     <span class="flex items-center gap-1 tooltip" data-tip="Like"><i class="fa-solid fa-thumbs-up"></i> ${post.like_count}</span>
-                                    <span class="flex items-center gap-1 tooltip" data-tip="Comments"><i class="fa-solid fa-comment"></i> 25</span>
+                                    <span class="flex items-center gap-1 tooltip" data-tip="Comments"><i class="fa-solid fa-comment"></i> ${post.comment_count}</span>
                                 </p>
                                 <p class="flex items-center gap-3 text-lg">
                                     <span class="cursor-pointer me-3 tooltip" data-tip="Bookmark"><i class="fa-solid fa-bookmark"></i></span>
