@@ -7,7 +7,7 @@ const profileView = () => {
         return;
     }
 
-    fetch(`http://127.0.0.1:8000/user/list/?user_id=${user_id}`)
+    fetch(`https://aspirethought-backend.onrender.com/user/list/?user_id=${user_id}`)
         .then(res => res.json())
         .then(data => {
             if (!data[0]) {
@@ -38,7 +38,7 @@ const profileView = () => {
             }
 
             // fetch my posts
-            fetch(`http://127.0.0.1:8000/blog/list/?author_id=${user_id}`)
+            fetch(`https://aspirethought-backend.onrender.com/blog/list/?author_id=${user_id}`)
                 .then(res => res.json())
                 .then(data => {
                     if (data.results.length > 0) {
@@ -132,7 +132,7 @@ const bookmarkPost = (slug) => {
         return;
     }
 
-    fetch("http://127.0.0.1:8000/user/bookmark/add/", {
+    fetch("https://aspirethought-backend.onrender.com/user/bookmark/add/", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -157,7 +157,7 @@ const redirectToSinglePost = (slug) => {
 
 const deletePost = async (slug) => {
     try {
-        const response = await fetch("http://127.0.0.1:8000/blog/delete/", {
+        const response = await fetch("https://aspirethought-backend.onrender.com/blog/delete/", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

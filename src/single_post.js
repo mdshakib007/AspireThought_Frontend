@@ -17,7 +17,7 @@ const hideSkeleton = () => {
 const displayPost = (post) => {
     document.getElementById("post-page-title").innerText = post.title;
 
-    fetch(`http://127.0.0.1:8000/user/list/?user_id=${post.author}`)
+    fetch(`https://aspirethought-backend.onrender.com/user/list/?user_id=${post.author}`)
         .then(res => res.json())
         .then(userData => {
             hideSkeleton();
@@ -74,14 +74,14 @@ const displayPost = (post) => {
                         </form>
                     </div>`;
 
-                fetch(`http://127.0.0.1:8000/blog/${post.slug}/comments/`)
+                fetch(`https://aspirethought-backend.onrender.com/blog/${post.slug}/comments/`)
                     .then(res => res.json())
                     .then(comments => {
                         document.getElementById("comment-count").innerText = `All Comments (${comments.length})`;
                         const commentSection = document.getElementById("comment-section");
                         if (comments.length > 0) {
                             comments.forEach(comment => {
-                                fetch(`http://127.0.0.1:8000/user/list/?username=${comment.user}`)
+                                fetch(`https://aspirethought-backend.onrender.com/user/list/?username=${comment.user}`)
                                     .then(res => res.json())
                                     .then(commenterData => {
                                         if (commenterData.length > 0) {
@@ -127,7 +127,7 @@ const fetchPost = () => {
         hideSkeleton();
         postSection.innerHTML = "Unexpected Error Occurred!";
     } else {
-        fetch(`http://127.0.0.1:8000/blog/list/?post_slug=${slug}`)
+        fetch(`https://aspirethought-backend.onrender.com/blog/list/?post_slug=${slug}`)
             .then(res => res.json())
             .then(data => {
                 if (data.results.length > 0) {
@@ -148,7 +148,7 @@ const postComment = function (event) {
     const token = localStorage.getItem("token");
     const content = document.getElementById("comment-input").value;
 
-    fetch(`http://127.0.0.1:8000/blog/${slug}/comments/add/`, {
+    fetch(`https://aspirethought-backend.onrender.com/blog/${slug}/comments/add/`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -176,7 +176,7 @@ const likePost = (event) => {
         return;
     }
 
-    fetch(`http://127.0.0.1:8000/blog/${slug}/like/`, {
+    fetch(`https://aspirethought-backend.onrender.com/blog/${slug}/like/`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -202,7 +202,7 @@ const bookmarkPost = (event) => {
         return;
     }
 
-    fetch("http://127.0.0.1:8000/user/bookmark/add/", {
+    fetch("https://aspirethought-backend.onrender.com/user/bookmark/add/", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",

@@ -10,7 +10,7 @@ const loadUserInformation = () => {
         window.location.href = "./login.html";
     }
 
-    fetch(`http://127.0.0.1:8000/user/list/?user_id=${user_id}`)
+    fetch(`https://aspirethought-backend.onrender.com/user/list/?user_id=${user_id}`)
         .then(res => res.json())
         .then(data => {
             if (data.length > 0) {
@@ -59,7 +59,7 @@ const requestForVerification = () => {
         return;
     }
 
-    fetch("http://127.0.0.1:8000/user/request-verification/", {
+    fetch("https://aspirethought-backend.onrender.com/user/request-verification/", {
         method: "POST",
         headers: {
             "Authorization": `Token ${token}`,
@@ -131,7 +131,7 @@ const updateUserInformation = (event) => {
         formData.append(title, updatedValue);
     }
 
-    fetch("http://127.0.0.1:8000/user/update/", {
+    fetch("https://aspirethought-backend.onrender.com/user/update/", {
         method: "POST",
         headers: {
             "Authorization": `Token ${token}`,

@@ -66,7 +66,7 @@ const fetchPosts = (url, displayCallback) => {
 };
 
 const fetchRecentPosts = () => {
-    const url = "http://127.0.0.1:8000/blog/list/";
+    const url = "https://aspirethought-backend.onrender.com/blog/list/";
     fetchPosts(url, displayRecentPosts);
 };
 
@@ -86,7 +86,7 @@ const displayRecentPosts = (posts) => {
         const tag1 = post.tags[0] ? post.tags[0] : "None";
         const tag2 = post.tags[1] ? post.tags[1] : "None";
 
-        fetch(`http://127.0.0.1:8000/user/list/?user_id=${post.author}`)
+        fetch(`https://aspirethought-backend.onrender.com/user/list/?user_id=${post.author}`)
             .then(res => res.json())
             .then(data => {
                 if (data.length > 0) {
@@ -165,7 +165,7 @@ document.querySelectorAll('input[name="my_tabs_1"]').forEach(tab => {
 });
 
 const fetchRecomendations = () => {
-    const url = "http://127.0.0.1:8000/blog/list/";
+    const url = "https://aspirethought-backend.onrender.com/blog/list/";
     fetchPosts(url, (posts) => {
         const postsSection = document.getElementById("posts-section");
         postsSection.innerHTML = "Coming Soon!";
@@ -175,7 +175,7 @@ const fetchRecomendations = () => {
 };
 
 const fetchFollowingPosts = () => {
-    const url = "http://127.0.0.1:8000/blog/list/";
+    const url = "https://aspirethought-backend.onrender.com/blog/list/";
     fetchPosts(url, (posts) => {
         const postsSection = document.getElementById("posts-section");
         postsSection.innerHTML = "Coming Soon!";
@@ -185,7 +185,7 @@ const fetchFollowingPosts = () => {
 };
 
 const fetchStories = () => {
-    const url = "http://127.0.0.1:8000/blog/list/";
+    const url = "https://aspirethought-backend.onrender.com/blog/list/";
     fetchPosts(url, (posts) => {
         const postsSection = document.getElementById("posts-section");
         postsSection.innerHTML = "Coming Soon!";

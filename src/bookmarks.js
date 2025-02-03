@@ -7,7 +7,7 @@ const profileView = () => {
         return;
     }
 
-    fetch(`http://127.0.0.1:8000/user/list/?user_id=${user_id}`)
+    fetch(`https://aspirethought-backend.onrender.com/user/list/?user_id=${user_id}`)
         .then(res => res.json())
         .then(data => {
             if (!data[0]) {
@@ -23,14 +23,14 @@ const profileView = () => {
 
             // fetch my bookmarks
             user.bookmarks.forEach(post_slug => {
-                fetch(`http://127.0.0.1:8000/blog/list/?post_slug=${post_slug}`)
+                fetch(`https://aspirethought-backend.onrender.com/blog/list/?post_slug=${post_slug}`)
                     .then(res => res.json())
                     .then(data => {
                         if (data.results.length > 0) {
                             const post = data.results[0];
                             const parent = document.getElementById("my-bookmarks-section");
 
-                            fetch(`http://127.0.0.1:8000/user/list/?user_id=${post.author}`)
+                            fetch(`https://aspirethought-backend.onrender.com/user/list/?user_id=${post.author}`)
                                 .then(res => res.json())
                                 .then(postAuthor => {
                                     if (postAuthor.length > 0) {
@@ -123,7 +123,7 @@ const removeBookmarkPost = (slug) => {
         return;
     }
 
-    fetch("http://127.0.0.1:8000/user/bookmark/remove/", {
+    fetch("https://aspirethought-backend.onrender.com/user/bookmark/remove/", {
         method: "DELETE",
         headers: {
             "Content-Type": "application/json",

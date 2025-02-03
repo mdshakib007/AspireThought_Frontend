@@ -12,7 +12,7 @@ const handleLogin = (event) => {
 
     document.getElementById("login-btn").innerHTML = `<span class="loading loading-spinner loading-xs"></span>`;
 
-    fetch("http://127.0.0.1:8000/user/login/", {
+    fetch("https://aspirethought-backend.onrender.com/user/login/", {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify(info),
