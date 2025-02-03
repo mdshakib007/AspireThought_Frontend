@@ -20,7 +20,7 @@ const handleLogout = (event) => {
         return;
     }
 
-    fetch("https://aspirethought-backend.onrender.com/user/logout/", {
+    fetch("http://127.0.0.1:8000/user/logout/", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -49,7 +49,7 @@ const loadNavProfilePicture = () => {
         return;
     }
 
-    fetch(`https://aspirethought-backend.onrender.com/user/list/${user_id}`)
+    fetch(`http://127.0.0.1:8000/user/list/${user_id}`)
     .then(res => res.json())
     .then(data => {
         if(data.username){

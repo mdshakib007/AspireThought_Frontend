@@ -10,7 +10,7 @@ const displayTags = () => {
         return;
     }
 
-    fetch("https://aspirethought-backend.onrender.com/tag/list/")
+    fetch("http://127.0.0.1:8000/tag/list/")
         .then(res => res.json())
         .then(data => {
             const parent = document.getElementById("tag-list-div");
@@ -53,7 +53,7 @@ const displayForEditing = async () => {
     if (!mode || !post_slug) return;
 
     try {
-        const res = await fetch(`https://aspirethought-backend.onrender.com/blog/list/?post_slug=${post_slug}`);
+        const res = await fetch(`http://127.0.0.1:8000/blog/list/?post_slug=${post_slug}`);
         const data = await res.json();
 
         if (data.results.length > 0) {
@@ -116,7 +116,7 @@ const editPost = async (event) => {
     tags.forEach(tag => formData.append("tags", tag));
 
     try {
-        const response = await fetch("https://aspirethought-backend.onrender.com/blog/edit/", {
+        const response = await fetch("http://127.0.0.1:8000/blog/edit/", {
             method: "POST",
             headers: {
                 "Authorization": `Token ${token}`,
@@ -168,7 +168,7 @@ const createPost = async (event) => {
     tags.forEach(tag => formData.append("tags", tag));
 
     try {
-        const postResponse = await fetch("https://aspirethought-backend.onrender.com/blog/create/", {
+        const postResponse = await fetch("http://127.0.0.1:8000/blog/create/", {
             method: "POST",
             headers: {
                 "Authorization": `Token ${token}`,

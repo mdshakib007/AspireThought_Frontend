@@ -17,13 +17,15 @@ const hideSkeleton = () => {
 const displayPost = (post) => {
     document.getElementById("post-page-title").innerText = post.title;
 
-    fetch(`https://aspirethought-backend.onrender.com/user/list/?user_id=${post.author}`)
+    fetch(`http://127.0.0.1:8000/user/list/?user_id=${post.author}`)
         .then(res => res.json())
         .then(userData => {
             hideSkeleton();
             if (userData.length > 0) {
                 const author = userData[0];
+
                 const author_name = author.first_name ? author.first_name : author.username;
+                const verified = author.is_verified ? `<span class="tooltip" data-tip="Verified Author"><i class="fa-solid fa-circle-check text-blue-600"></i></span>` : "";
                 const author_image = author.profile_picture ? author.profile_picture : "./images/nav/default-user.png";
                 const post_image = post.image ? post.image : "./images/up-aspireThought.png";
                 const tag1 = post.tags[0] ? post.tags[0] : "None";
@@ -35,7 +37,7 @@ const displayPost = (post) => {
                         <img src="${author_image}" alt="User Avatar"
                             class="w-10 h-10 object-cover rounded-full border border-slate-400">
                         <div>
-                            <p class="text-sm font-medium text-black">${author_name}</p>
+                            <p class="text-sm font-medium text-black">${author_name} ${verified}</p>
                             <p class="text-xs text-slate-500">${post.created_at.slice(0, 10)} • <i class="fa-solid fa-earth-americas"></i></p>
                         </div>
                     </div>
@@ -43,7 +45,7 @@ const displayPost = (post) => {
                     <div>
                         <h1 class="text-4xl font-bold text-slate-900 leading-snug mb-5">${post.title}</h1>
                         <img src="${post_image}" alt="blog img" class="my-5 w-full">
-                        <div class="prose mb-6 leading-relaxed">${postBodyHtml}</div>
+                        <div class="prose mb-6 leading-relaxed text-lg">${postBodyHtml}</div>
                     </div>
 
                     <div class="mt-4 flex gap-2">
@@ -59,7 +61,7 @@ const displayPost = (post) => {
                         </p>
                         <p class="flex items-center gap-2 text-lg">
                             <span onclick="bookmarkPost(event)" class="cursor-pointer tooltip" data-tip="Bookmark"><i class="fa-solid fa-bookmark"></i></span>
-                            <span class="cursor-pointer tooltip ml-4" data-tip="More"><i class="fa-solid fa-ellipsis"></i></span>
+                            <span onclick="copyPostLink('${post.slug}')" class="cursor-pointer tooltip ml-4" data-tip="Copy Link"><i class="fa-solid fa-link"></i></span>
                         </p>
                     </div>
 
@@ -72,14 +74,14 @@ const displayPost = (post) => {
                         </form>
                     </div>`;
 
-                fetch(`https://aspirethought-backend.onrender.com/blog/${post.slug}/comments/`)
+                fetch(`http://127.0.0.1:8000/blog/${post.slug}/comments/`)
                     .then(res => res.json())
                     .then(comments => {
                         document.getElementById("comment-count").innerText = `All Comments (${comments.length})`;
                         const commentSection = document.getElementById("comment-section");
                         if (comments.length > 0) {
                             comments.forEach(comment => {
-                                fetch(`https://aspirethought-backend.onrender.com/user/list/?username=${comment.user}`)
+                                fetch(`http://127.0.0.1:8000/user/list/?username=${comment.user}`)
                                     .then(res => res.json())
                                     .then(commenterData => {
                                         if (commenterData.length > 0) {
@@ -125,7 +127,7 @@ const fetchPost = () => {
         hideSkeleton();
         postSection.innerHTML = "Unexpected Error Occurred!";
     } else {
-        fetch(`https://aspirethought-backend.onrender.com/blog/list/?post_slug=${slug}`)
+        fetch(`http://127.0.0.1:8000/blog/list/?post_slug=${slug}`)
             .then(res => res.json())
             .then(data => {
                 if (data.results.length > 0) {
@@ -146,7 +148,7 @@ const postComment = function (event) {
     const token = localStorage.getItem("token");
     const content = document.getElementById("comment-input").value;
 
-    fetch(`https://aspirethought-backend.onrender.com/blog/${slug}/comments/add/`, {
+    fetch(`http://127.0.0.1:8000/blog/${slug}/comments/add/`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -174,7 +176,7 @@ const likePost = (event) => {
         return;
     }
 
-    fetch(`https://aspirethought-backend.onrender.com/blog/${slug}/like/`, {
+    fetch(`http://127.0.0.1:8000/blog/${slug}/like/`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -200,7 +202,7 @@ const bookmarkPost = (event) => {
         return;
     }
 
-    fetch("https://aspirethought-backend.onrender.com/user/bookmark/add/", {
+    fetch("http://127.0.0.1:8000/user/bookmark/add/", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -218,5 +220,17 @@ const bookmarkPost = (event) => {
         });
 };
 
+
+const copyPostLink = (slug) => {
+    const url = `http://127.0.0.1:5500/single_post.html?slug=${slug}`;
+
+    navigator.clipboard.writeText(url)
+        .then(() => {
+            alert("Post link copied to clipboard!");
+        })
+        .catch(err => {
+            console.error("Failed to copy: ", err);
+        });
+};
 
 fetchPost();

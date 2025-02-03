@@ -7,7 +7,7 @@ const profileView = () => {
         return;
     }
 
-    fetch(`https://aspirethought-backend.onrender.com/user/list/?user_id=${user_id}`)
+    fetch(`http://127.0.0.1:8000/user/list/?user_id=${user_id}`)
         .then(res => res.json())
         .then(data => {
             if (!data[0]) {
@@ -17,7 +17,8 @@ const profileView = () => {
             if (user.profile_picture) {
                 document.getElementById("profile-profile-picture").src = user.profile_picture;
             }
-            document.getElementById("profile-username").innerText = user.username;
+            const verified = user.is_verified ? `<span class="tooltip" data-tip="Verified Author"><i class="fa-solid fa-circle-check text-blue-600"></i></span>` : "";
+            document.getElementById("profile-username").innerHTML = `${user.username} ${verified}`;
             document.getElementById("profile-email").innerText = user.email;
 
             if (user.first_name) {
@@ -37,7 +38,7 @@ const profileView = () => {
             }
 
             // fetch my posts
-            fetch(`https://aspirethought-backend.onrender.com/blog/list/?author_id=${user_id}`)
+            fetch(`http://127.0.0.1:8000/blog/list/?author_id=${user_id}`)
                 .then(res => res.json())
                 .then(data => {
                     if (data.results.length > 0) {
@@ -47,6 +48,7 @@ const profileView = () => {
                         posts.forEach(post => {
                             const post_img = post.image ? post.image : "./images/up-aspireThought.png";
                             const user_name = user.first_name ? user.first_name : user.username;
+                            const verified = user.is_verified ? `<span class="tooltip" data-tip="Verified Author"><i class="fa-solid fa-circle-check text-blue-600"></i></span>` : "";
                             const user_img = user.profile_picture ? user.profile_picture : "./images/nav/default-user.png";
                             const tag1 = post.tags[0] ? post.tags[0] : "None";
                             const tag2 = post.tags[1] ? post.tags[1] : "None";
@@ -59,7 +61,7 @@ const profileView = () => {
                                     <img src="${user_img}" alt="User Avatar"
                                         class="w-10 h-10 object-cover rounded-full border border-slate-400">
                                     <div>
-                                        <p class="text-sm font-medium text-black">${user_name}</p>
+                                        <p class="text-sm font-medium text-black">${user_name} ${verified}</p>
                                         <p class="text-xs text-slate-500">${post.created_at.slice(0, 10)} • <i
                                                 class="fa-solid fa-earth-americas"></i>
                                         </p>
@@ -130,7 +132,7 @@ const bookmarkPost = (slug) => {
         return;
     }
 
-    fetch("https://aspirethought-backend.onrender.com/user/bookmark/add/", {
+    fetch("http://127.0.0.1:8000/user/bookmark/add/", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -155,7 +157,7 @@ const redirectToSinglePost = (slug) => {
 
 const deletePost = async (slug) => {
     try {
-        const response = await fetch("https://aspirethought-backend.onrender.com/blog/delete/", {
+        const response = await fetch("http://127.0.0.1:8000/blog/delete/", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

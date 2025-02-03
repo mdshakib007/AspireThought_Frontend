@@ -66,7 +66,7 @@ const fetchPosts = (url, displayCallback) => {
 };
 
 const fetchRecentPosts = () => {
-    const url = "https://aspirethought-backend.onrender.com/blog/list/";
+    const url = "http://127.0.0.1:8000/blog/list/";
     fetchPosts(url, displayRecentPosts);
 };
 
@@ -86,12 +86,14 @@ const displayRecentPosts = (posts) => {
         const tag1 = post.tags[0] ? post.tags[0] : "None";
         const tag2 = post.tags[1] ? post.tags[1] : "None";
 
-        fetch(`https://aspirethought-backend.onrender.com/user/list/?user_id=${post.author}`)
+        fetch(`http://127.0.0.1:8000/user/list/?user_id=${post.author}`)
             .then(res => res.json())
             .then(data => {
                 if (data.length > 0) {
                     const author = data[0];
+                    
                     const author_name = author.first_name ? author.first_name : author.username;
+                    const verified = author.is_verified ? `<span class="tooltip" data-tip="Verified Author"><i class="fa-solid fa-circle-check text-blue-600"></i></span>` : "";
                     const author_image = author.profile_picture ? author.profile_picture : "./images/nav/default-user.png";
                     const post_image = post.image ? post.image : "./images/up-aspireThought.png";
 
@@ -100,7 +102,7 @@ const displayRecentPosts = (posts) => {
                             <img src="${author_image}" alt="User Avatar"
                                 class="w-10 h-10 object-cover rounded-full border border-slate-400">
                             <div>
-                                <p class="text-sm font-medium text-black">${author_name}</p>
+                                <p class="text-sm font-medium text-black">${author_name} ${verified}</p>
                                 <p class="text-xs text-slate-500">${post.created_at.slice(0, 10)} • <i class="fa-solid fa-earth-americas"></i></p>
                             </div>
                         </div>
@@ -163,7 +165,7 @@ document.querySelectorAll('input[name="my_tabs_1"]').forEach(tab => {
 });
 
 const fetchRecomendations = () => {
-    const url = "https://aspirethought-backend.onrender.com/blog/list/";
+    const url = "http://127.0.0.1:8000/blog/list/";
     fetchPosts(url, (posts) => {
         const postsSection = document.getElementById("posts-section");
         postsSection.innerHTML = "Coming Soon!";
@@ -173,7 +175,7 @@ const fetchRecomendations = () => {
 };
 
 const fetchFollowingPosts = () => {
-    const url = "https://aspirethought-backend.onrender.com/blog/list/";
+    const url = "http://127.0.0.1:8000/blog/list/";
     fetchPosts(url, (posts) => {
         const postsSection = document.getElementById("posts-section");
         postsSection.innerHTML = "Coming Soon!";
@@ -183,7 +185,7 @@ const fetchFollowingPosts = () => {
 };
 
 const fetchStories = () => {
-    const url = "https://aspirethought-backend.onrender.com/blog/list/";
+    const url = "http://127.0.0.1:8000/blog/list/";
     fetchPosts(url, (posts) => {
         const postsSection = document.getElementById("posts-section");
         postsSection.innerHTML = "Coming Soon!";
