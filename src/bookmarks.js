@@ -147,6 +147,9 @@ const redirectToSinglePost = (slug) => {
     window.location.href = url;
 };
 
-
+const visitAuthorProfile = (id) =>{
+    const url = `https://mdshakib007.github.io/AspireThought_Frontend/visit_profile.html?author_id=${id}`;
+    window.location.href = url;
+};
 
 profileView();

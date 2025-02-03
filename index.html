@@ -15,6 +15,74 @@
 <body class="font-serif">
     <header>
         <nav class="pb-16" id="nav-component">
+            <div class="navbar bg-base-200 text-base-content fixed z-40 font-serif">
+                <div class="flex-1 gap-2">
+                    <a class="text-xl font-serif font-bold" href="./index.html">
+                        AspireThought
+                    </a>
+                    <div class="form-control">
+                        <label class="input flex items-center gap-2 rounded-full">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <input id="universal-serach-input" type="text" placeholder="Search"
+                                class="grow w-20 md:w-auto" />
+                        </label>
+                    </div>
+                </div>
+                <div class="flex-none gap-2">
+                    <a href="./create_post.html" class="mr-3 text-2xl md:block hidden"><i
+                            class="fa-solid fa-pen-to-square"></i></a>
+                    <div role="button" class="btn btn-ghost btn-circle avatar">
+                        <div class="w-10 rounded-full border-2 border-slate-600">
+                            <label for="navigation" class="drawer-button">
+                                <img id="nav-profile-image-1" alt="profile" src="./images/nav/login.png" />
+                            </label>
+                        </div>
+                    </div>
+                    <div class="drawer drawer-end">
+                        <input id="navigation" type="checkbox" class="drawer-toggle" />
+                        <div class="drawer-side">
+                            <label for="navigation" aria-label="close sidebar" class="drawer-overlay"></label>
+                            <ul class="menu bg-base-200 text-base-content min-h-full w-72 p-4 font-bold">
+                                <li>
+                                    <a href="./profile.html">
+                                        <img id="nav-profile-image-2" src="./images/nav/login.png" alt=""
+                                            class="h-12 w-12 rounded-full border-2 border-slate-600 object-cover">
+                                        <span id="nav-profile-name">Login</span>
+                                    </a>
+                                </li>
+                                <li class="text-lg"><a href="./create_post.html"><i
+                                            class="fa-solid fa-pen-to-square"></i> Add
+                                        Post</a></li>
+                                <div class="border-b-2 border-base-600 my-2"></div>
+
+                                <li><a href="./bookmarks.html"><i class="fa-solid fa-bookmark"></i> Bookmarks</a></li>
+                                <li><a><i class="fa-solid fa-book"></i> Stories</a></li>
+                                <li><a><i class="fa-solid fa-square-poll-vertical"></i> Dashboard</a></li>
+
+                                <div class="border-b-2 border-base-600 my-2"></div>
+
+                                <li><a href="./settings.html"><i class="fa-solid fa-gear"></i> Settings</a></li>
+                                <li><a href="./settings.html"><i class="fa-solid fa-circle-check"></i> Verification</a>
+                                </li>
+                                <li><a href="mailto:commonshakib@gmail.com"><i
+                                            class="fa-solid fa-wand-magic-sparkles"></i> Feature Request</a></li>
+                                <li><a href="mailto:commonshakib@gmail.com"><i class="fa-solid fa-tags"></i> Tag
+                                        Request</a></li>
+                                <li><a href="mailto:commonshakib@gmail.com"><i class="fa-solid fa-circle-question"></i>
+                                        Help</a></li>
+                                <li><a href="mailto:commonshakib@gmail.com"><i class="fa-solid fa-bug"></i> Report</a>
+                                </li>
+
+                                <div class="border-b-2 border-base-600 my-2"></div>
+
+                                <li onclick="handleLogout(event)"><a><i class="fa-solid fa-right-from-bracket"></i>
+                                        Logout</a></li>
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </nav>
     </header>
 
@@ -37,7 +105,7 @@
             <input id="recomendation-tab-selection" type="radio" name="my_tabs_1" role="tab" class="tab"
                 aria-label="For You" />
 
-            <input id="recent-tab-selection" type="radio" name="my_tabs_1" role="tab" class="tab" aria-label="Recent"
+            <input id="recent-tab-selection" type="radio" name="my_tabs_1" role="tab" class="tab" aria-label="Home"
                 checked="checked" />
 
             <input id="following-tab-selection" type="radio" name="my_tabs_1" role="tab" class="tab"
@@ -86,10 +154,41 @@
     </main>
 
     <footer id="footer-component" class="footer bg-base-200 p-5 md:flex md:justify-evenly text-md">
+        <nav>
+            <h6 class="footer-title">Services</h6>
+            <a class="link link-hover">Branding</a>
+            <a class="link link-hover">Design</a>
+            <a class="link link-hover">Marketing</a>
+            <a class="link link-hover">Advertisement</a>
+        </nav>
+        <nav>
+            <h6 class="footer-title">Company</h6>
+            <a class="link link-hover">About us</a>
+            <a class="link link-hover">Contact</a>
+            <a class="link link-hover">Jobs</a>
+            <a class="link link-hover">Press kit</a>
+        </nav>
+        <nav>
+            <h6 class="footer-title">Legal</h6>
+            <a class="link link-hover">Terms of use</a>
+            <a class="link link-hover">Privacy policy</a>
+            <a class="link link-hover">Cookie policy</a>
+        </nav>
+        <form>
+            <h6 class="footer-title">Newsletter</h6>
+            <fieldset class="form-control max-w-80">
+                <label class="label">
+                    <span class="label-text">Subscribe to official Newsletter</span>
+                </label>
+                <div class="flex flex-col md:flex-row gap-2">
+                    <input type="text" placeholder="Your Email" class="input input-bordered" required />
+                    <button class="btn bg-slate-500 hover:bg-slate-600 text-white">Subscribe</button>
+                </div>
+            </fieldset>
+        </form>
     </footer>
 
     <script src="./src/app.js"></script>
-    <script src="./src/common.js"></script>
 </body>
 
 </html>

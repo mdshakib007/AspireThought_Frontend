@@ -19,7 +19,7 @@ const loadUserInformation = () => {
                 if (user.profile_picture) {
                     document.getElementById("profile-picture").src = user.profile_picture;
                 } else {
-                    document.getElementById("profile-picture").src = "../images/nav/default-user.png";
+                    document.getElementById("profile-picture").src = "./images/nav/default-user.png";
                 }
                 document.getElementById("username").innerHTML = user.is_verified ? ` ${user.username} <i class="fa-solid fa-circle-check text-blue-600"></i>` : ` ${user.username}`;
                 document.getElementById("full-name").innerHTML = ` ${user.first_name} ${user.last_name}`;

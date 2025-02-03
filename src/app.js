@@ -22,6 +22,65 @@ const clearPagination = () => {
     document.getElementById("pagination-controls").innerHTML = "";
 };
 
+const handleLogout = (event) => {
+    event.preventDefault();
+
+    const token = localStorage.getItem("token");
+    const user_id = localStorage.getItem("user_id");
+
+    if (!token || !user_id) {
+        window.location.href = "./login.html";
+        return;
+    }
+
+    fetch("https://aspirethought-backend.onrender.com/user/logout/", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Token ${token}`
+        }
+    })
+        .then((res) => res.json())
+        .then((data) => {
+            if (data.success) {
+                localStorage.removeItem("token");
+                localStorage.removeItem("user_id");
+                window.location.href = "./login.html";
+            } else {
+                console.error("Logout failed:", data);
+                alert("Logout failed. Please try again.");
+            }
+        })
+        .catch((error) => {
+            console.error("Error during logout:", error);
+        });
+};
+
+const loadNavProfilePicture = () => {
+    const user_id = localStorage.getItem("user_id");
+    if (!user_id) {
+        return;
+    }
+
+    fetch(`https://aspirethought-backend.onrender.com/user/list/${user_id}`)
+        .then(res => res.json())
+        .then(data => {
+            if (data.username) {
+                document.getElementById("nav-profile-name").innerText = data.username;
+            } else {
+                document.getElementById("nav-profile-name").innerText = "Unknown";
+            }
+            if (data.profile_picture) {
+                document.getElementById("nav-profile-image-1").src = data.profile_picture;
+                document.getElementById("nav-profile-image-2").src = data.profile_picture;
+            } else {
+                document.getElementById("nav-profile-image-1").src = "./images/nav/default-user.png";
+                document.getElementById("nav-profile-image-2").src = "./images/nav/default-user.png";
+            }
+        })
+};
+
+
 const displayPagination = (data, displayCallback) => {
     const paginationContainer = document.getElementById("pagination-controls");
     paginationContainer.innerHTML = "";
@@ -93,7 +152,7 @@ const displayRecentPosts = (posts) => {
             .then(data => {
                 if (data.length > 0) {
                     const author = data[0];
-                    
+
                     const author_name = author.first_name ? author.first_name : author.username;
                     const verified = author.is_verified ? `<span class="tooltip" data-tip="Verified Author"><i class="fa-solid fa-circle-check text-blue-600"></i></span>` : "";
                     const author_image = author.profile_picture ? author.profile_picture : "./images/nav/default-user.png";
@@ -118,7 +177,7 @@ const displayRecentPosts = (posts) => {
                                 </div>
                             </div>
             
-                            <div class="mt-2 flex gap-2">
+                            <div class="mt-2 flex gap-2" id="tag-section">
                                 <span class="text-xs font-semibold px-3 py-1 bg-slate-200 text-slate-800 rounded-full cursor-pointer">${tag1}</span>
                                 <span class="text-xs font-semibold px-3 py-1 bg-slate-200 text-slate-800 rounded-full cursor-pointer">${tag2}</span>
                             </div>
@@ -205,10 +264,26 @@ const copyPostLink = (slug) => {
         });
 };
 
-const visitAuthorProfile = (id) =>{
+const visitAuthorProfile = (id) => {
     const url = `https://mdshakib007.github.io/AspireThought_Frontend/visit_profile.html?author_id=${id}`;
     window.location.href = url;
 };
+
+document.getElementById("universal-serach-input").addEventListener("keydown", function (event) {
+    if (event.key === "Enter") {
+        event.preventDefault();
+        handleSearch();
+    }
+});
+
+function handleSearch() {
+    const query = document.getElementById("universal-serach-input").value.trim();
+    if (query) {
+        const url = `https://aspirethought-backend.onrender.com/blog/list/?title=${query}`;
+        fetchPosts(url, displayRecentPosts);
+    }
+};
+
 
 const fetchAndUpdateTabContent = () => {
     const selectedTab = document.querySelector('input[name="my_tabs_1"]:checked');
@@ -260,4 +335,5 @@ const fetchStories = () => {
     });
 };
 
+loadNavProfilePicture();
 fetchAndUpdateTabContent();
