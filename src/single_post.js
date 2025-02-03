@@ -34,10 +34,10 @@ const displayPost = (post) => {
 
                 postSection.innerHTML = `
                     <div class="flex items-center gap-3 mb-4 border-b border-slate-300 pb-4">
-                        <img src="${author_image}" alt="User Avatar"
-                            class="w-10 h-10 object-cover rounded-full border border-slate-400">
+                        <img onclick="visitAuthorProfile('${author.id}')" src="${author_image}" alt="User Avatar"
+                            class="w-10 h-10 object-cover rounded-full border border-slate-400 cursor-pointer">
                         <div>
-                            <p class="text-sm font-medium text-black">${author_name} ${verified}</p>
+                            <p onclick="visitAuthorProfile('${author.id}')" class="text-sm font-medium text-black cursor-pointer">${author_name} ${verified}</p>
                             <p class="text-xs text-slate-500">${post.created_at.slice(0, 10)} • <i class="fa-solid fa-earth-americas"></i></p>
                         </div>
                     </div>
@@ -226,6 +226,11 @@ const copyPostLink = (slug) => {
         .catch(err => {
             console.error("Failed to copy: ", err);
         });
+};
+
+const visitAuthorProfile = (id) => {
+    const url = `https://mdshakib007.github.io/AspireThought_Frontend/visit_profile.html?author_id=${id}`;
+    window.location.href = url;
 };
 
 fetchPost();

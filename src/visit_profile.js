@@ -50,10 +50,10 @@ const visitProfile = () => {
                             div.innerHTML = `
                             <div class="flex justify-between">
                                 <div class="flex items-center gap-3 mb-2">
-                                    <img src="${user_img}" alt="User Avatar"
-                                        class="w-10 h-10 object-cover rounded-full border border-slate-400">
+                                    <img onclick="visitAuthorProfile('${post.author}')" src="${user_img}" alt="User Avatar"
+                                        class="w-10 h-10 object-cover rounded-full border border-slate-400 cursor-pointer">
                                     <div>
-                                        <p class="text-sm font-medium text-black">${user_name} ${verified}</p>
+                                        <p onclick="visitAuthorProfile('${post.author}')" class="cursor-pointer text-sm font-medium text-black">${user_name} ${verified}</p>
                                         <p class="text-xs text-slate-500">${post.created_at.slice(0, 10)} • <i
                                                 class="fa-solid fa-earth-americas"></i>
                                         </p>
@@ -144,6 +144,11 @@ const bookmarkPost = (slug) => {
 
 const redirectToSinglePost = (slug) => {
     const url = `https://mdshakib007.github.io/AspireThought_Frontend/single_post.html?slug=${slug}`;
+    window.location.href = url;
+};
+
+const visitAuthorProfile = (id) => {
+    const url = `https://mdshakib007.github.io/AspireThought_Frontend/visit_profile.html?author_id=${id}`;
     window.location.href = url;
 };
 
