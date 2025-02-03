@@ -185,9 +185,8 @@ const likePost = (slug) => {
         .then(data => {
             if (data.success) {
                 alert(data.success);
-                window.location.href = `single_post.html?slug=${slug}`;
             } else {
-
+                alert(data.error ? data.error : "Unexpected error occurred!");
             }
         });
 };
@@ -222,7 +221,7 @@ const copyPostLink = (slug) => {
 
     navigator.clipboard.writeText(url)
         .then(() => {
-            alert("Post link copied to clipboard!");
+            console.log("Post link copied to clipboard!");
         })
         .catch(err => {
             console.error("Failed to copy: ", err);

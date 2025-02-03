@@ -66,11 +66,10 @@ const requestForVerification = () => {
         .then(res => res.json())
         .then(data => {
             if (data.success) {
-                alert(data.success);
+                window.location.href = "settings.html";
             } else {
                 alert(data.error ? data.error : "Unexpected error occurred!");
             }
-            window.location.href = "settings.html";
         });
 };
 

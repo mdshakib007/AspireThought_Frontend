@@ -108,7 +108,7 @@ const copyPostLink = (slug) => {
 
     navigator.clipboard.writeText(url)
         .then(() => {
-            alert("Post link copied to clipboard!");
+            console.log("Post link copied to clipboard!");
         })
         .catch(err => {
             console.error("Failed to copy: ", err);

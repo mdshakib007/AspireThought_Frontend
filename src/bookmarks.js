@@ -109,7 +109,7 @@ const copyPostLink = (slug) => {
 
     navigator.clipboard.writeText(url)
         .then(() => {
-            alert("Post link copied to clipboard!");
+            console.log("Post link copied to clipboard!");
         })
         .catch(err => {
             console.error("Failed to copy: ", err);
@@ -135,10 +135,10 @@ const removeBookmarkPost = (slug) => {
         .then(data => {
             if (data.success) {
                 alert(data.success);
+                window.location.href = "bookmarks.html";
             } else if (data.error) {
                 alert(data.error);
             }
-            window.location.href = "bookmarks.html";
         });
 };
 

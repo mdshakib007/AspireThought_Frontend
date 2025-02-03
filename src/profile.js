@@ -118,7 +118,7 @@ const copyPostLink = (slug) => {
 
     navigator.clipboard.writeText(url)
         .then(() => {
-            alert("Post link copied to clipboard!");
+            console.log("Post link copied to clipboard!");
         })
         .catch(err => {
             console.error("Failed to copy: ", err);
@@ -172,7 +172,7 @@ const deletePost = async (slug) => {
 
         const data = await response.json();
         if (data.success) {
-            alert(data.success);
+            window.location.href = "profile.html";
         } else {
             alert(data.error || "Something went wrong!");
         }

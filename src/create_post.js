@@ -126,10 +126,8 @@ const editPost = async (event) => {
 
         const data = await response.json();
         if (data.success) {
-            alert("Post updated successfully!");
             window.location.href = "profile.html";
         } else {
-            console.log(data);
             alert("Failed to update post!");
         }
     } catch (error) {
@@ -180,7 +178,6 @@ const createPost = async (event) => {
         if (postData.success) {
             window.location.href = "index.html";
         } else {
-            console.log(postData);
             alert("Failed to create post!");
         }
     } catch (error) {

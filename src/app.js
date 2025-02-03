@@ -162,9 +162,8 @@ const likePost = (slug) => {
         .then(data => {
             if (data.success) {
                 alert(data.success);
-                window.location.href = `single_post.html?slug=${slug}`;
             } else {
-
+                alert(data.error ? data.error : "Unexpected error occurred!");
             }
         });
 };
