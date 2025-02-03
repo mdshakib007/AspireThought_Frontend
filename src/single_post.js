@@ -57,15 +57,15 @@ const displayPost = (post) => {
 
                     <div class="mt-6 flex justify-between items-center text-slate-600 border-t border-b border-slate-300 py-2 px-4">
                         <p class="flex items-center gap-2 text-xl">
-                            <span onclick="likePost(event)" class="flex items-center gap-1 tooltip cursor-pointer" data-tip="Like"><i class="fa-solid fa-thumbs-up"></i> ${post.like_count}</span>
+                            <span onclick="likePost('${post.slug}')" class="flex items-center gap-1 tooltip cursor-pointer" data-tip="Like"><i class="fa-solid fa-thumbs-up"></i> ${post.like_count}</span>
                         </p>
                         <p class="flex items-center gap-2 text-lg">
-                            <span onclick="bookmarkPost(event)" class="cursor-pointer tooltip" data-tip="Bookmark"><i class="fa-solid fa-bookmark"></i></span>
+                            <span onclick="bookmarkPost('${post.slug}')" class="cursor-pointer tooltip" data-tip="Bookmark"><i class="fa-solid fa-bookmark"></i></span>
                             <span onclick="copyPostLink('${post.slug}')" class="cursor-pointer tooltip ml-4" data-tip="Copy Link"><i class="fa-solid fa-link"></i></span>
                         </p>
                     </div>
 
-                    <div class="mt-6">
+                    <div id="single-post-comment-section" class="mt-6">
                         <form onsubmit="postComment(event)">
                             <textarea id="comment-input" class="textarea textarea-bordered w-full" name="write-comment" id="write-comment"
                                 placeholder="Write a Comment" required></textarea>
@@ -168,9 +168,7 @@ const postComment = function (event) {
 };
 
 
-const likePost = (event) => {
-    event.preventDefault();
-
+const likePost = (slug) => {
     if (!token || !user_id) {
         window.location.href = "login.html";
         return;
@@ -194,9 +192,7 @@ const likePost = (event) => {
         });
 };
 
-const bookmarkPost = (event) => {
-    event.preventDefault();
-
+const bookmarkPost = (slug) => {
     if (!token || !user_id) {
         window.location.href = "login.html";
         return;
@@ -222,7 +218,7 @@ const bookmarkPost = (event) => {
 
 
 const copyPostLink = (slug) => {
-    const url = `http://127.0.0.1:5500/single_post.html?slug=${slug}`;
+    const url = `https://mdshakib007.github.io/AspireThought_Frontend/single_post.html?slug=${slug}`;
 
     navigator.clipboard.writeText(url)
         .then(() => {

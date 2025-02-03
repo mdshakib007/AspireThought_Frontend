@@ -1,4 +1,6 @@
 let currentPage = 1;
+const token = localStorage.getItem("token");
+const user_id = localStorage.getItem("user_id");
 
 const hideBottomPostBtn = (event) => {
     event.preventDefault();
@@ -98,17 +100,17 @@ const displayRecentPosts = (posts) => {
                     const post_image = post.image ? post.image : "./images/up-aspireThought.png";
 
                     div.innerHTML = `
-                        <div class="flex items-center gap-3 mb-2">
-                            <img src="${author_image}" alt="User Avatar"
-                                class="w-10 h-10 object-cover rounded-full border border-slate-400">
+                        <div class="flex items-center gap-3 mb-4">
+                            <img onclick="visitAuthorProfile('${author.id}')" src="${author_image}" alt="User Avatar"
+                                class="w-10 h-10 object-cover rounded-full border border-slate-400 cursor-pointer">
                             <div>
-                                <p class="text-sm font-medium text-black">${author_name} ${verified}</p>
+                                <p  onclick="visitAuthorProfile('${author.id}')" class="text-sm font-medium text-black cursor-pointer">${author_name} ${verified}</p>
                                 <p class="text-xs text-slate-500">${post.created_at.slice(0, 10)} • <i class="fa-solid fa-earth-americas"></i></p>
                             </div>
                         </div>
-            
-                        <div onclick="redirectToSinglePost('${post.slug}')" class="cursor-pointer" >
-                            <div class="flex justify-between">
+
+                        <div class="" >
+                            <div onclick="redirectToSinglePost('${post.slug}')" class="flex flex-col-reverse sm:flex-row sm:justify-between cursor-pointer">
                                 <h1 class="text-2xl font-bold text-slate-900 leading-snug mb-3 hover:underline cursor-pointer">${post.title}</h1>
                                 <div class="w-40 md:w-52 flex-shrink-0">
                                     <img src="${post_image}" alt="Blog Image"
@@ -123,12 +125,12 @@ const displayRecentPosts = (posts) => {
             
                             <div class="mt-4 flex justify-between items-center text-slate-600">
                                 <p class="flex items-center gap-3 text-lg">
-                                    <span class="flex items-center gap-1 tooltip" data-tip="Like"><i class="fa-solid fa-thumbs-up"></i> ${post.like_count}</span>
-                                    <span class="flex items-center gap-1 tooltip" data-tip="Comments"><i class="fa-solid fa-comment"></i> ${post.comment_count}</span>
+                                    <span onclick="likePost('${post.slug}')" class="flex items-center gap-1 tooltip" data-tip="Like"><i class="fa-solid fa-thumbs-up"></i> ${post.like_count}</span>
+                                    <span onclick="redirectToSinglePost('${post.slug}')" class="flex items-center gap-1 tooltip" data-tip="Comments"><i class="fa-solid fa-comment"></i> ${post.comment_count}</span>
                                 </p>
                                 <p class="flex items-center gap-3 text-lg">
-                                    <span class="cursor-pointer me-3 tooltip" data-tip="Bookmark"><i class="fa-solid fa-bookmark"></i></span>
-                                    <span class="cursor-pointer tooltip" data-tip="More"><i class="fa-solid fa-ellipsis"></i></span>
+                                    <span onclick="bookmarkPost('${post.slug}')" class="cursor-pointer me-3 tooltip" data-tip="Bookmark"><i class="fa-solid fa-bookmark"></i></span>
+                                    <span onclick="copyPostLink('${post.slug}')" class="cursor-pointer tooltip" data-tip="Copy Link"><i class="fa-solid fa-link"></i></span>
                                 </p>
                             </div>
                         </div>
@@ -141,8 +143,73 @@ const displayRecentPosts = (posts) => {
 
 function redirectToSinglePost(slug) {
     window.location.href = `single_post.html?slug=${encodeURIComponent(slug)}`;
-}
+};
 
+const likePost = (slug) => {
+    if (!token || !user_id) {
+        window.location.href = "login.html";
+        return;
+    }
+
+    fetch(`https://aspirethought-backend.onrender.com/blog/${slug}/like/`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Token ${token}`,
+        }
+    })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                alert(data.success);
+                window.location.href = `single_post.html?slug=${slug}`;
+            } else {
+
+            }
+        });
+};
+
+const bookmarkPost = (slug) => {
+    if (!token || !user_id) {
+        window.location.href = "login.html";
+        return;
+    }
+
+    fetch("https://aspirethought-backend.onrender.com/user/bookmark/add/", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Token ${token}`,
+        },
+        body: JSON.stringify({ "slug": slug }),
+    })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                alert(data.success);
+            } else if (data.error) {
+                alert(data.error);
+            }
+        });
+};
+
+
+const copyPostLink = (slug) => {
+    const url = `https://mdshakib007.github.io/AspireThought_Frontend/single_post.html?slug=${slug}`;
+
+    navigator.clipboard.writeText(url)
+        .then(() => {
+            alert("Post link copied to clipboard!");
+        })
+        .catch(err => {
+            console.error("Failed to copy: ", err);
+        });
+};
+
+const visitAuthorProfile = (id) =>{
+    const url = `https://mdshakib007.github.io/AspireThought_Frontend/visit_profile.html?author_id=${id}`;
+    window.location.href = url;
+};
 
 const fetchAndUpdateTabContent = () => {
     const selectedTab = document.querySelector('input[name="my_tabs_1"]:checked');

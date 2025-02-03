@@ -1,12 +1,13 @@
+const user_id = localStorage.getItem("user_id");
+const token = localStorage.getItem("token");
+
 const getValue = (id) => {
     const value = document.getElementById(id).value;
     return value;
 };
 
 const loadUserInformation = () => {
-    user_id = localStorage.getItem("user_id")
-
-    if (!user_id) {
+    if (!user_id || !token) {
         window.location.href = "./login.html";
     }
 
@@ -14,7 +15,7 @@ const loadUserInformation = () => {
         .then(res => res.json())
         .then(data => {
             if (data.length > 0) {
-                user = data[0];
+                const user = data[0];
                 if (user.profile_picture) {
                     document.getElementById("profile-picture").src = user.profile_picture;
                 } else {
@@ -51,9 +52,6 @@ const loadUserInformation = () => {
 };
 
 const requestForVerification = () => {
-    const user_id = localStorage.getItem("user_id");
-    const token = localStorage.getItem("token");
-
     if (!user_id || !token) {
         alert("An error occurred!");
         return;
@@ -97,7 +95,7 @@ const openUpdateModal = (title, id) => {
 
 const updateUserInformation = (event) => {
     event.preventDefault();
-    const token = localStorage.getItem("token");
+    
     const id = document.getElementById("universal_modal").getAttribute("requested_id");
     const updatedValue = document.getElementById("universal-modal-input").value;
 

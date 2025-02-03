@@ -57,7 +57,7 @@ const profileView = () => {
                                             </p>
                                         </div>
                                     </div>
-                                    <div class="dropdown dropdown-end">
+                                    <div class="dropdown dropdown-end font-bold">
                                         <div tabindex="0" role="button" class="btn m-1 text-xl bg-slate-100 border-none rounded-full"><i class="fa-solid fa-ellipsis"></i></div>
                                         <ul tabindex="0" class="menu dropdown-content bg-slate-200 rounded-md z-[1] w-52 p-2 shadow-xl">
                                             <li onclick="copyPostLink('${post.slug}')"><a><i class="fa-solid fa-link"></i> Copy Link</a></li>
@@ -67,8 +67,8 @@ const profileView = () => {
                                 </div>
             
             
-                                <div class="cursor-pointer" onclick="redirectToSinglePost('${post.slug}')">
-                                    <div class="flex justify-between">
+                                <div class="">
+                                    <div onclick="redirectToSinglePost('${post.slug}')" class="flex justify-between cursor-pointer">
                                         <h1 class="text-2xl font-bold text-slate-900 leading-snug mb-3 hover:underline cursor-pointer">${post.title}</h1>
                                         <div class="w-40 md:w-52 flex-shrink-0">
                                             <img src="${post_img}" alt="Blog Image"
@@ -105,7 +105,7 @@ const profileView = () => {
 };
 
 const copyPostLink = (slug) => {
-    const url = `http://127.0.0.1:5500/single_post.html?slug=${slug}`;
+    const url = `https://mdshakib007.github.io/AspireThought_Frontend/single_post.html?slug=${slug}`;
 
     navigator.clipboard.writeText(url)
         .then(() => {
@@ -143,7 +143,7 @@ const removeBookmarkPost = (slug) => {
 };
 
 const redirectToSinglePost = (slug) => {
-    const url = `http://127.0.0.1:5500/single_post.html?slug=${slug}`;
+    const url = `https://mdshakib007.github.io/AspireThought_Frontend/single_post.html?slug=${slug}`;
     window.location.href = url;
 };
 

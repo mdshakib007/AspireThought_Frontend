@@ -61,8 +61,8 @@ const loadNavProfilePicture = () => {
             document.getElementById("nav-profile-image-1").src = data.profile_picture;
             document.getElementById("nav-profile-image-2").src = data.profile_picture;
         } else{
-            document.getElementById("nav-profile-image-1").src = "../images/nav/default-user.png";
-            document.getElementById("nav-profile-image-2").src = "../images/nav/default-user.png";
+            document.getElementById("nav-profile-image-1").src = "./images/nav/default-user.png";
+            document.getElementById("nav-profile-image-2").src = "./images/nav/default-user.png";
         }
     })
 };

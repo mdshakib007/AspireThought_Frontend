@@ -18,7 +18,8 @@
         </nav>
     </header>
 
-    <main class="min-h-screen">
+    <main class="min-h-screen max-w-4xl mx-auto px-2">
+
         <!-- bottom post button -->
         <div id="bottom-post-btn" class="fixed bottom-2 right-2 hidden md:block">
             <button onclick="hideBottomPostBtn(event)" class="border border-slate-500 p-1 rounded-full h-9 w-9"><i
@@ -31,7 +32,6 @@
                 </a>
             </div>
         </div>
-
 
         <div role="tablist" class="tabs tabs-bordered mt-5">
             <input id="recomendation-tab-selection" type="radio" name="my_tabs_1" role="tab" class="tab"
@@ -47,11 +47,11 @@
         </div>
 
         <!-- posts -->
-        <section id="posts-section" class="py-6 px-4">
+        <section id="posts-section" class="py-6">
         </section>
 
         <!-- skeleton -->
-        <section id="skeleton-lazy" class="flex flex-col gap-5 py-6 px-4">
+        <section id="skeleton-lazy" class="flex flex-col gap-5 py-6">
             <div class="flex max-w-4xl flex-col gap-4">
                 <div class="flex items-center gap-4">
                     <div class="skeleton h-16 w-16 shrink-0 rounded-full"></div>

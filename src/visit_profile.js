@@ -1,13 +1,10 @@
-const token = localStorage.getItem("token");
+const params = new URLSearchParams(window.location.search);
+const author_id = params.get("author_id");
 const user_id = localStorage.getItem("user_id");
+const token = localStorage.getItem("token");
 
-const profileView = () => {
-    if (!token || !user_id) {
-        window.location.href = "login.html";
-        return;
-    }
-
-    fetch(`https://aspirethought-backend.onrender.com/user/list/?user_id=${user_id}`)
+const visitProfile = () => {
+    fetch(`https://aspirethought-backend.onrender.com/user/list/?user_id=${author_id}`)
         .then(res => res.json())
         .then(data => {
             if (!data[0]) {
@@ -15,43 +12,38 @@ const profileView = () => {
             }
             const user = data[0];
             if (user.profile_picture) {
-                document.getElementById("profile-profile-picture").src = user.profile_picture;
+                document.getElementById("visit-profile-picture").src = user.profile_picture;
             }
             const verified = user.is_verified ? `<span class="tooltip" data-tip="Verified Author"><i class="fa-solid fa-circle-check text-blue-600"></i></span>` : "";
-            document.getElementById("profile-username").innerHTML = `${user.username} ${verified}`;
-            document.getElementById("profile-email").innerText = user.email;
+            document.getElementById("visit-profile-username").innerHTML = `${user.username} ${verified}`;
+            document.getElementById("visit-profile-email").innerText = user.email;
 
             if (user.first_name) {
-                document.getElementById("profile-full-name").innerHTML = `${user.first_name} ${user.last_name}`;
+                document.getElementById("visit-profile-full-name").innerHTML = `${user.first_name} ${user.last_name}`;
             } else {
-                document.getElementById("profile-full-name").innerHTML = "Unknown";
-            }
-            if (user.phone_number) {
-                document.getElementById("profile-phone").innerText = user.phone_number;
-            } else {
-                document.getElementById("profile-phone").innerText = "Unknown";
+                document.getElementById("visit-profile-full-name").innerHTML = "Unknown";
             }
             if (user.date_of_birth) {
-                document.getElementById("profile-date-of-birth").innerText = user.date_of_birth;
+                document.getElementById("visit-profile-date-of-birth").innerText = user.date_of_birth;
             } else {
-                document.getElementById("profile-date-of-birth").innerText = "Unknown";
+                document.getElementById("visit-profile-date-of-birth").innerText = "Unknown";
             }
 
-            // fetch my posts
-            fetch(`https://aspirethought-backend.onrender.com/blog/list/?author_id=${user_id}`)
+            // fetch posts
+            fetch(`https://aspirethought-backend.onrender.com/blog/list/?author_id=${author_id}`)
                 .then(res => res.json())
                 .then(data => {
                     if (data.results.length > 0) {
                         const posts = data.results;
-                        const parent = document.getElementById("my-posts-section");
+                        const parent = document.getElementById("visit-posts-section");
 
                         posts.forEach(post => {
                             const post_img = post.image ? post.image : "./images/up-aspireThought.png";
                             const user_name = user.first_name ? user.first_name : user.username;
                             const verified = user.is_verified ? `<span class="tooltip" data-tip="Verified Author"><i class="fa-solid fa-circle-check text-blue-600"></i></span>` : "";
                             const user_img = user.profile_picture ? user.profile_picture : "./images/nav/default-user.png";
-                            const tag1 = post.tags[0] ? post.tags[0] : "None";
-                            const tag2 = post.tags[1] ? post.tags[1] : "None";
+                            const tag1 = post.tags[0] ? post.tags[0] : "";
+                            const tag2 = post.tags[1] ? post.tags[1] : "";
                             const div = document.createElement("div");
                             div.classList.add("mt-10", "bg-slate-100", "p-2", "rounded-md");
 
@@ -72,8 +64,6 @@ const profileView = () => {
                                     <ul tabindex="0" class="menu dropdown-content bg-slate-200 rounded-md z-[1] w-52 p-2 shadow-xl">
                                         <li onclick="bookmarkPost('${post.slug}')"><a><i class="fa-solid fa-bookmark"></i> Save to Bookmark</a></li>
                                         <li onclick="copyPostLink('${post.slug}')"><a><i class="fa-solid fa-link"></i> Copy Link</a></li>
-                                        <li onclick="editPost('${post.slug}')"><a><i class="fa-solid fa-pen"></i> Edit Post</a></li>
-                                        <li onclick="deletePost('${post.slug}')"><a><i class="fa-solid fa-trash"></i> Delete Post</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -146,6 +136,8 @@ const bookmarkPost = (slug) => {
                 alert(data.success);
             } else if (data.error) {
                 alert(data.error);
+            } else{
+                alert("An Error occurred!");
             }
         });
 };
@@ -155,37 +147,4 @@ const redirectToSinglePost = (slug) => {
     window.location.href = url;
 };
 
-const deletePost = async (slug) => {
-    try {
-        const response = await fetch("https://aspirethought-backend.onrender.com/blog/delete/", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Token ${token}`,
-            },
-            body: JSON.stringify({ "post_slug": slug }),
-        });
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        if (data.success) {
-            alert(data.success);
-        } else {
-            alert(data.error || "Something went wrong!");
-        }
-
-    } catch (error) {
-        console.error("Error deleting post:", error);
-        alert("Failed to delete the post. Please try again!");
-    }
-};
-
-const editPost = (slug) => {
-    window.location.href = `create_post.html?mode=editing&post=${slug}`;
-};
-
-
-profileView();
+visitProfile();
