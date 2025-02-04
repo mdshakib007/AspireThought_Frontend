@@ -142,7 +142,7 @@ const displayRecentPosts = (posts) => {
 
     posts.forEach(post => {
         const div = document.createElement("div");
-        div.classList.add("max-w-4xl", "bg-slate-50", "p-3", "rounded-lg", "mb-5");
+        div.classList.add("max-w-4xl", "bg-slate-50", "p-3", "rounded-lg", "mb-5", "border", "border-slate-300");
 
         const tag1 = post.tags[0] ? post.tags[0] : "None";
         const tag2 = post.tags[1] ? post.tags[1] : "None";
@@ -159,19 +159,22 @@ const displayRecentPosts = (posts) => {
                     const post_image = post.image ? post.image : "./images/up-aspireThought.png";
 
                     div.innerHTML = `
-                        <div class="flex items-center gap-3 mb-4">
-                            <img onclick="visitAuthorProfile('${author.id}')" src="${author_image}" alt="User Avatar"
-                                class="w-10 h-10 object-cover rounded-full border border-slate-400 cursor-pointer">
-                            <div>
-                                <p  onclick="visitAuthorProfile('${author.id}')" class="text-sm font-medium text-black cursor-pointer">${author_name} ${verified}</p>
-                                <p class="text-xs text-slate-500">${post.created_at.slice(0, 10)} • <i class="fa-solid fa-earth-americas"></i></p>
+                        <div class="flex justify-between">
+                            <div class="flex items-center gap-3 mb-4">
+                                <img onclick="visitAuthorProfile('${author.id}')" src="${author_image}" alt="User Avatar"
+                                    class="w-10 h-10 object-cover rounded-full border border-slate-400 cursor-pointer">
+                                <div>
+                                    <p  onclick="visitAuthorProfile('${author.id}')" class="text-sm font-medium text-black cursor-pointer">${author_name} ${verified}</p>
+                                    <p class="text-xs text-slate-500">${post.created_at.slice(0, 10)} • <i class="fa-solid fa-earth-americas"></i></p>
+                                </div>
                             </div>
+                            <div class="tooltip" data-tip="Total Views"><i class="fa-solid fa-eye"></i> ${post.views}</div>
                         </div>
 
                         <div class="" >
-                            <div onclick="redirectToSinglePost('${post.slug}')" class="flex flex-col-reverse sm:flex-row sm:justify-between cursor-pointer">
-                                <h1 class="text-2xl font-bold text-slate-900 leading-snug mb-3 hover:underline cursor-pointer">${post.title}</h1>
-                                <div class="w-40 md:w-52 flex-shrink-0">
+                            <div onclick="redirectToSinglePost('${post.slug}')" class="flex justify-between cursor-pointer">
+                                <h1 class="text-md sm:text-xl md:text-2xl font-bold text-slate-900 leading-snug mb-3 hover:underline cursor-pointer">${post.title}</h1>
+                                <div class="w-32 md:w-52 flex-shrink-0">
                                     <img src="${post_image}" alt="Blog Image"
                                         class="w-full h-auto rounded-lg object-cover">
                                 </div>
@@ -182,12 +185,12 @@ const displayRecentPosts = (posts) => {
                                 <span class="text-xs font-semibold px-3 py-1 bg-slate-200 text-slate-800 rounded-full cursor-pointer">${tag2}</span>
                             </div>
             
-                            <div class="mt-4 flex justify-between items-center text-slate-600">
-                                <p class="flex items-center gap-3 text-lg">
+                            <div class="mt-2 flex justify-between items-center text-slate-600 border-t border-slate-300 pt-2">
+                                <p class="flex items-center gap-5 text-xl">
                                     <span onclick="likePost('${post.slug}')" class="flex items-center gap-1 tooltip" data-tip="Like"><i class="fa-solid fa-thumbs-up"></i> ${post.like_count}</span>
                                     <span onclick="redirectToSinglePost('${post.slug}')" class="flex items-center gap-1 tooltip" data-tip="Comments"><i class="fa-solid fa-comment"></i> ${post.comment_count}</span>
                                 </p>
-                                <p class="flex items-center gap-3 text-lg">
+                                <p class="flex items-center gap-5 text-xl">
                                     <span onclick="bookmarkPost('${post.slug}')" class="cursor-pointer me-3 tooltip" data-tip="Bookmark"><i class="fa-solid fa-bookmark"></i></span>
                                     <span onclick="copyPostLink('${post.slug}')" class="cursor-pointer tooltip" data-tip="Copy Link"><i class="fa-solid fa-link"></i></span>
                                 </p>
@@ -200,9 +203,23 @@ const displayRecentPosts = (posts) => {
     });
 };
 
-function redirectToSinglePost(slug) {
-    window.location.href = `single_post.html?slug=${encodeURIComponent(slug)}`;
-};
+async function redirectToSinglePost(slug) {
+    try {
+        await fetch(`https://aspirethought-backend.onrender.com/blog/${slug}/view/`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ "slug": slug }),
+        });
+
+        window.location.href = `single_post.html?slug=${encodeURIComponent(slug)}`;
+    } catch (error) {
+        console.error("Error increasing view count:", error);
+        window.location.href = `single_post.html?slug=${encodeURIComponent(slug)}`;
+    }
+}
+
 
 const likePost = (slug) => {
     if (!token || !user_id) {
@@ -257,7 +274,7 @@ const copyPostLink = (slug) => {
 
     navigator.clipboard.writeText(url)
         .then(() => {
-            alert("Post link copied to clipboard!");
+            console.log("Post link copied to clipboard!");
         })
         .catch(err => {
             console.error("Failed to copy: ", err);

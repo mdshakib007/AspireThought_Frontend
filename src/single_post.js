@@ -33,7 +33,8 @@ const displayPost = (post) => {
                 const postBodyHtml = marked.parse(post.body);
 
                 postSection.innerHTML = `
-                    <div class="flex items-center gap-3 mb-4 border-b border-slate-300 pb-4">
+                <div class="flex justify-between border-b border-slate-300 items-center">
+                    <div class="flex items-center gap-3 pb-4">
                         <img onclick="visitAuthorProfile('${author.id}')" src="${author_image}" alt="User Avatar"
                             class="w-10 h-10 object-cover rounded-full border border-slate-400 cursor-pointer">
                         <div>
@@ -41,38 +42,40 @@ const displayPost = (post) => {
                             <p class="text-xs text-slate-500">${post.created_at.slice(0, 10)} • <i class="fa-solid fa-earth-americas"></i></p>
                         </div>
                     </div>
+                    <div class="tooltip" data-tip="Total Views"><i class="fa-solid fa-eye"></i> ${post.views}</div>
+                </div>
 
-                    <div>
-                        <h1 class="text-4xl font-bold text-slate-900 leading-snug mb-5">${post.title}</h1>
-                        <img src="${post_image}" alt="blog img" class="my-5 w-full">
-                        <div class="prose mb-6 leading-relaxed text-lg">${postBodyHtml}</div>
-                    </div>
+                <div class="mt-4">
+                    <h1 class="text-4xl font-bold text-slate-900 leading-snug mb-5">${post.title}</h1>
+                    <img src="${post_image}" alt="blog img" class="my-5 w-full">
+                    <div class="prose mb-6 leading-relaxed text-lg">${postBodyHtml}</div>
+                </div>
 
-                    <div class="mt-4 flex gap-2">
-                        <span
-                            class="text-xs font-semibold px-3 py-1 bg-slate-200 text-slate-800 rounded-full cursor-pointer">${tag1}</span>
-                        <span
-                            class="text-xs font-semibold px-3 py-1 bg-slate-200 text-slate-800 rounded-full cursor-pointer">${tag2}</span>
-                    </div>
+                <div class="mt-4 flex gap-2">
+                    <span
+                        class="text-xs font-semibold px-3 py-1 bg-slate-200 text-slate-800 rounded-full cursor-pointer">${tag1}</span>
+                    <span
+                        class="text-xs font-semibold px-3 py-1 bg-slate-200 text-slate-800 rounded-full cursor-pointer">${tag2}</span>
+                </div>
 
-                    <div class="mt-6 flex justify-between items-center text-slate-600 border-t border-b border-slate-300 py-2 px-4">
-                        <p class="flex items-center gap-2 text-xl">
-                            <span onclick="likePost('${post.slug}')" class="flex items-center gap-1 tooltip cursor-pointer" data-tip="Like"><i class="fa-solid fa-thumbs-up"></i> ${post.like_count}</span>
-                        </p>
-                        <p class="flex items-center gap-2 text-lg">
-                            <span onclick="bookmarkPost('${post.slug}')" class="cursor-pointer tooltip" data-tip="Bookmark"><i class="fa-solid fa-bookmark"></i></span>
-                            <span onclick="copyPostLink('${post.slug}')" class="cursor-pointer tooltip ml-4" data-tip="Copy Link"><i class="fa-solid fa-link"></i></span>
-                        </p>
-                    </div>
+                <div class="mt-6 flex justify-between items-center text-slate-600 border-t border-b border-slate-300 py-2 px-4">
+                    <p class="flex items-center gap-2 text-xl">
+                        <span onclick="likePost('${post.slug}')" class="flex items-center gap-1 tooltip cursor-pointer" data-tip="Like"><i class="fa-solid fa-thumbs-up"></i> ${post.like_count}</span>
+                    </p>
+                    <p class="flex items-center gap-2 text-lg">
+                        <span onclick="bookmarkPost('${post.slug}')" class="cursor-pointer tooltip" data-tip="Bookmark"><i class="fa-solid fa-bookmark"></i></span>
+                        <span onclick="copyPostLink('${post.slug}')" class="cursor-pointer tooltip ml-4" data-tip="Copy Link"><i class="fa-solid fa-link"></i></span>
+                    </p>
+                </div>
 
-                    <div id="single-post-comment-section" class="mt-6">
-                        <form onsubmit="postComment(event)">
-                            <textarea id="comment-input" class="textarea textarea-bordered w-full" name="write-comment" id="write-comment"
-                                placeholder="Write a Comment" required></textarea>
-                            <button class="btn bg-slate-500 hover:bg-slate-600 text-white mt-2">Comment <i
-                                    class="fa-solid fa-location-arrow"></i></button>
-                        </form>
-                    </div>`;
+                <div id="single-post-comment-section" class="mt-6">
+                    <form onsubmit="postComment(event)">
+                        <textarea id="comment-input" class="textarea textarea-bordered w-full" name="write-comment" id="write-comment"
+                            placeholder="Write a Comment" required></textarea>
+                        <button class="btn bg-slate-500 hover:bg-slate-600 text-white mt-2">Comment <i
+                                class="fa-solid fa-location-arrow"></i></button>
+                    </form>
+                </div>`;
 
                 fetch(`https://aspirethought-backend.onrender.com/blog/${post.slug}/comments/`)
                     .then(res => res.json())

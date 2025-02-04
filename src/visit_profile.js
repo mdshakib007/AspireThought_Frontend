@@ -71,8 +71,8 @@ const visitProfile = () => {
         
                             <div class="">
                                 <div onclick="redirectToSinglePost('${post.slug}')" class="flex justify-between cursor-pointer">
-                                    <h1 class="text-2xl font-bold text-slate-900 leading-snug mb-3 hover:underline cursor-pointer">${post.title}</h1>
-                                    <div class="w-40 md:w-52 flex-shrink-0">
+                                    <h1 class="text-md sm:text-xl md:text-2xl font-bold text-slate-900 leading-snug mb-3 hover:underline cursor-pointer">${post.title}</h1>
+                                    <div class="w-32 md:w-52 flex-shrink-0">
                                         <img src="${post_img}" alt="Blog Image"
                                             class="w-full h-auto rounded-lg object-cover">
                                     </div>
@@ -85,13 +85,14 @@ const visitProfile = () => {
                                         class="text-xs font-semibold px-3 py-1 bg-slate-200 text-slate-800 rounded-full cursor-pointer">${tag2}</span>
                                 </div>
         
-                                <div class="mt-4 flex justify-between items-center text-slate-600">
-                                    <p class="flex items-center gap-3 text-lg">
-                                        <span class="flex items-center gap-1 tooltip" data-tip="Like"><i
+                                <div class="mt-2 pt-2 flex justify-between items-center text-slate-600 border-t border-slate-300">
+                                    <p class="flex items-center gap-5 text-xl">
+                                        <span onclick="likePost('${post.slug}')" class="flex items-center gap-1 tooltip cursor-pointer" data-tip="Like"><i
                                                 class="fa-solid fa-thumbs-up"></i> ${post.like_count}</span>
-                                        <span class="flex items-center gap-1 tooltip" data-tip="Comments"><i
+                                        <span onclick="redirectToSinglePost('${post.slug}')" class="flex items-center gap-1 tooltip cursor-pointer" data-tip="Comments"><i
                                                 class="fa-solid fa-comment"></i> ${post.comment_count}</span>
                                     </p>
+                                    <p class="tooltip" data-tip="Total Views"><i class="fa-solid fa-eye"></i> ${post.views}</p>
                                 </div>
                             </div>
                         `;
@@ -142,10 +143,46 @@ const bookmarkPost = (slug) => {
         });
 };
 
-const redirectToSinglePost = (slug) => {
-    const url = `https://mdshakib007.github.io/AspireThought_Frontend/single_post.html?slug=${slug}`;
-    window.location.href = url;
+async function redirectToSinglePost(slug) {
+    try {
+        await fetch(`https://aspirethought-backend.onrender.com/blog/${slug}/view/`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ "slug": slug }),
+        });
+
+        window.location.href = `single_post.html?slug=${encodeURIComponent(slug)}`;
+    } catch (error) {
+        console.error("Error increasing view count:", error);
+        window.location.href = `single_post.html?slug=${encodeURIComponent(slug)}`;
+    }
+}
+
+const likePost = (slug) => {
+    if (!token || !user_id) {
+        window.location.href = "login.html";
+        return;
+    }
+
+    fetch(`https://aspirethought-backend.onrender.com/blog/${slug}/like/`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Token ${token}`,
+        }
+    })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                alert(data.success);
+            } else {
+                alert(data.error ? data.error : "Unexpected error occurred!");
+            }
+        });
 };
+
 
 const visitAuthorProfile = (id) => {
     const url = `https://mdshakib007.github.io/AspireThought_Frontend/visit_profile.html?author_id=${id}`;
