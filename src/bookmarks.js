@@ -43,7 +43,7 @@ const profileView = () => {
                                         const tag1 = post.tags[0] ? post.tags[0] : "None";
                                         const tag2 = post.tags[1] ? post.tags[1] : "None";
                                         const div = document.createElement("div");
-                                        div.classList.add("mt-10", "bg-slate-100", "p-2", "rounded-md", "border", "border-slate-300");
+                                        div.classList.add("mt-10", "bg-slate-100", "p-2");
 
                                         div.innerHTML = `
                                 <div class="flex justify-between">
@@ -59,7 +59,7 @@ const profileView = () => {
                                     </div>
                                     <div class="dropdown dropdown-end font-bold">
                                         <div tabindex="0" role="button" class="btn m-1 text-xl bg-slate-100 border-none rounded-full"><i class="fa-solid fa-ellipsis"></i></div>
-                                        <ul tabindex="0" class="menu dropdown-content bg-slate-200 rounded-md z-[1] w-52 p-2 shadow-xl">
+                                        <ul tabindex="0" class="menu dropdown-content bg-slate-200 rounded-md z-[1] w-52 p-2">
                                             <li onclick="copyPostLink('${post.slug}')"><a><i class="fa-solid fa-link"></i> Copy Link</a></li>
                                             <li onclick="removeBookmarkPost('${post.slug}')"><a><i class="fa-solid fa-ban"></i> Remove Bookmark</a></li>
                                         </ul>
@@ -77,9 +77,9 @@ const profileView = () => {
                                     </div>
             
                                     <div class="mt-2 flex gap-2">
-                                        <span
+                                        <span onclick="tagResults('${tag1}')" 
                                             class="text-xs font-semibold px-3 py-1 bg-slate-200 text-slate-800 rounded-full cursor-pointer">${tag1}</span>
-                                        <span
+                                        <span onclick="tagResults('${tag2}')" 
                                             class="text-xs font-semibold px-3 py-1 bg-slate-200 text-slate-800 rounded-full cursor-pointer">${tag2}</span>
                                     </div>
             
@@ -183,9 +183,14 @@ const likePost = (slug) => {
         });
 };
 
-const visitAuthorProfile = (id) =>{
+const visitAuthorProfile = (id) => {
     const url = `https://mdshakib007.github.io/AspireThought_Frontend/visit_profile.html?author_id=${id}`;
     window.location.href = url;
+};
+
+const tagResults = (tag_slug) => {
+    if (tag_slug != "None")
+        window.location.href = `tag_results.html?tag=${tag_slug}`;
 };
 
 profileView();

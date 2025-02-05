@@ -52,9 +52,9 @@ const displayPost = (post) => {
                 </div>
 
                 <div class="mt-4 flex gap-2">
-                    <span
+                    <span onclick="tagResults('${tag1}')" 
                         class="text-xs font-semibold px-3 py-1 bg-slate-200 text-slate-800 rounded-full cursor-pointer">${tag1}</span>
-                    <span
+                    <span onclick="tagResults('${tag2}')" 
                         class="text-xs font-semibold px-3 py-1 bg-slate-200 text-slate-800 rounded-full cursor-pointer">${tag2}</span>
                 </div>
 
@@ -234,6 +234,11 @@ const copyPostLink = (slug) => {
 const visitAuthorProfile = (id) => {
     const url = `https://mdshakib007.github.io/AspireThought_Frontend/visit_profile.html?author_id=${id}`;
     window.location.href = url;
+};
+
+const tagResults = (tag_slug) => {
+    if (tag_slug != "None")
+        window.location.href = `tag_results.html?tag=${tag_slug}`;
 };
 
 fetchPost();

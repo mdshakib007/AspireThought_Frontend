@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Bookmarks - AspireThought</title>
+    <!-- tailwind, daisy-UI, font-awesome, favicon -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.19/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="./styles/style.css">
+</head>
+
+<body>
+    <header>
+        <nav class="pb-16" id="nav-component">
+        </nav>
+    </header>
+
+    <main class="min-h-screen flex flex-col items-center">
+        <!-- Tags Section -->
+        <div id="tags-section" class="relative w-full max-w-3xl">
+            <button id="scroll-left" class="absolute left-0 top-1/2 transform -translate-y-1/2 bg-white p-5 z-10">
+                <i class="fa-solid fa-chevron-left"></i>
+            </button>
+
+            <div id="horizontal-tags-container"
+                class="flex space-x-3 overflow-x-auto whitespace-nowrap p-4 mx-9 scrollbar-hide">
+                <!-- Tags will be loaded here -->
+                <p onclick="expandTags()"
+                    class="border border-green-500 rounded-full px-4 py-2 cursor-pointer bg-green-400 text-white hover:bg-green-500">
+                    Expand <i class="fa-solid fa-angles-down"></i></p>
+            </div>
+
+            <button id="scroll-right" class="absolute right-0 top-1/2 transform -translate-y-1/2 bg-white p-5 z-10">
+                <i class="fa-solid fa-chevron-right"></i>
+            </button>
+        </div>
+
+        <!-- Main Content -->
+        <div class="w-full max-w-3xl bg-slate-50 p-6">
+            <div class="flex flex-col items-center border-b-2 border-slate-200">
+                <h1 id="current-tag-name" class="text-4xl mt-6 font-bold font-sans"></h1>
+                <h2 id="tag-results-page-followers-and-stories" class="mt-4 text-lg font-bold text-slate-700">
+                </h2>
+                <p id="tag-follow-btn"
+                    class="btn bg-slate-500 hover:bg-slate-600 rounded-full border-none text-white text-lg my-4 hidden">
+                    <i class="fa-solid fa-plus"></i> Follow
+                </p>
+            </div>
+
+            <!-- Tag Results Section -->
+            <p class="text-3xl my-5 hidden" id="tag-results-title"></p>
+            <div id="tag-results-section" class="flex flex-col justify-center">
+            </div>
+
+            <!-- Recomended Section -->
+            <p class="text-3xl my-5 hidden font-semibold" id="recommended-posts-title"></p>
+            <div id="recommended-posts-section" class="flex flex-col justify-center">
+            </div>
+
+            <!-- skeleton -->
+            <section id="skeleton-lazy" class="flex flex-col gap-5 py-6">
+                <div class="flex max-w-4xl flex-col gap-4">
+                    <div class="flex items-center gap-4">
+                        <div class="skeleton h-16 w-16 shrink-0 rounded-full"></div>
+                        <div class="flex flex-col gap-4">
+                            <div class="skeleton h-4 w-20"></div>
+                            <div class="skeleton h-4 w-28"></div>
+                        </div>
+                    </div>
+                    <div class="skeleton h-32 w-full"></div>
+                </div>
+
+                <div class="flex max-w-4xl flex-col gap-4">
+                    <div class="flex items-center gap-4">
+                        <div class="skeleton h-16 w-16 shrink-0 rounded-full"></div>
+                        <div class="flex flex-col gap-4">
+                            <div class="skeleton h-4 w-20"></div>
+                            <div class="skeleton h-4 w-28"></div>
+                        </div>
+                    </div>
+                    <div class="skeleton h-32 w-full"></div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script>
+        const scrollContainer = document.getElementById('horizontal-tags-container');
+        const scrollLeftBtn = document.getElementById('scroll-left');
+        const scrollRightBtn = document.getElementById('scroll-right');
+
+        scrollLeftBtn.addEventListener('click', () => {
+            scrollContainer.scrollBy({ left: -200, behavior: 'smooth' });
+        });
+
+        scrollRightBtn.addEventListener('click', () => {
+            scrollContainer.scrollBy({ left: 200, behavior: 'smooth' });
+        });
+
+        const displayHorizontalTags = () => {
+            fetch("https://aspirethought-backend.onrender.com/tag/list/")
+                .then(res => res.json())
+                .then(tags => {
+                    const parent = document.getElementById("horizontal-tags-container");
+                    let cnt = 20;
+                    tags.forEach(tag => {
+                        if (cnt === 0) {
+                            return;
+                        }
+                        const p = document.createElement("p");
+                        p.classList.add("border", "border-slate-500", "rounded-full", "px-4", "py-2", "text-slate-700", "cursor-pointer", "hover:bg-slate-100");
+                        p.innerText = tag.name;
+                        p.onclick = () => {
+                            const newUrl = new URL(window.location);
+                            newUrl.searchParams.set('tag', tag.slug);
+                            window.history.pushState({}, '', newUrl);
+
+                            fetchTagResult(tag.slug);
+                        };
+
+                        parent.appendChild(p);
+                        cnt--;
+                    });
+                });
+        };
+
+        displayHorizontalTags();
+    </script>
+
+    <style>
+        /* Hide scrollbar for better UI */
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+
+
+
+    <footer id="footer-component" class="footer bg-base-200 p-5 md:flex md:justify-evenly text-md">
+    </footer>
+
+    <script src="./src/tag_results.js"></script>
+    <script src="./src/common.js"></script>
+</body>
+
+</html>

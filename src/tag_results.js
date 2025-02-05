@@ -1,148 +1,77 @@
-let currentPage = 1;
-const token = localStorage.getItem("token");
 const user_id = localStorage.getItem("user_id");
-
-const hideBottomPostBtn = (event) => {
-    event.preventDefault();
-    document.getElementById("bottom-post-btn").style.display = "none";
-};
+const token = localStorage.getItem("token");
+const params = new URLSearchParams(window.location.search);
+const tag = params.get('tag');
 
 const showSkeleton = () => {
     document.getElementById("skeleton-lazy").style.display = "flex";
-    document.getElementById("posts-section").innerHTML = "";
-    document.getElementById("not-found").style.display = "none";
+    document.getElementById("tag-results-section").innerHTML = "";
 };
 
-const showNotFound = () => {
-    document.getElementById("skeleton-lazy").style.display = "none";
-    document.getElementById("not-found").style.display = "block";
-};
+const expandTags = () => {
+    const parent = document.getElementById("tags-section");
+    parent.innerHTML = "";
+    parent.classList.add("max-h-72", "overflow-y-scroll", "m-2", "flex", "gap-2", "flex-wrap",);
 
-const clearPagination = () => {
-    document.getElementById("pagination-controls").innerHTML = "";
-};
+    fetch("https://aspirethought-backend.onrender.com/tag/list/")
+        .then(res => res.json())
+        .then(tags => {
+            tags.forEach(tag => {
+                const p = document.createElement("p");
+                p.classList.add("border", "border-slate-500", "rounded-full", "px-3", "py-2", "text-slate-700", "cursor-pointer", "hover:bg-slate-100");
+                p.innerText = tag.name;
+                p.onclick = () => {
+                    const newUrl = new URL(window.location);
+                    newUrl.searchParams.set('tag', tag.slug);
+                    window.history.pushState({}, '', newUrl);
 
-const handleLogout = (event) => {
-    event.preventDefault();
-
-    const token = localStorage.getItem("token");
-    const user_id = localStorage.getItem("user_id");
-
-    if (!token || !user_id) {
-        window.location.href = "./login.html";
-        return;
-    }
-
-    fetch("https://aspirethought-backend.onrender.com/user/logout/", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Token ${token}`
-        }
-    })
-        .then((res) => res.json())
-        .then((data) => {
-            if (data.success) {
-                localStorage.removeItem("token");
-                localStorage.removeItem("user_id");
-                window.location.href = "./login.html";
-            } else {
-                console.error("Logout failed:", data);
-                alert("Logout failed. Please try again.");
-            }
-        })
-        .catch((error) => {
-            console.error("Error during logout:", error);
+                    fetchTagResult(tag.slug);
+                };
+                parent.appendChild(p);
+            });
         });
 };
 
-const loadNavProfilePicture = () => {
-    const user_id = localStorage.getItem("user_id");
-    if (!user_id) {
-        return;
-    }
-
-    fetch(`https://aspirethought-backend.onrender.com/user/list/${user_id}`)
+const recommendedPostsFetch = () => {
+    fetch("https://aspirethought-backend.onrender.com/blog/list/")
         .then(res => res.json())
         .then(data => {
-            if (data.username) {
-                document.getElementById("nav-profile-name").innerText = data.username;
-            } else {
-                document.getElementById("nav-profile-name").innerText = "Unknown";
-            }
-            if (data.profile_picture) {
-                document.getElementById("nav-profile-image-1").src = data.profile_picture;
-                document.getElementById("nav-profile-image-2").src = data.profile_picture;
-            } else {
-                document.getElementById("nav-profile-image-1").src = "./images/nav/default-user.png";
-                document.getElementById("nav-profile-image-2").src = "./images/nav/default-user.png";
-            }
-        })
+            const title = document.getElementById("recommended-posts-title");
+            title.classList.remove("hidden");
+            title.innerText = "Recommended";
+
+            displayPost(data.results, "recommended-posts-section");
+        });
+
+
 };
 
+const fetchTagResult = (tag_slug) => {
 
-const displayPagination = (data, displayCallback) => {
-    const paginationContainer = document.getElementById("pagination-controls");
-    paginationContainer.innerHTML = "";
-
-    if (data.previous) {
-        const prevButton = document.createElement("button");
-        prevButton.innerHTML = `<i class="fa-solid fa-arrow-left"></i> Previous`;
-        prevButton.classList.add("btn", "bg-gray-200", "text-gray-600", "px-4", "py-2", "rounded-lg", "hover:bg-gray-300", "transition");
-        prevButton.addEventListener("click", () => {
-            fetchPosts(data.previous, displayCallback);
-        });
-        paginationContainer.appendChild(prevButton);
-    }
-
-    if (data.next) {
-        const nextButton = document.createElement("button");
-        nextButton.innerHTML = `Next <i class="fa-solid fa-arrow-right"></i>`;
-        nextButton.classList.add("btn", "bg-gray-200", "text-gray-600", "px-4", "py-2", "rounded-lg", "hover:bg-gray-300", "transition");
-        nextButton.addEventListener("click", () => {
-            fetchPosts(data.next, displayCallback);
-        });
-        paginationContainer.appendChild(nextButton);
-    }
-};
-
-const fetchPosts = (url, displayCallback) => {
-    showSkeleton();
-    fetch(url)
+    fetch(`https://aspirethought-backend.onrender.com/blog/list/?tag_slug=${tag_slug}`)
         .then(res => res.json())
         .then(data => {
-            if (data.results && data.results.length > 0) {
-                displayCallback(data.results);
-                displayPagination(data, displayCallback);
-            } else {
-                showNotFound();
-                clearPagination();
-            }
-        })
-        .catch(error => {
-            console.error("Error fetching posts:", error);
-            showNotFound();
-            clearPagination();
+            document.getElementById("current-tag-name").innerText = tag_slug;
+            document.getElementById("tag-results-page-followers-and-stories").innerText = `Topic • 321 Followers • 0 Stories • ${data.results.length} Posts`;
+            document.getElementById("tag-follow-btn").classList.remove("hidden");
+            const title = document.getElementById("tag-results-title");
+            title.classList.remove("hidden");
+            title.innerHTML = `${data.results.length} Results for <span class="font-bold">${tag_slug}</span>`;
+
+            displayPost(data.results, "tag-results-section");
         });
 };
 
-const fetchRecentPosts = () => {
-    const url = "https://aspirethought-backend.onrender.com/blog/list/";
-    fetchPosts(url, displayRecentPosts);
-};
-
-const displayRecentPosts = (posts) => {
+const displayPost = (posts, section) => {
     const skeleton = document.getElementById("skeleton-lazy");
-    const postsSection = document.getElementById("posts-section");
-    const notFound = document.getElementById("not-found");
+    const postsSection = document.getElementById(section);
 
     skeleton.style.display = "none";
-    notFound.style.display = "none";
     postsSection.innerHTML = "";
 
     posts.forEach(post => {
         const div = document.createElement("div");
-        div.classList.add("max-w-4xl", "bg-slate-50", "p-3", "mb-5");
+        div.classList.add("max-w-4xl", "bg-slate-100", "p-3", "mb-5");
 
         const tag1 = post.tags[0] ? post.tags[0] : "None";
         const tag2 = post.tags[1] ? post.tags[1] : "None";
@@ -286,75 +215,12 @@ const visitAuthorProfile = (id) => {
     window.location.href = url;
 };
 
-document.getElementById("universal-serach-input").addEventListener("keydown", function (event) {
-    if (event.key === "Enter") {
-        event.preventDefault();
-        handleSearch();
-    }
-});
-
-function handleSearch() {
-    const query = document.getElementById("universal-serach-input").value.trim();
-    if (query) {
-        const url = `https://aspirethought-backend.onrender.com/blog/list/?title=${query}`;
-        fetchPosts(url, displayRecentPosts);
-    }
-};
-
 const tagResults = (tag_slug) => {
     if (tag_slug != "None")
         window.location.href = `tag_results.html?tag=${tag_slug}`;
 };
 
-const fetchAndUpdateTabContent = () => {
-    const selectedTab = document.querySelector('input[name="my_tabs_1"]:checked');
-    if (!selectedTab) return;
-
-    const selectedTabId = selectedTab.id;
-    if (selectedTabId === "recomendation-tab-selection") {
-        fetchRecomendations();
-    } else if (selectedTabId === "recent-tab-selection") {
-        fetchRecentPosts();
-    } else if (selectedTabId === "following-tab-selection") {
-        fetchFollowingPosts();
-    } else if (selectedTabId === "story-tab-selection") {
-        fetchStories();
-    }
-};
-
-document.querySelectorAll('input[name="my_tabs_1"]').forEach(tab => {
-    tab.addEventListener("change", fetchAndUpdateTabContent);
-});
-
-const fetchRecomendations = () => {
-    const url = "https://aspirethought-backend.onrender.com/blog/list/";
-    fetchPosts(url, (posts) => {
-        const postsSection = document.getElementById("posts-section");
-        postsSection.innerHTML = "Coming Soon!";
-        document.getElementById("skeleton-lazy").style.display = "none";
-        clearPagination();
-    });
-};
-
-const fetchFollowingPosts = () => {
-    const url = "https://aspirethought-backend.onrender.com/blog/list/";
-    fetchPosts(url, (posts) => {
-        const postsSection = document.getElementById("posts-section");
-        postsSection.innerHTML = "Coming Soon!";
-        document.getElementById("skeleton-lazy").style.display = "none";
-        clearPagination();
-    });
-};
-
-const fetchStories = () => {
-    const url = "https://aspirethought-backend.onrender.com/blog/list/";
-    fetchPosts(url, (posts) => {
-        const postsSection = document.getElementById("posts-section");
-        postsSection.innerHTML = "Coming Soon!";
-        document.getElementById("skeleton-lazy").style.display = "none";
-        clearPagination();
-    });
-};
-
-loadNavProfilePicture();
-fetchAndUpdateTabContent();
+if (tag) {
+    fetchTagResult(tag);
+}
+recommendedPostsFetch();
