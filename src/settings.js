@@ -46,9 +46,39 @@ const loadUserInformation = () => {
                     document.getElementById("verified-author").style.display = "none";
                 }
             } else {
+                alert("session expired. please login again.");
                 window.location.href = "./login.html";
             }
         })
+};
+
+const followingTopicList = () => {
+    if(!user_id || !token){
+        return;
+    }
+
+    fetch(`https://aspirethought-backend.onrender.com/user/list/?user_id=${user_id}`)
+    .then(res => res.json())
+    .then(data => {
+        if(data.length > 0){
+            const parent = document.getElementById("following-topic-list");
+            data[0].following.forEach(topic => {
+                tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td><a href="tag_results.html?tag=${topic}"><i class="fa-solid fa-tag"></i> ${topic}</a></td>
+                    <td><button onclick="unfollowTopic('${topic}')" class="btn btn-sm btn-outline hover:bg-slate-600 rounded-full">Unfollow</button></td>
+                `;
+                parent.appendChild(tr);
+            });
+        } else {
+            alert("session expired. please login again.");
+            window.location.href = "./login.html";
+        }
+    });
+};
+
+const unfollowTopic = (topic) => {
+
 };
 
 const requestForVerification = () => {
@@ -147,3 +177,4 @@ const updateUserInformation = (event) => {
 };
 
 loadUserInformation();
+followingTopicList();

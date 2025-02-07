@@ -224,7 +224,7 @@ const editPost = (slug) => {
 };
 
 const visitAuthorProfile = (id) => {
-    const url = `https://mdshakib007.github.io/AspireThought_Frontend/visit_profile.html?author_id=${id}`;
+    const url = `visit_profile.html?author_id=${id}`;
     window.location.href = url;
 };
 

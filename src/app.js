@@ -107,6 +107,7 @@ const displayPagination = (data, displayCallback) => {
 };
 
 const fetchPosts = (url, displayCallback) => {
+    document.getElementById("no-topic-followed").classList.add("hidden");
     showSkeleton();
     fetch(url)
         .then(res => res.json())
@@ -128,10 +129,45 @@ const fetchPosts = (url, displayCallback) => {
 
 const fetchRecentPosts = () => {
     const url = "https://aspirethought-backend.onrender.com/blog/list/";
-    fetchPosts(url, displayRecentPosts);
+    fetchPosts(url, displayPosts);
 };
 
-const displayRecentPosts = (posts) => {
+
+const fetchFollowingPosts = () => {
+    const postsSection = document.getElementById("posts-section");
+    postsSection.innerHTML = "";
+    document.getElementById("no-topic-followed").classList.add("hidden");
+
+    if (!user_id || !token) {
+        window.location.href = "login.html";
+        return;
+    }
+
+    fetch(`https://aspirethought-backend.onrender.com/user/list/?user_id=${user_id}`)
+        .then(res => res.json())
+        .then(data => {
+            if (data.length > 0) {
+                currUser = data[0];
+                followedTopic = currUser.following;
+                console.log(followedTopic);
+                if (followedTopic.length > 0) {
+                    const followedTags = followedTopic.map(tag => tag).join(",");
+                    const url = `https://aspirethought-backend.onrender.com/blog/list/?tag_slug=${followedTags}`;
+                    fetchPosts(url, displayPosts);
+                } else {
+                    document.getElementById("no-topic-followed").classList.remove("hidden");
+                }
+
+            } else {
+                alert("Session ended! Please login again.");
+                window.location.href = "login";
+                return;
+            }
+        });
+};
+
+
+const displayPosts = (posts) => {
     const skeleton = document.getElementById("skeleton-lazy");
     const postsSection = document.getElementById("posts-section");
     const notFound = document.getElementById("not-found");
@@ -282,7 +318,7 @@ const copyPostLink = (slug) => {
 };
 
 const visitAuthorProfile = (id) => {
-    const url = `https://mdshakib007.github.io/AspireThought_Frontend/visit_profile.html?author_id=${id}`;
+    const url = `visit_profile.html?author_id=${id}`;
     window.location.href = url;
 };
 
@@ -297,7 +333,7 @@ function handleSearch() {
     const query = document.getElementById("universal-serach-input").value.trim();
     if (query) {
         const url = `https://aspirethought-backend.onrender.com/blog/list/?title=${query}`;
-        fetchPosts(url, displayRecentPosts);
+        fetchPosts(url, displayPosts);
     }
 };
 
@@ -311,9 +347,7 @@ const fetchAndUpdateTabContent = () => {
     if (!selectedTab) return;
 
     const selectedTabId = selectedTab.id;
-    if (selectedTabId === "recomendation-tab-selection") {
-        fetchRecomendations();
-    } else if (selectedTabId === "recent-tab-selection") {
+    if (selectedTabId === "recent-tab-selection") {
         fetchRecentPosts();
     } else if (selectedTabId === "following-tab-selection") {
         fetchFollowingPosts();
@@ -325,26 +359,6 @@ const fetchAndUpdateTabContent = () => {
 document.querySelectorAll('input[name="my_tabs_1"]').forEach(tab => {
     tab.addEventListener("change", fetchAndUpdateTabContent);
 });
-
-const fetchRecomendations = () => {
-    const url = "https://aspirethought-backend.onrender.com/blog/list/";
-    fetchPosts(url, (posts) => {
-        const postsSection = document.getElementById("posts-section");
-        postsSection.innerHTML = "Coming Soon!";
-        document.getElementById("skeleton-lazy").style.display = "none";
-        clearPagination();
-    });
-};
-
-const fetchFollowingPosts = () => {
-    const url = "https://aspirethought-backend.onrender.com/blog/list/";
-    fetchPosts(url, (posts) => {
-        const postsSection = document.getElementById("posts-section");
-        postsSection.innerHTML = "Coming Soon!";
-        document.getElementById("skeleton-lazy").style.display = "none";
-        clearPagination();
-    });
-};
 
 const fetchStories = () => {
     const url = "https://aspirethought-backend.onrender.com/blog/list/";

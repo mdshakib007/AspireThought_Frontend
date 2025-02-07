@@ -102,10 +102,7 @@
         </div>
 
         <div role="tablist" class="tabs tabs-bordered mt-5">
-            <input id="recomendation-tab-selection" type="radio" name="my_tabs_1" role="tab" class="tab"
-                aria-label="For You" />
-
-            <input id="recent-tab-selection" type="radio" name="my_tabs_1" role="tab" class="tab" aria-label="Home"
+            <input id="recent-tab-selection" type="radio" name="my_tabs_1" role="tab" class="tab" aria-label="For You"
                 checked="checked" />
 
             <input id="following-tab-selection" type="radio" name="my_tabs_1" role="tab" class="tab"
@@ -146,6 +143,15 @@
         <!-- not found -->
         <section id="not-found" class="max-w-4xl my-5 text-2xl">
             <h1 class="text-2xl text-center"><i class="fa-solid fa-ban"></i> No Results Found</h1>
+        </section>
+
+        <!-- no topic followed -->
+        <section id="no-topic-followed" class="max-w-4xl my-5 hidden">
+            <h1 class="text-2xl text-center"><i class="fa-solid fa-tags"></i> No Topic Following!</h1>
+            <p class="text-center">Please follow your favourite topics to see.</p>
+            <div class="flex justify-center">
+                <a href="./tag_results.html" class="btn bg-green-500 hover:bg-green-600 rounded-full text-white">Follow Topics <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+            </div>
         </section>
 
         <!-- pagination controls -->

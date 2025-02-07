@@ -42,25 +42,44 @@ const recommendedPostsFetch = () => {
 
             displayPost(data.results, "recommended-posts-section");
         });
-
-
 };
 
-const fetchTagResult = (tag_slug) => {
+const fetchTagResult = async (tag_slug) => {
+    try {
+        // Fetch followers and posts in parallel
+        const [followersRes, postsRes] = await Promise.all([
+            fetch(`https://aspirethought-backend.onrender.com/tag/list/?slug=${tag_slug}`).then(res => res.json()),
+            fetch(`https://aspirethought-backend.onrender.com/blog/list/?tag_slug=${tag_slug}`).then(res => res.json())
+        ]);
 
-    fetch(`https://aspirethought-backend.onrender.com/blog/list/?tag_slug=${tag_slug}`)
-        .then(res => res.json())
-        .then(data => {
-            document.getElementById("current-tag-name").innerText = tag_slug;
-            document.getElementById("tag-results-page-followers-and-stories").innerText = `Topic • 321 Followers • 0 Stories • ${data.results.length} Posts`;
-            document.getElementById("tag-follow-btn").classList.remove("hidden");
-            const title = document.getElementById("tag-results-title");
-            title.classList.remove("hidden");
-            title.innerHTML = `${data.results.length} Results for <span class="font-bold">${tag_slug}</span>`;
+        // Get followers count
+        const followers = followersRes[0].followers || 0;
+        const posts = postsRes.results || [];
 
-            displayPost(data.results, "tag-results-section");
-        });
+        console.log(posts);
+
+        // Update UI
+        document.getElementById("current-tag-name").innerText = tag_slug;
+        document.getElementById("tag-results-page-followers-and-stories").innerText =
+            `Topic • ${followers} Followers • 0 Stories • ${posts.length} Posts`;
+
+        followStatus(tag_slug);
+
+        const title = document.getElementById("tag-results-title");
+        title.classList.remove("hidden");
+        title.innerHTML = `${posts.length} Results for <span class="font-bold">${tag_slug}</span>`;
+
+        document.getElementById("tag-follow-btn").onclick = () => {
+            followTopic(tag_slug);
+        };
+
+        displayPost(posts, "tag-results-section");
+
+    } catch (error) {
+        console.error("Error fetching tag data:", error);
+    }
 };
+
 
 const displayPost = (posts, section) => {
     const skeleton = document.getElementById("skeleton-lazy");
@@ -149,6 +168,55 @@ async function redirectToSinglePost(slug) {
     }
 }
 
+const followTopic = (topic) => {
+    if (!token || !user_id) {
+        window.location.href = "login.html";
+        return;
+    }
+
+    fetch(`https://aspirethought-backend.onrender.com/user/following/topic/add/`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Token ${token}`,
+        },
+        body: JSON.stringify({ "slug": topic }),
+    })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) alert(data.success);
+            else if (data.error) alert(data.error);
+            else alert("Something went wrong.");
+        });
+};
+
+const followStatus = (topic) => {
+    const followBtn = document.getElementById("tag-follow-btn");
+    const following = document.getElementById("tag-following-btn");
+    if (!token || !user_id) {
+        followBtn.classList.remove("hidden");
+        following.classList.add("hidden");
+        return;
+    }
+
+    fetch(`https://aspirethought-backend.onrender.com/user/list/?user_id=${user_id}`)
+        .then(res => res.json())
+        .then(data => {
+            if (data.length > 0) {
+                const user = data[0];
+                user.following.forEach(followed => {
+                    if (followed === topic) {
+                        following.classList.remove("hidden");
+                        followBtn.classList.add("hidden");
+                        return;
+                    }
+                });
+            }
+        });
+    followBtn.classList.remove("hidden");
+    following.classList.add("hidden");
+};
+
 
 const likePost = (slug) => {
     if (!token || !user_id) {
@@ -211,7 +279,7 @@ const copyPostLink = (slug) => {
 };
 
 const visitAuthorProfile = (id) => {
-    const url = `https://mdshakib007.github.io/AspireThought_Frontend/visit_profile.html?author_id=${id}`;
+    const url = `visit_profile.html?author_id=${id}`;
     window.location.href = url;
 };
 
