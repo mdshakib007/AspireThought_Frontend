@@ -62,6 +62,7 @@ const followingTopicList = () => {
     .then(data => {
         if(data.length > 0){
             const parent = document.getElementById("following-topic-list");
+            parent.innerHTML = "";
             data[0].following.forEach(topic => {
                 tr = document.createElement("tr");
                 tr.innerHTML = `
@@ -78,12 +79,35 @@ const followingTopicList = () => {
 };
 
 const unfollowTopic = (topic) => {
+    if(!user_id || !token){
+        window.location.href = "login.html";
+        return;
+    }
 
+    fetch("https://aspirethought-backend.onrender.com/user/following/topic/remove/", {
+        method : "DELETE",
+        headers : {
+            "Content-Type" : "application/json",
+            "Authorization" : `Token ${token}`,
+        },
+        body : JSON.stringify({"slug" : topic}),
+    })
+    .then(res => res.json())
+    .then(data => {
+        if(data.success){
+            followingTopicList();
+        }else if(data.error){
+            alert(data.error);
+        }else{
+            alert("Session ended, please login again.");
+            window.location.href = "login.html";
+        }
+    });
 };
 
 const requestForVerification = () => {
     if (!user_id || !token) {
-        alert("An error occurred!");
+        window.location.href = "login.html";
         return;
     }
 
@@ -96,6 +120,7 @@ const requestForVerification = () => {
         .then(res => res.json())
         .then(data => {
             if (data.success) {
+                alert(data.success);
                 window.location.href = "settings.html";
             } else {
                 alert(data.error ? data.error : "Unexpected error occurred!");

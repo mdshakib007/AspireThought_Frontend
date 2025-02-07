@@ -184,7 +184,9 @@ const followTopic = (topic) => {
     })
         .then(res => res.json())
         .then(data => {
-            if (data.success) alert(data.success);
+            if (data.success) {
+                fetchTagResult(topic);
+            }
             else if (data.error) alert(data.error);
             else alert("Something went wrong.");
         });
