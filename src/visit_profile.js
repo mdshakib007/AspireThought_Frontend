@@ -38,12 +38,12 @@ const visitProfile = () => {
                         const parent = document.getElementById("visit-posts-section");
 
                         posts.forEach(post => {
-                            const post_img = post.image ? post.image : "./images/up-aspireThought.png";
+                            const post_img = post.image ? post.image : null;
                             const user_name = user.first_name ? user.first_name : user.username;
                             const verified = user.is_verified ? `<span class="tooltip" data-tip="Verified Author"><i class="fa-solid fa-circle-check text-blue-600"></i></span>` : "";
                             const user_img = user.profile_picture ? user.profile_picture : "./images/nav/default-user.png";
-                            const tag1 = post.tags[0] ? post.tags[0] : "";
-                            const tag2 = post.tags[1] ? post.tags[1] : "";
+                            const tag1 = post.tags[0] ? post.tags[0] : null;
+                            const tag2 = post.tags[1] ? post.tags[1] : null;
                             const div = document.createElement("div");
                             div.classList.add("mt-10", "bg-slate-100", "p-2", "rounded-md");
 
@@ -72,17 +72,19 @@ const visitProfile = () => {
                             <div class="">
                                 <div onclick="redirectToSinglePost('${post.slug}')" class="flex justify-between cursor-pointer">
                                     <h1 class="text-md sm:text-xl md:text-2xl font-bold text-slate-900 leading-snug mb-3 hover:underline cursor-pointer">${post.title}</h1>
-                                    <div class="w-32 md:w-52 flex-shrink-0">
-                                        <img src="${post_img}" alt="Blog Image"
-                                            class="w-full h-auto rounded-lg object-cover">
-                                    </div>
+                                    ${post_img ? `
+                                        <div class="w-32 md:w-52 flex-shrink-0">
+                                            <img src="${post_img}" alt="Blog Image"
+                                                class="w-full h-auto rounded-lg object-cover">
+                                        </div>
+                                    ` : ""}
                                 </div>
         
                                 <div class="mt-2 flex gap-2">
-                                    <span
-                                        class="text-xs font-semibold px-3 py-1 bg-slate-200 text-slate-800 rounded-full cursor-pointer">${tag1}</span>
-                                    <span
-                                        class="text-xs font-semibold px-3 py-1 bg-slate-200 text-slate-800 rounded-full cursor-pointer">${tag2}</span>
+                                    ${tag1 ? `<span
+                                        class="text-xs font-semibold px-3 py-1 bg-slate-200 text-slate-800 rounded-full cursor-pointer">${tag1}</span>` : ""}
+                                    ${tag2 ? `<span
+                                        class="text-xs font-semibold px-3 py-1 bg-slate-200 text-slate-800 rounded-full cursor-pointer">${tag2}</span>` : ""}
                                 </div>
         
                                 <div class="mt-2 pt-2 flex justify-between items-center text-slate-600 border-t border-slate-300">

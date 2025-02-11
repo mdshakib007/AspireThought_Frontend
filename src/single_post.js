@@ -27,9 +27,9 @@ const displayPost = (post) => {
                 const author_name = author.first_name ? author.first_name : author.username;
                 const verified = author.is_verified ? `<span class="tooltip" data-tip="Verified Author"><i class="fa-solid fa-circle-check text-blue-600"></i></span>` : "";
                 const author_image = author.profile_picture ? author.profile_picture : "./images/nav/default-user.png";
-                const post_image = post.image ? post.image : "./images/up-aspireThought.png";
-                const tag1 = post.tags[0] ? post.tags[0] : "None";
-                const tag2 = post.tags[1] ? post.tags[1] : "None";
+                const post_image = post.image ? post.image : null;
+                const tag1 = post.tags[0] ? post.tags[0] : null;
+                const tag2 = post.tags[1] ? post.tags[1] : null;
                 const postBodyHtml = marked.parse(post.body);
 
                 postSection.innerHTML = `
@@ -47,15 +47,15 @@ const displayPost = (post) => {
 
                 <div class="mt-4">
                     <h1 class="text-4xl font-bold text-slate-900 leading-snug mb-5">${post.title}</h1>
-                    <img src="${post_image}" alt="blog img" class="my-5 w-full">
+                    ${post_image ? `<img src="${post_image}" alt="blog img" class="my-5 w-full">` : ""}
                     <div class="prose mb-6 leading-relaxed text-lg">${postBodyHtml}</div>
                 </div>
 
                 <div class="mt-4 flex gap-2">
-                    <span onclick="tagResults('${tag1}')" 
-                        class="text-xs font-semibold px-3 py-1 bg-slate-200 text-slate-800 rounded-full cursor-pointer">${tag1}</span>
-                    <span onclick="tagResults('${tag2}')" 
-                        class="text-xs font-semibold px-3 py-1 bg-slate-200 text-slate-800 rounded-full cursor-pointer">${tag2}</span>
+                    ${tag1 ? `<span onclick="tagResults('${tag1}')" 
+                        class="text-xs font-semibold px-3 py-1 bg-slate-200 text-slate-800 rounded-full cursor-pointer">${tag1}</span>`:""}
+                    ${tag2 ? `<span onclick="tagResults('${tag2}')" 
+                        class="text-xs font-semibold px-3 py-1 bg-slate-200 text-slate-800 rounded-full cursor-pointer">${tag2}</span>` : ""}
                 </div>
 
                 <div class="mt-6 flex justify-between items-center text-slate-600 border-t border-b border-slate-300 py-2 px-4">

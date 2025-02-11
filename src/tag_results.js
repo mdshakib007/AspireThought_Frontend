@@ -92,8 +92,8 @@ const displayPost = (posts, section) => {
         const div = document.createElement("div");
         div.classList.add("max-w-4xl", "bg-slate-100", "p-3", "mb-5");
 
-        const tag1 = post.tags[0] ? post.tags[0] : "None";
-        const tag2 = post.tags[1] ? post.tags[1] : "None";
+        const tag1 = post.tags[0] ? post.tags[0] : null;
+        const tag2 = post.tags[1] ? post.tags[1] : null;
 
         fetch(`https://aspirethought-backend.onrender.com/user/list/?user_id=${post.author}`)
             .then(res => res.json())
@@ -104,7 +104,7 @@ const displayPost = (posts, section) => {
                     const author_name = author.first_name ? author.first_name : author.username;
                     const verified = author.is_verified ? `<span class="tooltip" data-tip="Verified Author"><i class="fa-solid fa-circle-check text-blue-600"></i></span>` : "";
                     const author_image = author.profile_picture ? author.profile_picture : "./images/nav/default-user.png";
-                    const post_image = post.image ? post.image : "./images/up-aspireThought.png";
+                    const post_image = post.image ? post.image : null;
 
                     div.innerHTML = `
                         <div class="flex justify-between">
@@ -122,15 +122,18 @@ const displayPost = (posts, section) => {
                         <div class="" >
                             <div onclick="redirectToSinglePost('${post.slug}')" class="flex justify-between cursor-pointer">
                                 <h1 class="text-md sm:text-xl md:text-2xl font-bold text-slate-900 leading-snug mb-3 hover:underline cursor-pointer">${post.title}</h1>
-                                <div class="w-32 md:w-52 flex-shrink-0">
-                                    <img src="${post_image}" alt="Blog Image"
+                                ${post_image ? `
+                                    <div class="w-32 md:w-52 flex-shrink-0">
+                                        <img src="${post_image}" alt="Blog Image"
                                         class="w-full h-auto rounded-lg object-cover">
-                                </div>
+                                    </div> 
+                                ` : ""}
+                                
                             </div>
             
                             <div class="mt-2 flex gap-2" id="tag-section">
-                                <span onclick="tagResults('${tag1}')" class="text-xs font-semibold px-3 py-1 bg-slate-200 text-slate-800 rounded-full cursor-pointer">${tag1}</span>
-                                <span onclick="tagResults('${tag2}')" class="text-xs font-semibold px-3 py-1 bg-slate-200 text-slate-800 rounded-full cursor-pointer">${tag2}</span>
+                                ${tag1 ? `<span onclick="tagResults('${tag1}')" class="text-xs font-semibold px-3 py-1 bg-slate-200 text-slate-800 rounded-full cursor-pointer">${tag1}</span>` : ""}
+                                ${tag2 ? `<span onclick="tagResults('${tag2}')" class="text-xs font-semibold px-3 py-1 bg-slate-200 text-slate-800 rounded-full cursor-pointer">${tag2}</span>` : ""}
                             </div>
             
                             <div class="mt-2 flex justify-between items-center text-slate-600 border-t border-slate-300 pt-2">

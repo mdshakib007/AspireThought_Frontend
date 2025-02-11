@@ -35,7 +35,8 @@ const handleLogout = (event) => {
                 window.location.href = "./login.html";
             } else {
                 console.error("Logout failed:", data);
-                alert("Logout failed. Please try again.");
+                alert("Session expired. please login again.");
+                window.location.href = "login.html";
             }
         })
         .catch((error) => {

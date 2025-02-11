@@ -48,7 +48,8 @@ const handleLogout = (event) => {
                 window.location.href = "./login.html";
             } else {
                 console.error("Logout failed:", data);
-                alert("Logout failed. Please try again.");
+                alert("Session expired, please login again.");
+                window.location.href = "login.html";
             }
         })
         .catch((error) => {
@@ -180,8 +181,8 @@ const displayPosts = (posts) => {
         const div = document.createElement("div");
         div.classList.add("max-w-4xl", "bg-slate-50", "p-3", "mb-5");
 
-        const tag1 = post.tags[0] ? post.tags[0] : "None";
-        const tag2 = post.tags[1] ? post.tags[1] : "None";
+        const tag1 = post.tags[0] || null;
+        const tag2 = post.tags[1] || null;
 
         fetch(`https://aspirethought-backend.onrender.com/user/list/?user_id=${post.author}`)
             .then(res => res.json())
@@ -189,10 +190,22 @@ const displayPosts = (posts) => {
                 if (data.length > 0) {
                     const author = data[0];
 
-                    const author_name = author.first_name ? author.first_name : author.username;
+                    const author_name = author.first_name || author.username;
                     const verified = author.is_verified ? `<span class="tooltip" data-tip="Verified Author"><i class="fa-solid fa-circle-check text-blue-600"></i></span>` : "";
-                    const author_image = author.profile_picture ? author.profile_picture : "./images/nav/default-user.png";
-                    const post_image = post.image ? post.image : "./images/up-aspireThought.png";
+                    const author_image = author.profile_picture || "./images/nav/default-user.png";
+                    const post_image = post.image ? 
+                        `<div class="w-32 md:w-52 flex-shrink-0">
+                            <img src="${post.image}" alt="Blog Image" class="w-full h-auto rounded-lg object-cover">
+                        </div>` 
+                        : "";
+
+                    // Conditionally render tags
+                    const tagsHtml = (tag1 || tag2) ? `
+                        <div class="mt-2 flex gap-2" id="tag-section">
+                            ${tag1 ? `<span onclick="tagResults('${tag1}')" class="text-xs font-semibold px-3 py-1 bg-slate-200 text-slate-800 rounded-full cursor-pointer">${tag1}</span>` : ""}
+                            ${tag2 ? `<span onclick="tagResults('${tag2}')" class="text-xs font-semibold px-3 py-1 bg-slate-200 text-slate-800 rounded-full cursor-pointer">${tag2}</span>` : ""}
+                        </div>
+                    ` : "";
 
                     div.innerHTML = `
                         <div class="flex justify-between">
@@ -200,27 +213,21 @@ const displayPosts = (posts) => {
                                 <img onclick="visitAuthorProfile('${author.id}')" src="${author_image}" alt="User Avatar"
                                     class="w-10 h-10 object-cover rounded-full border border-slate-400 cursor-pointer">
                                 <div>
-                                    <p  onclick="visitAuthorProfile('${author.id}')" class="text-sm font-medium text-black cursor-pointer">${author_name} ${verified}</p>
+                                    <p onclick="visitAuthorProfile('${author.id}')" class="text-sm font-medium text-black cursor-pointer">${author_name} ${verified}</p>
                                     <p class="text-xs text-slate-500">${post.created_at.slice(0, 10)} • <i class="fa-solid fa-earth-americas"></i></p>
                                 </div>
                             </div>
                             <div class="tooltip" data-tip="Total Views"><i class="fa-solid fa-eye"></i> ${post.views}</div>
                         </div>
 
-                        <div class="" >
+                        <div>
                             <div onclick="redirectToSinglePost('${post.slug}')" class="flex justify-between cursor-pointer">
                                 <h1 class="text-md sm:text-xl md:text-2xl font-bold text-slate-900 leading-snug mb-3 hover:underline cursor-pointer">${post.title}</h1>
-                                <div class="w-32 md:w-52 flex-shrink-0">
-                                    <img src="${post_image}" alt="Blog Image"
-                                        class="w-full h-auto rounded-lg object-cover">
-                                </div>
+                                ${post_image}
                             </div>
-            
-                            <div class="mt-2 flex gap-2" id="tag-section">
-                                <span onclick="tagResults('${tag1}')" class="text-xs font-semibold px-3 py-1 bg-slate-200 text-slate-800 rounded-full cursor-pointer">${tag1}</span>
-                                <span onclick="tagResults('${tag2}')" class="text-xs font-semibold px-3 py-1 bg-slate-200 text-slate-800 rounded-full cursor-pointer">${tag2}</span>
-                            </div>
-            
+                            
+                            ${tagsHtml}
+
                             <div class="mt-2 flex justify-between items-center text-slate-600 border-t border-slate-300 pt-2">
                                 <p class="flex items-center gap-5 text-xl">
                                     <span onclick="likePost('${post.slug}')" class="flex items-center gap-1 tooltip cursor-pointer" data-tip="Like"><i class="fa-solid fa-thumbs-up"></i> ${post.like_count}</span>
