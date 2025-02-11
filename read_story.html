@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="post-page-title"></title>
+    <!-- markdown, tailwind, daisy-UI, font-awesome -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tailwindcss/typography@latest/dist/typography.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.19/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="./styles/style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script>
+        marked.setOptions({
+            gfm: true,
+            breaks: true,
+            headerIds: true,
+            mangle: false
+        });
+    </script>
+
+</head>
+
+<body>
+    <header>
+        <nav class="pb-16" id="nav-component">
+        </nav>
+    </header>
+
+
+    <main class="min-h-screen max-w-4xl mx-auto">
+        <!-- skeleton -->
+        <section id="skeleton-lazy" class="flex flex-col gap-5 py-6 px-4">
+            <div class="flex max-w-4xl flex-col gap-4">
+                <div class="flex items-center gap-4">
+                    <div class="skeleton h-16 w-16 shrink-0 rounded-full"></div>
+                    <div class="flex flex-col gap-4">
+                        <div class="skeleton h-4 w-20"></div>
+                        <div class="skeleton h-4 w-28"></div>
+                    </div>
+                </div>
+                <div class="skeleton h-screen w-full"></div>
+            </div>
+            <div class="flex max-w-4xl flex-col gap-4">
+                <div class="flex items-center gap-4">
+                    <div class="skeleton h-16 w-16 shrink-0 rounded-full"></div>
+                    <div class="flex flex-col gap-4">
+                        <div class="skeleton h-4 w-20"></div>
+                        <div class="skeleton h-4 w-28"></div>
+                    </div>
+                </div>
+                <div class="skeleton h-20 w-1/2"></div>
+            </div>
+            <div class="flex max-w-4xl flex-col gap-4">
+                <div class="flex items-center gap-4">
+                    <div class="skeleton h-16 w-16 shrink-0 rounded-full"></div>
+                    <div class="flex flex-col gap-4">
+                        <div class="skeleton h-4 w-20"></div>
+                        <div class="skeleton h-4 w-28"></div>
+                    </div>
+                </div>
+                <div class="skeleton h-20 w-1/2"></div>
+            </div>
+        </section>
+
+        <!-- post -->
+        <section id="post-section" class="py-10 px-4">
+        </section>
+
+        <!-- Comments List -->
+        <section id="comment-section" class="py-10 px-4">
+            <h5 class="text-lg mb-4 font-bold" id="comment-count"></h5>
+        </section>
+
+    </main>
+
+    <footer id="footer-component" class="footer bg-base-200 p-5 md:flex md:justify-evenly text-md">
+    </footer>
+
+    <script src="./src/read_story.js"></script>
+    <script src="./src/common.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Details - AspireThought</title>
+    <!-- tailwind, daisy-UI, font-awesome, favicon -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.19/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="./styles/style.css">
+</head>
+
+<body>
+    <header>
+        <nav class="pb-16" id="nav-component">
+        </nav>
+    </header>
+
+    <main class="min-h-screen flex justify-center">
+        <div class="w-full max-w-3xl bg-slate-50 p-6 border border-slate-100">
+            <div class="flex flex-col items-center">
+                <h2 id="story-name" class="mt-4 text-3xl font-bold"></h2>
+                <h2 id="author-name" class="mt-4 text-lg font-bold"></h2>
+
+                <p id="story-tags" class="m-4 text-slate-600 flex flex-wrap justify-center gap-2">
+                </p>
+
+                <img id="story-cover-image" src="" alt="story cover"
+                    class="w-72 h-auto object-cover">
+                <div class="flex justify-center gap-4 my-4">
+                    <button class="btn bg-slate-500 hover:bg-slate-600 border-none text-white"><i class="fa-solid fa-book-open"></i> Start Reading</button>
+                    <button class="btn bg-transparent hover:bg-slate-600 border-slate-600 hover:text-white"><i class="fa-solid fa-book-medical"></i> Add to Library</button>
+                </div>
+                <a class="mb-4 underline text-slate-600 text-xs cursor-pointer">Having issue reading this book?</a>
+            </div>
+
+            <h1 class="text-xl mt-6 font-bold"><i class="fa-solid fa-book"></i> Summary</h1>
+            <p id="story-summary" class="text-slate-600 text-sm p-2" ></p>
+
+            <div class="flex my-4 py-2 gap-2 border-y border-slate-200">
+                <img id="author-image" src="./images/nav/default-user.png" alt="" class="w-10 h-10 object-cover rounded-full border border-slate-400 cursor-pointer">
+                <div>
+                    <p id="author-name-2" class="font-bold text-sm"></p>
+                    <p id="published-data" class="text-xs font-bold"></p>
+                </div>
+            </div>
+
+            <!-- bookmarked post section -->
+            <h1 id="chapter-count" class="text-xl mt-6 font-bold"></h1>
+            <div id="story-chapter-section" class="flex flex-col justify-center">
+            </div>
+        </div>
+    </main>
+
+    <footer id="footer-component" class="footer bg-base-200 p-5 md:flex md:justify-evenly text-md">
+    </footer>
+
+    <script src="./src/story_details.js"></script>
+    <script src="./src/common.js"></script>
+</body>
+
+</html>
