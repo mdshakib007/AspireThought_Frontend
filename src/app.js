@@ -211,10 +211,9 @@ const displayStories = (stories) => {
                     const user_img = user.profile_picture ? user.profile_picture : "./images/nav/default-user.png";
 
                     div.innerHTML = `
-                <div class="flex justify-between">
                     <div class="flex items-center gap-3 mb-2">
                         <img onclick="visitAuthorProfile('${user.id}')" src="${user_img}" alt="User Avatar"
-                            class="w-10 h-10 object-cover rounded-full border border-slate-400 cursor-pointer">
+                            class="w-10 h-10 object-cover rounded-full cursor-pointer">
                         <div>
                             <p onclick="visitAuthorProfile('${user.id}')" class="text-sm font-medium text-black cursor-pointer">${user_name} ${verified}</p>
                             <p class="text-xs text-slate-500">${story.created_at.slice(0, 10)} • <i
@@ -222,23 +221,15 @@ const displayStories = (stories) => {
                             </p>
                         </div>
                     </div>
-                    <div class="dropdown dropdown-end font-bold">
-                        <div tabindex="0" role="button" class="btn m-1 text-xl bg-slate-100 border-none rounded-full"><i class="fa-solid fa-ellipsis"></i></div>
-                        <ul tabindex="0" class="menu dropdown-content bg-slate-200 rounded-md z-[1] w-52 p-2">
-                            <li onclick="copyStoryLink('${story.slug}')"><a><i class="fa-solid fa-link"></i> Copy Link</a></li>
-                            <li onclick="addToLibrary('${story.slug}')"><a><i class="fa-solid fa-book-medical"></i> Add to Library</a></li>
-                        </ul>
-                    </div>
-                </div>
         
         
-                <div onclick="redirectToStory('${story.slug}')" class="flex flex-col-reverse items-center cursor-pointer">
-                    <h1 class="text-md sm:text-xl md:text-2xl font-bold text-slate-900 leading-snug mb-3 hover:underline cursor-pointer">${story.name}</h1>
-                    <div class="w-32 md:w-52 flex-shrink-0">
-                        <img src="${story.cover}" alt="Blog Image" class="w-full h-auto rounded-lg object-cover">
+                    <div onclick="redirectToStory('${story.slug}')" class="flex flex-col cursor-pointer">
+                        <h1 class="text-md sm:text-lg md:text-xl font-bold text-slate-900 mb-3 hover:underline cursor-pointer">${story.name}</h1>
+                        <div class="w-52 md:w-72 flex-shrink-0">
+                            <img src="${story.cover}" alt="Blog Image" class="w-full h-auto rounded-lg object-cover">
+                        </div>
                     </div>
-                </div>
-                `;
+                    `;
                 }
             });
 

@@ -29,6 +29,10 @@ const loadStoryDetails = async () => {
     const authorImage = author.profile_picture ? author.profile_picture : "./images/nav/default-user.png";
     const verified = author.is_verified ? `<span class="tooltip" data-tip="Verified Author"><i class="fa-solid fa-circle-check text-blue-600"></i></span>` : "";
 
+    if(user_id && token && user_id == authorId){
+        document.getElementById("add-new-chapter-btn").classList.remove("hidden");
+    }
+
     document.getElementById("story-name").innerText = storyName;
     document.getElementById("story-summary").innerText = summary;
     document.getElementById("published-data").innerText = created.slice(0, 10);

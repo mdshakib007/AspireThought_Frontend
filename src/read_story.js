@@ -58,6 +58,15 @@ const displayPost = (post) => {
                     </p>
                 </div>
 
+                <div class="mt-6 flex justify-between">
+                    <button onclick="navigatePage('prev')" class="btn bg-slate-500 hover:bg-slate-600 text-white rounded-lg ${prevPage ? '' : 'opacity-50 cursor-not-allowed'}" ${prevPage ? '' : 'disabled'}>
+                        <i class="fa-solid fa-arrow-left"></i> Previous
+                    </button>
+                    <button onclick="navigatePage('next')" class="btn bg-slate-500 hover:bg-slate-600 text-white rounded-lg ${nextPage ? '' : 'opacity-50 cursor-not-allowed'}" ${nextPage ? '' : 'disabled'}>
+                        Next <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+
                 <div id="single-post-comment-section" class="mt-6">
                     <form onsubmit="postComment(event)">
                         <textarea id="comment-input" class="textarea textarea-bordered w-full" name="write-comment" id="write-comment"
@@ -112,6 +121,18 @@ const displayPost = (post) => {
         });
 };
 
+const navigatePage = (direction) => {
+    let currentPage = parseInt(page) || 1;
+    if (direction === "next" && nextPage) {
+        window.location.href = `read_story.html?story=${story}&chapter=${chapter}&page=${currentPage + 1}`;
+    } else if (direction === "prev" && prevPage) {
+        window.location.href = `read_story.html?story=${story}&chapter=${chapter}&page=${currentPage - 1}`;
+    }
+};
+
+let nextPage = null;
+let prevPage = null;
+
 const fetchPost = () => {
     showSkeleton();
 
@@ -124,6 +145,8 @@ const fetchPost = () => {
             .then(res => res.json())
             .then(data => {
                 if (data.results.length > 0) {
+                    nextPage = data.next;
+                    prevPage = data.previous;
                     displayPost(data.results[0]);
                 } else {
                     hideSkeleton();
