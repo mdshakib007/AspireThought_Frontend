@@ -238,8 +238,32 @@ const followTopic = (topic) => {
             if (data.success) {
                 fetchTagResult(topic);
             }
-            else if (data.error) alert(data.error);
-            else alert("Something went wrong.");
+            else if (data.error) {
+                Toastify({
+                    text: `${data.error}`,
+                    duration: 3000,
+                    offset: {
+                        x: 10,
+                        y: 50
+                    },
+                    style: {
+                        background: "#475569",
+                    }
+                }).showToast();
+            }
+            else {
+                Toastify({
+                    text: `Something went wrong`,
+                    duration: 3000,
+                    offset: {
+                        x: 10,
+                        y: 50
+                    },
+                    style: {
+                        background: "#475569",
+                    }
+                }).showToast();
+            }
         });
 };
 
@@ -287,9 +311,29 @@ const likePost = (slug) => {
         .then(res => res.json())
         .then(data => {
             if (data.success) {
-                alert(data.success);
+                Toastify({
+                    text: `${data.success}`,
+                    duration: 3000,
+                    offset: {
+                        x: 10,
+                        y: 50
+                    },
+                    style: {
+                        background: "#475569",
+                    }
+                }).showToast();
             } else {
-                alert(data.error ? data.error : "Unexpected error occurred!");
+                Toastify({
+                    text: `${data.error ? data.error : "Unexpected error occurred!"}`,
+                    duration: 3000,
+                    offset: {
+                        x: 10,
+                        y: 50
+                    },
+                    style: {
+                        background: "#475569",
+                    }
+                }).showToast();
             }
         });
 };
@@ -311,9 +355,29 @@ const bookmarkPost = (slug) => {
         .then(res => res.json())
         .then(data => {
             if (data.success) {
-                alert(data.success);
+                Toastify({
+                    text: `${data.success}`,
+                    duration: 3000,
+                    offset: {
+                        x: 10,
+                        y: 50
+                    },
+                    style: {
+                        background: "#475569",
+                    }
+                }).showToast();
             } else if (data.error) {
-                alert(data.error);
+                Toastify({
+                    text: `${data.error}`,
+                    duration: 3000,
+                    offset: {
+                        x: 10,
+                        y: 50
+                    },
+                    style: {
+                        background: "#475569",
+                    }
+                }).showToast();
             }
         });
 };
@@ -324,7 +388,17 @@ const copyPostLink = (slug) => {
 
     navigator.clipboard.writeText(url)
         .then(() => {
-            console.log("Post link copied to clipboard!");
+            Toastify({
+                text: `Post link copied to clipboard!`,
+                duration: 3000,
+                offset: {
+                    x: 10,
+                    y: 50
+                },
+                style: {
+                    background: "#475569",
+                }
+            }).showToast();
         })
         .catch(err => {
             console.error("Failed to copy: ", err);

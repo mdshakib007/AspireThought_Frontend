@@ -7,7 +7,7 @@ const token = localStorage.getItem("token");
 const postChapter = async (event) => {
     event.preventDefault();
 
-    if(!user_id || !token){
+    if (!user_id || !token) {
         window.location.href = "login.html";
         return;
     }
@@ -38,7 +38,17 @@ const postChapter = async (event) => {
         if (postData.success) {
             window.location.href = `story_details.html?story=${story}`;
         } else {
-            alert(postData.error ? postData.error : "Failed to create post!");
+            Toastify({
+                text: `${postData.error ? postData.error : "Failed to create post!"}`,
+                duration: 3000,
+                offset: {
+                    x: 10,
+                    y: 50
+                },
+                style: {
+                    background: "#475569",
+                }
+            }).showToast();
         }
     } catch (error) {
         console.error("Post creating error:", error);

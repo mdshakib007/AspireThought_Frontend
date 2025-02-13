@@ -35,7 +35,17 @@ const handleLogout = (event) => {
                 window.location.href = "./login.html";
             } else {
                 console.error("Logout failed:", data);
-                alert("Session expired. please login again.");
+                Toastify({
+                    text: `Unexpected error occurred!`,
+                    duration: 3000,
+                    offset: {
+                        x: 10,
+                        y: 50
+                    },
+                    style: {
+                        background: "#475569",
+                    }
+                }).showToast();
                 window.location.href = "login.html";
             }
         })
@@ -46,26 +56,26 @@ const handleLogout = (event) => {
 
 const loadNavProfilePicture = () => {
     const user_id = localStorage.getItem("user_id");
-    if(!user_id){
+    if (!user_id) {
         return;
     }
 
     fetch(`https://aspirethought-backend.onrender.com/user/list/${user_id}`)
-    .then(res => res.json())
-    .then(data => {
-        if(data.username){
-            document.getElementById("nav-profile-name").innerText = data.username;
-        } else{
-            document.getElementById("nav-profile-name").innerText = "Unknown";
-        }
-        if(data.profile_picture){
-            document.getElementById("nav-profile-image-1").src = data.profile_picture;
-            document.getElementById("nav-profile-image-2").src = data.profile_picture;
-        } else{
-            document.getElementById("nav-profile-image-1").src = "./images/nav/default-user.png";
-            document.getElementById("nav-profile-image-2").src = "./images/nav/default-user.png";
-        }
-    })
+        .then(res => res.json())
+        .then(data => {
+            if (data.username) {
+                document.getElementById("nav-profile-name").innerText = data.username;
+            } else {
+                document.getElementById("nav-profile-name").innerText = "Unknown";
+            }
+            if (data.profile_picture) {
+                document.getElementById("nav-profile-image-1").src = data.profile_picture;
+                document.getElementById("nav-profile-image-2").src = data.profile_picture;
+            } else {
+                document.getElementById("nav-profile-image-1").src = "./images/nav/default-user.png";
+                document.getElementById("nav-profile-image-2").src = "./images/nav/default-user.png";
+            }
+        })
 };
 
 

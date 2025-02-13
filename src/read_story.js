@@ -163,7 +163,7 @@ const postComment = function (event) {
 
     const content = document.getElementById("comment-input").value;
 
-    if(!token || !user_id) {
+    if (!token || !user_id) {
         window.location.href = "login.html";
     }
 
@@ -180,7 +180,17 @@ const postComment = function (event) {
             if (response.ok) {
                 window.location.href = `read_story.html?story=${story}&chapter=${chapter}&page=${page}`
             } else {
-                alert("session expired, please login again.");
+                Toastify({
+                    text: `session expired, please login again.`,
+                    duration: 3000,
+                    offset: {
+                        x: 10,
+                        y: 50
+                    },
+                    style: {
+                        background: "#475569",
+                    }
+                }).showToast();
                 window.location.href = "login.html";
             }
         })
@@ -204,9 +214,29 @@ const likePost = (slug) => {
         .then(res => res.json())
         .then(data => {
             if (data.success) {
-                alert(data.success);
+                Toastify({
+                    text: `${data.success}`,
+                    duration: 3000,
+                    offset: {
+                        x: 10,
+                        y: 50
+                    },
+                    style: {
+                        background: "#475569",
+                    }
+                }).showToast();
             } else {
-                alert(data.error ? data.error : "Unexpected error occurred!");
+                Toastify({
+                    text: `${data.error ? data.error : "Unexpected error occurred!"}`,
+                    duration: 3000,
+                    offset: {
+                        x: 10,
+                        y: 50
+                    },
+                    style: {
+                        background: "#475569",
+                    }
+                }).showToast();
             }
         });
 };
@@ -217,7 +247,17 @@ const copyPostLink = (slug) => {
 
     navigator.clipboard.writeText(url)
         .then(() => {
-            console.log("Post link copied to clipboard!");
+            Toastify({
+                text: `Post link copied to clipboard!`,
+                duration: 3000,
+                offset: {
+                    x: 10,
+                    y: 50
+                },
+                style: {
+                    background: "#475569",
+                }
+            }).showToast();
         })
         .catch(err => {
             console.error("Failed to copy: ", err);

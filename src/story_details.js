@@ -29,7 +29,7 @@ const loadStoryDetails = async () => {
     const authorImage = author.profile_picture ? author.profile_picture : "./images/nav/default-user.png";
     const verified = author.is_verified ? `<span class="tooltip" data-tip="Verified Author"><i class="fa-solid fa-circle-check text-blue-600"></i></span>` : "";
 
-    if(user_id && token && user_id == authorId){
+    if (user_id && token && user_id == authorId) {
         document.getElementById("add-new-chapter-btn").classList.remove("hidden");
     }
 
@@ -94,9 +94,29 @@ const addToLibrary = () => {
         .then(res => res.json())
         .then(data => {
             if (data.success) {
-                alert(data.success);
+                Toastify({
+                    text: `${data.success}`,
+                    duration: 3000,
+                    offset: {
+                        x: 10,
+                        y: 50
+                    },
+                    style: {
+                        background: "#475569",
+                    }
+                }).showToast();
             } else if (data.error) {
-                alert(data.error);
+                Toastify({
+                    text: `${data.error}`,
+                    duration: 3000,
+                    offset: {
+                        x: 10,
+                        y: 50
+                    },
+                    style: {
+                        background: "#475569",
+                    }
+                }).showToast();
             }
         });
 };
@@ -117,9 +137,29 @@ const likePost = (slug) => {
         .then(res => res.json())
         .then(data => {
             if (data.success) {
-                alert(data.success);
+                Toastify({
+                    text: `${data.success}`,
+                    duration: 3000,
+                    offset: {
+                        x: 10,
+                        y: 50
+                    },
+                    style: {
+                        background: "#475569",
+                    }
+                }).showToast();
             } else {
-                alert(data.error ? data.error : "Unexpected error occurred!");
+                Toastify({
+                    text: `${data.error ? data.error : "Unexpected error occurred!"}`,
+                    duration: 3000,
+                    offset: {
+                        x: 10,
+                        y: 50
+                    },
+                    style: {
+                        background: "#475569",
+                    }
+                }).showToast();
             }
         });
 };

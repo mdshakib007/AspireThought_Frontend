@@ -76,7 +76,17 @@ const displayForEditing = async () => {
                 document.getElementById("select-tag-input-2").value = post.tags[1] || "None";
             }, 500);
         } else {
-            alert("Post not found!");
+            Toastify({
+                text: `post not found`,
+                duration: 3000,
+                offset: {
+                    x: 10,
+                    y: 50
+                },
+                style: {
+                    background: "#475569",
+                }
+            }).showToast();
         }
     } catch (error) {
         console.error("Error fetching post data:", error);
@@ -128,7 +138,17 @@ const editPost = async (event) => {
         if (data.success) {
             window.location.href = "profile.html";
         } else {
-            alert("Failed to update post!");
+            Toastify({
+                text: `Faild to update post`,
+                duration: 3000,
+                offset: {
+                    x: 10,
+                    y: 50
+                },
+                style: {
+                    background: "#475569",
+                }
+            }).showToast();
         }
     } catch (error) {
         console.error("Error updating post:", error);
@@ -178,7 +198,17 @@ const createPost = async (event) => {
         if (postData.success) {
             window.location.href = "index.html";
         } else {
-            alert("Failed to create post!");
+            Toastify({
+                text: `Faild to create post`,
+                duration: 3000,
+                offset: {
+                    x: 10,
+                    y: 50
+                },
+                style: {
+                    background: "#475569",
+                }
+            }).showToast();
         }
     } catch (error) {
         console.error("Post creating error:", error);

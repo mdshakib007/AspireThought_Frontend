@@ -53,7 +53,7 @@ const displayPost = (post) => {
 
                 <div class="mt-4 flex gap-2">
                     ${tag1 ? `<span onclick="tagResults('${tag1}')" 
-                        class="text-xs font-semibold px-3 py-1 bg-slate-200 text-slate-800 rounded-full cursor-pointer">${tag1}</span>`:""}
+                        class="text-xs font-semibold px-3 py-1 bg-slate-200 text-slate-800 rounded-full cursor-pointer">${tag1}</span>` : ""}
                     ${tag2 ? `<span onclick="tagResults('${tag2}')" 
                         class="text-xs font-semibold px-3 py-1 bg-slate-200 text-slate-800 rounded-full cursor-pointer">${tag2}</span>` : ""}
                 </div>
@@ -187,9 +187,29 @@ const likePost = (slug) => {
         .then(res => res.json())
         .then(data => {
             if (data.success) {
-                alert(data.success);
+                Toastify({
+                    text: `${data.success}`,
+                    duration: 3000,
+                    offset: {
+                        x: 10,
+                        y: 50
+                    },
+                    style: {
+                        background: "#475569",
+                    }
+                }).showToast();
             } else {
-                alert(data.error ? data.error : "Unexpected error occurred!");
+                Toastify({
+                    text: `${data.error ? data.error : "Unexpected error occurred!"}`,
+                    duration: 3000,
+                    offset: {
+                        x: 10,
+                        y: 50
+                    },
+                    style: {
+                        background: "#475569",
+                    }
+                }).showToast();
             }
         });
 };
@@ -211,9 +231,29 @@ const bookmarkPost = (slug) => {
         .then(res => res.json())
         .then(data => {
             if (data.success) {
-                alert(data.success);
+                Toastify({
+                    text: `${data.success}`,
+                    duration: 3000,
+                    offset: {
+                        x: 10,
+                        y: 50
+                    },
+                    style: {
+                        background: "#475569",
+                    }
+                }).showToast();
             } else if (data.error) {
-                alert(data.error);
+                Toastify({
+                    text: `${data.error}`,
+                    duration: 3000,
+                    offset: {
+                        x: 10,
+                        y: 50
+                    },
+                    style: {
+                        background: "#475569",
+                    }
+                }).showToast();
             }
         });
 };
@@ -224,7 +264,17 @@ const copyPostLink = (slug) => {
 
     navigator.clipboard.writeText(url)
         .then(() => {
-            console.log("Post link copied to clipboard!");
+            Toastify({
+                text: `Post link copied to clipboard!`,
+                duration: 3000,
+                offset: {
+                    x: 10,
+                    y: 50
+                },
+                style: {
+                    background: "#475569",
+                }
+            }).showToast();
         })
         .catch(err => {
             console.error("Failed to copy: ", err);

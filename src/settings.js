@@ -46,63 +46,103 @@ const loadUserInformation = () => {
                     document.getElementById("verified-author").style.display = "none";
                 }
             } else {
-                alert("session expired. please login again.");
+                Toastify({
+                    text: `session expired. please login again.`,
+                    duration: 3000,
+                    offset: {
+                        x: 10,
+                        y: 50
+                    },
+                    style: {
+                        background: "#475569",
+                    }
+                }).showToast();
                 window.location.href = "./login.html";
             }
         })
 };
 
 const followingTopicList = () => {
-    if(!user_id || !token){
+    if (!user_id || !token) {
         return;
     }
 
     fetch(`https://aspirethought-backend.onrender.com/user/list/?user_id=${user_id}`)
-    .then(res => res.json())
-    .then(data => {
-        if(data.length > 0){
-            const parent = document.getElementById("following-topic-list");
-            parent.innerHTML = "";
-            data[0].following.forEach(topic => {
-                tr = document.createElement("tr");
-                tr.innerHTML = `
+        .then(res => res.json())
+        .then(data => {
+            if (data.length > 0) {
+                const parent = document.getElementById("following-topic-list");
+                parent.innerHTML = "";
+                data[0].following.forEach(topic => {
+                    tr = document.createElement("tr");
+                    tr.innerHTML = `
                     <td><a href="tag_results.html?tag=${topic}"><i class="fa-solid fa-tag"></i> ${topic}</a></td>
                     <td><button onclick="unfollowTopic('${topic}')" class="btn btn-sm btn-outline hover:bg-slate-600 rounded-full">Unfollow</button></td>
                 `;
-                parent.appendChild(tr);
-            });
-        } else {
-            alert("session expired. please login again.");
-            window.location.href = "./login.html";
-        }
-    });
+                    parent.appendChild(tr);
+                });
+            } else {
+                Toastify({
+                    text: `session expired. please login again.`,
+                    duration: 3000,
+                    offset: {
+                        x: 10,
+                        y: 50
+                    },
+                    style: {
+                        background: "#475569",
+                    }
+                }).showToast();
+                window.location.href = "./login.html";
+            }
+        });
 };
 
 const unfollowTopic = (topic) => {
-    if(!user_id || !token){
+    if (!user_id || !token) {
         window.location.href = "login.html";
         return;
     }
 
     fetch("https://aspirethought-backend.onrender.com/user/following/topic/remove/", {
-        method : "DELETE",
-        headers : {
-            "Content-Type" : "application/json",
-            "Authorization" : `Token ${token}`,
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Token ${token}`,
         },
-        body : JSON.stringify({"slug" : topic}),
+        body: JSON.stringify({ "slug": topic }),
     })
-    .then(res => res.json())
-    .then(data => {
-        if(data.success){
-            followingTopicList();
-        }else if(data.error){
-            alert(data.error);
-        }else{
-            alert("Session ended, please login again.");
-            window.location.href = "login.html";
-        }
-    });
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                followingTopicList();
+            } else if (data.error) {
+                Toastify({
+                    text: `${data.error}`,
+                    duration: 3000,
+                    offset: {
+                        x: 10,
+                        y: 50
+                    },
+                    style: {
+                        background: "#475569",
+                    }
+                }).showToast();
+            } else {
+                Toastify({
+                    text: `Session ended, please login again`,
+                    duration: 3000,
+                    offset: {
+                        x: 10,
+                        y: 50
+                    },
+                    style: {
+                        background: "#475569",
+                    }
+                }).showToast();
+                window.location.href = "login.html";
+            }
+        });
 };
 
 const requestForVerification = () => {
@@ -120,10 +160,30 @@ const requestForVerification = () => {
         .then(res => res.json())
         .then(data => {
             if (data.success) {
-                alert(data.success);
+                Toastify({
+                    text: `${data.success}`,
+                    duration: 3000,
+                    offset: {
+                        x: 10,
+                        y: 50
+                    },
+                    style: {
+                        background: "#475569",
+                    }
+                }).showToast();
                 window.location.href = "settings.html";
             } else {
-                alert(data.error ? data.error : "Unexpected error occurred!");
+                Toastify({
+                    text: `${data.error ? data.error : "Unexpected error occurred!"}`,
+                    duration: 3000,
+                    offset: {
+                        x: 10,
+                        y: 50
+                    },
+                    style: {
+                        background: "#475569",
+                    }
+                }).showToast();
             }
         });
 };
@@ -149,12 +209,22 @@ const openUpdateModal = (title, id) => {
 
 const updateUserInformation = (event) => {
     event.preventDefault();
-    
+
     const id = document.getElementById("universal_modal").getAttribute("requested_id");
     const updatedValue = document.getElementById("universal-modal-input").value;
 
     if (!updatedValue) {
-        alert("Please fill out the input field!");
+        Toastify({
+            text: `Please fill out the input field!`,
+            duration: 3000,
+            offset: {
+                x: 10,
+                y: 50
+            },
+            style: {
+                background: "#475569",
+            }
+        }).showToast();
         return;
     }
 
@@ -175,7 +245,17 @@ const updateUserInformation = (event) => {
     if (id === "profile-picture") {
         const fileInput = document.getElementById("universal-modal-input");
         if (!fileInput || fileInput.files.length === 0) {
-            alert("No file selected for profile picture update.");
+            Toastify({
+                text: `No file selected for profile picture update.`,
+                duration: 3000,
+                offset: {
+                    x: 10,
+                    y: 50
+                },
+                style: {
+                    background: "#475569",
+                }
+            }).showToast();
             return;
         }
         formData.append(title, fileInput.files[0]);

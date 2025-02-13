@@ -13,7 +13,17 @@ const displayInit = async () => {
     const myResponse = await fetch(myUrl);
     const me = await myResponse.json();
     if (me.length < 1) {
-        alert("Session expired, please login again");
+        Toastify({
+            text: `Session expired, please login again`,
+            duration: 3000,
+            offset: {
+                x: 10,
+                y: 50
+            },
+            style: {
+                background: "#475569",
+            }
+        }).showToast();
         window.location.href = "login.html";
     }
 
@@ -126,8 +136,18 @@ const CreateStory = () => {
     const selectedTags = Array.from(tagsSelect.selectedOptions).map(option => option.value);
     const summary = document.getElementById("story-summary-input").value;
 
-    if(!storyName || !storyImage || !selectedTags || !summary){
-        alert("Please fill out all the field.");
+    if (!storyName || !storyImage || !selectedTags || !summary) {
+        Toastify({
+            text: `Please fill out all the field`,
+            duration: 3000,
+            offset: {
+                x: 10,
+                y: 50
+            },
+            style: {
+                background: "#475569",
+            }
+        }).showToast();
         document.getElementById("create-story-btn").innerHTML = `Create Story`;
         return;
     }
@@ -141,19 +161,29 @@ const CreateStory = () => {
     fetch(`https://aspirethought-backend.onrender.com/blog/stories/create/`, {
         method: "POST",
         headers: {
-            "Authorization": `Token ${token}`, 
+            "Authorization": `Token ${token}`,
         },
-        body: formData, 
+        body: formData,
     })
-    .then(res => res.json())
-    .then(data => {
-        if (data.success) {
-            window.location.href = "stories.html";
-        } else {
-            alert(data.error ? data.error : "Unexpected error occurred.");
-        }
-    })
-    .catch(error => console.error("Error:", error));
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                window.location.href = "stories.html";
+            } else {
+                Toastify({
+                    text: `${data.error ? data.error : "Unexpected error occurred."}`,
+                    duration: 3000,
+                    offset: {
+                        x: 10,
+                        y: 50
+                    },
+                    style: {
+                        background: "#475569",
+                    }
+                }).showToast();
+            }
+        })
+        .catch(error => console.error("Error:", error));
     document.getElementById("create-story-btn").innerHTML = `Create Story`;
 };
 

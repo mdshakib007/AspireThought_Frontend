@@ -48,7 +48,17 @@ const handleLogout = (event) => {
                 window.location.href = "./login.html";
             } else {
                 console.error("Logout failed:", data);
-                alert("Session expired, please login again.");
+                Toastify({
+                    text: "Session expired, please login again.",
+                    duration: 3000,
+                    offset: {
+                        x: 10,
+                        y: 50
+                    },
+                    style: {
+                        background: "#475569",
+                    }
+                }).showToast();
                 window.location.href = "login.html";
             }
         })
@@ -160,7 +170,17 @@ const fetchFollowingPosts = () => {
                 }
 
             } else {
-                alert("Session ended! Please login again.");
+                Toastify({
+                    text: "Session expired, please login again.",
+                    duration: 3000,
+                    offset: {
+                        x: 10,
+                        y: 50
+                    },
+                    style: {
+                        background: "#475569",
+                    }
+                }).showToast();
                 window.location.href = "login";
                 return;
             }
@@ -335,7 +355,7 @@ async function redirectToSinglePost(slug) {
     }
 }
 
-const redirectToStory = (slug) =>{
+const redirectToStory = (slug) => {
     window.location.href = `story_details.html?story=${slug}`;
 };
 
@@ -348,7 +368,17 @@ const copyStoryLink = (slug) => {
 
     navigator.clipboard.writeText(url)
         .then(() => {
-            console.log("Post link copied to clipboard!");
+            Toastify({
+                text: `Post link copied to clipboard!`,
+                duration: 3000,
+                offset: {
+                    x: 10,
+                    y: 50
+                },
+                style: {
+                    background: "#475569",
+                }
+            }).showToast();
         })
         .catch(err => {
             console.error("Failed to copy: ", err);
@@ -371,9 +401,29 @@ const likePost = (slug) => {
         .then(res => res.json())
         .then(data => {
             if (data.success) {
-                alert(data.success);
+                Toastify({
+                    text: `${data.success}`,
+                    duration: 3000,
+                    offset: {
+                        x: 10,
+                        y: 50
+                    },
+                    style: {
+                        background: "#475569",
+                    }
+                }).showToast();
             } else {
-                alert(data.error ? data.error : "Unexpected error occurred!");
+                Toastify({
+                    text: `${data.error ? data.error : "Unexpected error occurred!"}`,
+                    duration: 3000,
+                    offset: {
+                        x: 10,
+                        y: 50
+                    },
+                    style: {
+                        background: "#475569",
+                    }
+                }).showToast();
             }
         });
 };
@@ -395,9 +445,29 @@ const bookmarkPost = (slug) => {
         .then(res => res.json())
         .then(data => {
             if (data.success) {
-                alert(data.success);
+                Toastify({
+                    text: `${data.success}`,
+                    duration: 3000,
+                    offset: {
+                        x: 10,
+                        y: 50
+                    },
+                    style: {
+                        background: "#475569",
+                    }
+                }).showToast();
             } else if (data.error) {
-                alert(data.error);
+                Toastify({
+                    text: `${data.error}`,
+                    duration: 3000,
+                    offset: {
+                        x: 10,
+                        y: 50
+                    },
+                    style: {
+                        background: "#475569",
+                    }
+                }).showToast();
             }
         });
 };
@@ -408,7 +478,17 @@ const copyPostLink = (slug) => {
 
     navigator.clipboard.writeText(url)
         .then(() => {
-            console.log("Post link copied to clipboard!");
+            Toastify({
+                text: `Post link copied to clipboard!`,
+                duration: 3000,
+                offset: {
+                    x: 10,
+                    y: 50
+                },
+                style: {
+                    background: "#475569",
+                }
+            }).showToast();
         })
         .catch(err => {
             console.error("Failed to copy: ", err);
