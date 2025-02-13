@@ -47,39 +47,87 @@ const recommendedPostsFetch = () => {
 const fetchTagResult = async (tag_slug) => {
     try {
         // Fetch followers and posts in parallel
-        const [followersRes, postsRes] = await Promise.all([
+        const [followersRes, postsRes, storyRes] = await Promise.all([
             fetch(`https://aspirethought-backend.onrender.com/tag/list/?slug=${tag_slug}`).then(res => res.json()),
-            fetch(`https://aspirethought-backend.onrender.com/blog/list/?tag_slug=${tag_slug}`).then(res => res.json())
+            fetch(`https://aspirethought-backend.onrender.com/blog/list/?tag_slug=${tag_slug}`).then(res => res.json()),
+            fetch(`https://aspirethought-backend.onrender.com/blog/stories/?tag_slug=${tag_slug}`).then(res => res.json())
         ]);
 
         // Get followers count
         const followers = followersRes[0].followers || 0;
         const posts = postsRes.results || [];
-
-        console.log(posts);
+        const stories = storyRes.results || [];
 
         // Update UI
         document.getElementById("current-tag-name").innerText = tag_slug;
         document.getElementById("tag-results-page-followers-and-stories").innerText =
-            `Topic • ${followers} Followers • 0 Stories • ${posts.length} Posts`;
+            `Topic • ${followers} Followers • ${stories.length} Stories • ${posts.length} Posts`;
 
         followStatus(tag_slug);
 
         const title = document.getElementById("tag-results-title");
         title.classList.remove("hidden");
-        title.innerHTML = `${posts.length} Results for <span class="font-bold">${tag_slug}</span>`;
+        title.innerHTML = `${posts.length + stories.length} Results for <span class="font-bold">${tag_slug}</span>`;
 
         document.getElementById("tag-follow-btn").onclick = () => {
             followTopic(tag_slug);
         };
 
         displayPost(posts, "tag-results-section");
+        displayStories(stories, "tag-results-section");
 
     } catch (error) {
         console.error("Error fetching tag data:", error);
     }
 };
 
+
+const displayStories = (stories, section) => {
+    const parent = document.getElementById(section);
+
+    stories.forEach(story => {
+        console.log(story);
+        const div = document.createElement("div");
+        div.classList.add("max-w-4xl", "bg-slate-50", "p-3", "mb-5");
+
+        fetch(`https://aspirethought-backend.onrender.com/user/list/?user_id=${story.author}`)
+            .then(res => res.json())
+            .then(userData => {
+                if (userData.length > 0) {
+                    const user = userData[0];
+                    const user_name = user.first_name ? user.first_name : user.username;
+                    const verified = user.is_verified ? `<span class="tooltip" data-tip="Verified Author"><i class="fa-solid fa-circle-check text-blue-600"></i></span>` : "";
+                    const user_img = user.profile_picture ? user.profile_picture : "./images/nav/default-user.png";
+
+                    div.innerHTML = `
+                    <div class="flex items-center gap-3 mb-2">
+                        <img onclick="visitAuthorProfile('${user.id}')" src="${user_img}" alt="User Avatar"
+                            class="w-10 h-10 object-cover rounded-full cursor-pointer">
+                        <div>
+                            <p onclick="visitAuthorProfile('${user.id}')" class="text-sm font-medium text-black cursor-pointer">${user_name} ${verified}</p>
+                            <p class="text-xs text-slate-500">${story.created_at.slice(0, 10)} • <i
+                                    class="fa-solid fa-earth-americas"></i>
+                            </p>
+                        </div>
+                    </div>
+        
+                    <div onclick="redirectToStory('${story.slug}')" class="flex flex-col cursor-pointer">
+                        <h1 class="text-md sm:text-lg md:text-xl font-bold text-slate-900 mb-3 hover:underline cursor-pointer">${story.name}</h1>
+                        <div class="w-52 md:w-72 flex-shrink-0">
+                            <img src="${story.cover}" alt="Blog Image" class="w-full h-auto rounded-lg object-cover">
+                        </div>
+                    </div>
+                    `;
+                }
+            });
+
+        parent.appendChild(div);
+    })
+};
+
+const redirectToStory = (slug) => {
+    window.location.href = `story_details.html?story=${slug}`;
+};
 
 const displayPost = (posts, section) => {
     const skeleton = document.getElementById("skeleton-lazy");

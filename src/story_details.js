@@ -44,7 +44,8 @@ const loadStoryDetails = async () => {
 
     tags.forEach(tag => {
         const tagParent = document.getElementById("story-tags");
-        const tagChild = document.createElement("span");
+        const tagChild = document.createElement("a");
+        tagChild.href = `tag_results.html?tag=${tag}`;
         tagChild.classList.add("p-2", "border", "rounded-lg");
         tagChild.innerText = tag;
         tagParent.appendChild(tagChild);
@@ -116,5 +117,9 @@ async function redirectToSinglePost(story_slug, slug, page_count) {
         window.location.href = `read_story.html?story=${encodeURIComponent(story_slug)}&chapter=${slug}&page=${page_count}`;
     }
 }
+
+const redirectToCreateChapterd = () => {
+    window.location.href = `write_chapter.html?story=${story_slug}`;
+};
 
 loadStoryDetails();

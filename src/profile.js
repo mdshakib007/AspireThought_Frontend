@@ -1,7 +1,7 @@
 const token = localStorage.getItem("token");
 const user_id = localStorage.getItem("user_id");
 
-const profileView = () => {
+const profileView = async () => {
     if (!token || !user_id) {
         window.location.href = "login.html";
         return;
@@ -93,9 +93,9 @@ const profileView = () => {
         
                                 <div class="mt-2 flex gap-2">
                                     ${tag1 ? `<span onclick="tagResults('${tag1}')" 
-                                        class="text-xs font-semibold px-3 py-1 bg-slate-200 text-slate-800 rounded-full cursor-pointer">${tag1}</span>`: ""}
+                                        class="text-xs font-semibold px-3 py-1 bg-slate-200 text-slate-800 rounded-full cursor-pointer">${tag1}</span>` : ""}
                                     ${tag2 ? `<span onclick="tagResults('${tag2}')" 
-                                        class="text-xs font-semibold px-3 py-1 bg-slate-200 text-slate-800 rounded-full cursor-pointer">${tag2}</span>`: ""}
+                                        class="text-xs font-semibold px-3 py-1 bg-slate-200 text-slate-800 rounded-full cursor-pointer">${tag2}</span>` : ""}
                                 </div>
         
                                 <div class="mt-2 pt-2 flex justify-between items-center text-slate-600 border-t border-slate-300">
@@ -115,10 +115,88 @@ const profileView = () => {
                 });
         });
 
+    const myStoriesRes = await fetch(`https://aspirethought-backend.onrender.com/blog/stories/?author_id=${user_id}`)
+    const myStories = await myStoriesRes.json();
+    if (myStories.results.length > 0) {
+        displayStories(myStories.results);
+    } else {
+        document.getElementById("my-stories-section").innerHTML = `
+            <div class="flex justify-center">
+                <a href="stories.html" class="btn bg-transparent hover:bg-green-600 rounded-full border border-black hover:text-white">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                    Write your first story!
+                </a>
+            </div>
+        `;
+    }
+};
+
+const displayStories = (stories) => {
+    const parent = document.getElementById("my-stories-section");
+
+    stories.forEach(story => {
+        const div = document.createElement("div");
+        div.classList.add("max-w-4xl", "bg-slate-50", "p-3", "mb-5");
+
+        fetch(`https://aspirethought-backend.onrender.com/user/list/?user_id=${story.author}`)
+            .then(res => res.json())
+            .then(userData => {
+                if (userData.length > 0) {
+                    const user = userData[0];
+                    const user_name = user.first_name ? user.first_name : user.username;
+                    const verified = user.is_verified ? `<span class="tooltip" data-tip="Verified Author"><i class="fa-solid fa-circle-check text-blue-600"></i></span>` : "";
+                    const user_img = user.profile_picture ? user.profile_picture : "./images/nav/default-user.png";
+
+                    div.innerHTML = `
+                    <div class="flex justify-between">
+                        <div class="flex items-center gap-3 mb-2">
+                            <img onclick="visitAuthorProfile('${user.id}')" src="${user_img}" alt="User Avatar"
+                                class="w-10 h-10 object-cover rounded-full cursor-pointer">
+                            <div>
+                                <p onclick="visitAuthorProfile('${user.id}')" class="text-sm font-medium text-black cursor-pointer">${user_name} ${verified}</p>
+                                <p class="text-xs text-slate-500">${story.created_at.slice(0, 10)} • <i
+                                        class="fa-solid fa-earth-americas"></i>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="dropdown dropdown-end font-bold">
+                            <div tabindex="0" role="button" class="btn m-1 text-xl bg-slate-100 border-none rounded-full"><i class="fa-solid fa-ellipsis"></i></div>
+                            <ul tabindex="0" class="menu dropdown-content bg-slate-200 rounded-md z-[1] w-52 p-2 shadow-xl">
+                                <li onclick="copyStoryLink('${story.slug}')"><a><i class="fa-solid fa-link"></i> Copy Link</a></li>
+                                <li onclick="deleteStory('${story.slug}')"><a><i class="fa-solid fa-trash"></i> Delete Story</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div onclick="redirectToStory('${story.slug}')" class="flex flex-col cursor-pointer">
+                        <h1 class="text-md sm:text-lg md:text-xl font-bold text-slate-900 mb-3 hover:underline cursor-pointer">${story.name}</h1>
+                        <div class="w-52 md:w-72 flex-shrink-0">
+                            <img src="${story.cover}" alt="Blog Image" class="w-full h-auto rounded-lg object-cover">
+                        </div>
+                    </div>
+                    `;
+                }
+            });
+
+        parent.appendChild(div);
+    })
 };
 
 const copyPostLink = (slug) => {
     const url = `https://mdshakib007.github.io/AspireThought_Frontend/single_post.html?slug=${slug}`;
+
+    navigator.clipboard.writeText(url)
+        .then(() => {
+            console.log("Post link copied to clipboard!");
+        })
+        .catch(err => {
+            console.error("Failed to copy: ", err);
+        });
+};
+
+const copyStoryLink = (slug) => {
+    const url = `https://mdshakib007.github.io/AspireThought_Frontend/story_details.html?story=${slug}`;
 
     navigator.clipboard.writeText(url)
         .then(() => {
@@ -194,6 +272,10 @@ async function redirectToSinglePost(slug) {
     }
 }
 
+const redirectToStory = (slug) => {
+    window.location.href = `story_details.html?story=${slug}`;
+};
+
 const deletePost = async (slug) => {
     try {
         const response = await fetch("https://aspirethought-backend.onrender.com/blog/delete/", {
@@ -203,6 +285,32 @@ const deletePost = async (slug) => {
                 "Authorization": `Token ${token}`,
             },
             body: JSON.stringify({ "post_slug": slug }),
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        if (data.success) {
+            window.location.href = "profile.html";
+        } else {
+            alert(data.error || "Something went wrong!");
+        }
+
+    } catch (error) {
+        console.error("Error deleting post:", error);
+        alert("Failed to delete the post. Please try again!");
+    }
+};
+
+const deleteStory = async (slug) => {
+    try {
+        const response = await fetch(`https://aspirethought-backend.onrender.com/blog/stories/${slug}/delete/`, {
+            method: "DELETE",
+            headers: {
+                "Authorization": `Token ${token}`,
+            },
         });
 
         if (!response.ok) {
