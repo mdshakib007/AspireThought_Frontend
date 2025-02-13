@@ -55,7 +55,6 @@ const loadStoryDetails = async () => {
     let pageCount = 0;
     chapters.forEach(chapter => {
         pageCount++;
-        console.log(chapter);
         const div = document.createElement("div");
         div.classList.add("bg-white", "rounded-lg", "p-2", "mt-4");
         div.innerHTML = `
@@ -76,6 +75,30 @@ const loadStoryDetails = async () => {
         `;
         chapterContainer.appendChild(div);
     })
+};
+
+const addToLibrary = () => {
+    if (!token || !user_id) {
+        window.location.href = "login.html";
+        return;
+    }
+
+    fetch("https://aspirethought-backend.onrender.com/user/library/add/", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Token ${token}`,
+        },
+        body: JSON.stringify({ "slug": story_slug }),
+    })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                alert(data.success);
+            } else if (data.error) {
+                alert(data.error);
+            }
+        });
 };
 
 const likePost = (slug) => {

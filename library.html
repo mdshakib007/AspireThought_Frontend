@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Library - AspireThought</title>
+    <!-- tailwind, daisy-UI, font-awesome, favicon -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.19/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="./styles/style.css">
+</head>
+
+<body>
+    <header>
+        <nav class="pb-16" id="nav-component">
+        </nav>
+    </header>
+
+    <main class="min-h-screen flex justify-center">
+        <div class="w-full max-w-3xl bg-slate-50 p-6 border border-slate-100">
+            <div class="flex flex-col items-center border-b-2 border-slate-200">
+                <img id="library-page-profile-picture" src="./images/nav/default-user.png" alt="Profile Picture"
+                    class="w-32 h-32 rounded-full border-2 border-slate-300 object-cover">
+                <h2 id="library-page-username" class="mt-4 text-xl font-bold text-slate-700"></h2>
+                <p id="library-page-full-name" class="text-slate-500 font-semibold text-2xl"></p>
+            </div>
+
+            <!-- libraryed post section -->
+            <h1 class="text-3xl mt-6 font-bold border-b-2"><i class="fa-solid fa-bookmark"></i> My Library</h1>
+            <div id="my-library-section" class="flex justify-center flex-wrap">
+            </div>
+        </div>
+    </main>
+
+    <footer id="footer-component" class="footer bg-base-200 p-5 md:flex md:justify-evenly text-md">
+    </footer>
+
+    <script src="./src/library.js"></script>
+    <script src="./src/common.js"></script>
+</body>
+
+</html>
