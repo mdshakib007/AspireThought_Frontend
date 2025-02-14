@@ -19,7 +19,84 @@
         </nav>
     </header>
 
-    <main class="min-h-screen flex justify-center items-center">
+    <main class="min-h-screen flex justify-center">
+        <div class="w-full max-w-3xl bg-slate-50 p-6 border border-slate-100">
+            <h1 class="text-center text-2xl font-bold mb-5">Author Analytics</h1>
+
+            <!-- 1st stats -->
+            <div class="stats shadow flex md:flex-row flex-col my-2">
+                <div class="stat">
+                    <div class="stat-figure text-slate-500">
+                        <i class="fa-solid fa-thumbs-up text-3xl"></i>
+                    </div>
+                    <div class="stat-title">Total Likes</div>
+                    <div id="like-count" class="stat-value text-slate-500"></div>
+                    <div class="stat-desc">Getting more engagement</div>
+                </div>
+
+                <div class="stat">
+                    <div class="stat-figure text-green-500">
+                        <i class="fa-solid fa-bolt text-3xl"></i>
+                    </div>
+                    <div class="stat-title">Total Reads</div>
+                    <div id="read-count" class="stat-value text-green-500"></div>
+                    <div class="stat-desc">People loves your writes!</div>
+                </div>
+
+                <div class="stat">
+                    <div class="stat-figure text-secondary">
+                        <div class="avatar online">
+                            <div class="w-16 rounded-full">
+                                <img id="author-img" src="./images/nav/default-user.png" />
+                            </div>
+                        </div>
+                    </div>
+                    <div id="engagement-score" class="stat-value"></div>
+                    <div class="stat-title">E. Score</div>
+                    <div class="stat-desc text-green-500">Top engagement</div>
+                </div>
+            </div>
+
+            <!-- 2nd stats -->
+            <div class="stats shadow flex md:flex-row flex-col my-2">
+                <div class="stat">
+                    <div class="stat-figure text-slate-500">
+                        <i class="fa-solid fa-comment text-3xl"></i>
+                    </div>
+                    <div class="stat-title">Comments</div>
+                    <div id="comment-count" class="stat-value text-slate-500"></div>
+                    <div class="stat-desc">Total comments</div>
+                </div>
+
+                <div class="stat">
+                    <div class="stat-figure text-green-500">
+                        <i class="fa-solid fa-check-to-slot text-3xl"></i>
+                    </div>
+                    <div class="stat-title">Total Posts</div>
+                    <div id="post-count" class="stat-value text-green-500"></div>
+                    <div class="stat-desc">All time data</div>
+                </div>
+
+                <div class="stat">
+                    <div class="stat-figure text-red-500">
+                        <i class="fa-solid fa-book text-3xl"></i>
+                    </div>
+                    <div class="stat-title">My Stories</div>
+                    <div id="story-count" class="stat-value"></div>
+                    <div id="chapter-count" class="stat-desc text-red-500"></div>
+                </div>
+            </div>
+
+            <!-- most viewed post -->
+            <div id="most-viewed-post" class="pt-6">
+
+            </div>
+
+            <!-- top content -->
+            <div id="top-content" class="pt-6">
+
+            </div>
+        </div>
     </main>
 
     <footer id="footer-component" class="footer bg-base-200 p-5 md:flex md:justify-evenly text-md">
