@@ -10,7 +10,7 @@ const displayTags = () => {
         return;
     }
 
-    fetch("https://aspirethought-backend.onrender.com/tag/list/")
+    fetch("https://aspire-thought-backend.vercel.app/tag/list/")
         .then(res => res.json())
         .then(data => {
             const parent = document.getElementById("tag-list-div");
@@ -53,7 +53,7 @@ const displayForEditing = async () => {
     if (!mode || !post_slug) return;
 
     try {
-        const res = await fetch(`https://aspirethought-backend.onrender.com/blog/list/?post_slug=${post_slug}`);
+        const res = await fetch(`https://aspire-thought-backend.vercel.app/blog/list/?post_slug=${post_slug}`);
         const data = await res.json();
 
         if (data.results.length > 0) {
@@ -117,21 +117,54 @@ const editPost = async (event) => {
     if (select_tag1 !== "None") tags.push(select_tag1);
     if (select_tag2 !== "None") tags.push(select_tag2);
 
-    const formData = new FormData();
-    formData.append("slug", post_slug); // Slug is required for identifying the post
+    let img_url = null;
+    if (cover_image) {
+        const imageForm = new FormData();
+        imageForm.append("image", cover_image);
+        try {
+            const imgResponse = await fetch("https://api.imgbb.com/1/upload?key=a1628c9dacce3ab8a8de3488c32afc47", {
+                method: "POST",
+                body: imageForm,
+            });
 
-    if (title) formData.append("title", title);
-    if (cover_image) formData.append("image", cover_image);
-    if (markdown_body) formData.append("body", markdown_body);
-    tags.forEach(tag => formData.append("tags", tag));
+            const imgData = await imgResponse.json();
+
+            if (imgData.success) {
+                img_url = imgData.data.display_url;
+            } else {
+                Toastify({
+                    text: `Image upload failed.`,
+                    duration: 3000,
+                    offset: { x: 10, y: 50 },
+                    style: { background: "#22c55e" }
+                }).showToast();
+                return;
+            }
+        } catch (error) {
+            console.error("Image upload error:", error);
+            Toastify({
+                text: `Failed to upload image.`,
+                duration: 3000,
+                offset: { x: 10, y: 50 },
+                style: { background: "#22c55e" }
+            }).showToast();
+            return;
+        }
+    }
+
+    let info = { "slug": post_slug };
+    if (img_url) info.image = img_url;
+    if (markdown_body) info.body = markdown_body;
+    if (tags.length > 0) info.tags = tags;
 
     try {
-        const response = await fetch("https://aspirethought-backend.onrender.com/blog/edit/", {
+        const response = await fetch("https://aspire-thought-backend.vercel.app/blog/edit/", {
             method: "POST",
             headers: {
                 "Authorization": `Token ${token}`,
+                "content-type": "application/json",
             },
-            body: formData,
+            body: JSON.stringify(info),
         });
 
         const data = await response.json();
@@ -179,19 +212,55 @@ const createPost = async (event) => {
     if (select_tag1 != "None") tags.push(select_tag1);
     if (select_tag2 > "None") tags.push(select_tag2);
 
-    const formData = new FormData();
-    formData.append("title", title);
-    if (cover_image) formData.append("image", cover_image);
-    formData.append("body", markdown_body);
-    tags.forEach(tag => formData.append("tags", tag));
+    let img_url = null;
+    if (cover_image) {
+        const imageForm = new FormData();
+        imageForm.append("image", cover_image);
+        try {
+            const imgResponse = await fetch("https://api.imgbb.com/1/upload?key=a1628c9dacce3ab8a8de3488c32afc47", {
+                method: "POST",
+                body: imageForm,
+            });
+
+            const imgData = await imgResponse.json();
+
+            if (imgData.success) {
+                img_url = imgData.data.display_url;
+            } else {
+                Toastify({
+                    text: `Image upload failed.`,
+                    duration: 3000,
+                    offset: { x: 10, y: 50 },
+                    style: { background: "#22c55e" }
+                }).showToast();
+                return;
+            }
+        } catch (error) {
+            console.error("Image upload error:", error);
+            Toastify({
+                text: `Failed to upload image.`,
+                duration: 3000,
+                offset: { x: 10, y: 50 },
+                style: { background: "#22c55e" }
+            }).showToast();
+            return;
+        }
+    }
+    
+    let info = {slug : post_slug};
+    if (title) info.title = title;
+    if (img_url) info.image = img_url;
+    if(markdown_body) info.body = markdown_body;
+    if(tags.length > 0) info.tags = tags;
 
     try {
-        const postResponse = await fetch("https://aspirethought-backend.onrender.com/blog/create/", {
+        const postResponse = await fetch("https://aspire-thought-backend.vercel.app/blog/create/", {
             method: "POST",
             headers: {
                 "Authorization": `Token ${token}`,
+                "content-type": "application/json",
             },
-            body: formData,
+            body: JSON.stringify(info),
         });
 
         const postData = await postResponse.json();

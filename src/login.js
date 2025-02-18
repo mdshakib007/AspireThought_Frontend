@@ -12,7 +12,7 @@ const handleLogin = (event) => {
 
     document.getElementById("login-btn").innerHTML = `<span class="loading loading-spinner loading-xs"></span>`;
 
-    fetch("https://aspirethought-backend.onrender.com/user/login/", {
+    fetch("https://aspire-thought-backend.vercel.app/user/login/", {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify(info),

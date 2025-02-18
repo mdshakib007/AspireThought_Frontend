@@ -7,7 +7,7 @@ const profileView = () => {
         return;
     }
 
-    fetch(`https://aspirethought-backend.onrender.com/user/list/?user_id=${user_id}`)
+    fetch(`https://aspire-thought-backend.vercel.app/user/list/?user_id=${user_id}`)
         .then(res => res.json())
         .then(data => {
             if (!data[0]) {
@@ -23,7 +23,7 @@ const profileView = () => {
 
             // fetch my library
             user.library.forEach(story_slug => {
-                fetch(`https://aspirethought-backend.onrender.com/blog/stories/?story_slug=${story_slug}`)
+                fetch(`https://aspire-thought-backend.vercel.app/blog/stories/?story_slug=${story_slug}`)
                     .then(res => res.json())
                     .then(data => {
                         if (data.results.length > 0) {
@@ -43,7 +43,7 @@ const displayStory = (story) => {
     const div = document.createElement("div");
     div.classList.add("max-w-4xl", "bg-slate-50", "p-3", "mb-5");
 
-    fetch(`https://aspirethought-backend.onrender.com/user/list/?user_id=${story.author}`)
+    fetch(`https://aspire-thought-backend.vercel.app/user/list/?user_id=${story.author}`)
         .then(res => res.json())
         .then(userData => {
             if (userData.length > 0) {
@@ -89,7 +89,7 @@ const displayStory = (story) => {
 };
 
 const copyPostLink = (slug) => {
-    const url = `https://mdshakib007.github.io/AspireThought_Frontend/single_post.html?slug=${slug}`;
+    const url = `https://aspire-thought.vercel.app/single_post.html?slug=${slug}`;
 
     navigator.clipboard.writeText(url)
         .then(() => {
@@ -111,7 +111,7 @@ const copyPostLink = (slug) => {
 };
 
 const copyStoryLink = (slug) => {
-    const url = `https://mdshakib007.github.io/AspireThought_Frontend/story_details.html?story=${slug}`;
+    const url = `https://aspire-thought.vercel.app/story_details.html?story=${slug}`;
 
     navigator.clipboard.writeText(url)
         .then(() => {
@@ -139,7 +139,7 @@ const removeStory = (slug) => {
         return;
     }
 
-    fetch("https://aspirethought-backend.onrender.com/user/library/remove/", {
+    fetch("https://aspire-thought-backend.vercel.app/user/library/remove/", {
         method: "DELETE",
         headers: {
             "Content-Type": "application/json",
@@ -180,7 +180,7 @@ const removeStory = (slug) => {
 
 async function redirectToSinglePost(slug) {
     try {
-        await fetch(`https://aspirethought-backend.onrender.com/blog/${slug}/view/`, {
+        await fetch(`https://aspire-thought-backend.vercel.app/blog/${slug}/view/`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -201,7 +201,7 @@ const likePost = (slug) => {
         return;
     }
 
-    fetch(`https://aspirethought-backend.onrender.com/blog/${slug}/like/`, {
+    fetch(`https://aspire-thought-backend.vercel.app/blog/${slug}/like/`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",

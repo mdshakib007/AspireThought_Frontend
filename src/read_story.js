@@ -19,7 +19,7 @@ const hideSkeleton = () => {
 const displayPost = (post) => {
     document.getElementById("post-page-title").innerText = post.title;
 
-    fetch(`https://aspirethought-backend.onrender.com/user/list/?user_id=${post.author}`)
+    fetch(`https://aspire-thought-backend.vercel.app/user/list/?user_id=${post.author}`)
         .then(res => res.json())
         .then(userData => {
             hideSkeleton();
@@ -76,14 +76,14 @@ const displayPost = (post) => {
                     </form>
                 </div>`;
 
-                fetch(`https://aspirethought-backend.onrender.com/blog/${post.slug}/comments/`)
+                fetch(`https://aspire-thought-backend.vercel.app/blog/${post.slug}/comments/`)
                     .then(res => res.json())
                     .then(comments => {
                         document.getElementById("comment-count").innerText = `All Comments (${comments.length})`;
                         const commentSection = document.getElementById("comment-section");
                         if (comments.length > 0) {
                             comments.forEach(comment => {
-                                fetch(`https://aspirethought-backend.onrender.com/user/list/?username=${comment.user}`)
+                                fetch(`https://aspire-thought-backend.vercel.app/user/list/?username=${comment.user}`)
                                     .then(res => res.json())
                                     .then(commenterData => {
                                         if (commenterData.length > 0) {
@@ -141,7 +141,7 @@ const fetchPost = () => {
         hideSkeleton();
         postSection.innerHTML = "Unexpected Error Occurred!";
     } else {
-        fetch(`https://aspirethought-backend.onrender.com/blog/stories/${story}/chapters/?page=${page}`)
+        fetch(`https://aspire-thought-backend.vercel.app/blog/stories/${story}/chapters/?page=${page}`)
             .then(res => res.json())
             .then(data => {
                 if (data.results.length > 0) {
@@ -167,7 +167,7 @@ const postComment = function (event) {
         window.location.href = "login.html";
     }
 
-    fetch(`https://aspirethought-backend.onrender.com/blog/${chapter}/comments/add/`, {
+    fetch(`https://aspire-thought-backend.vercel.app/blog/${chapter}/comments/add/`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -204,7 +204,7 @@ const likePost = (slug) => {
         return;
     }
 
-    fetch(`https://aspirethought-backend.onrender.com/blog/${slug}/like/`, {
+    fetch(`https://aspire-thought-backend.vercel.app/blog/${slug}/like/`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -243,7 +243,7 @@ const likePost = (slug) => {
 
 
 const copyPostLink = (slug) => {
-    const url = `https://mdshakib007.github.io/AspireThought_Frontend/read_story.html?story=${story}&chapter=${chapter}&page=${page}`;
+    const url = `https://aspire-thought.vercel.app/read_story.html?story=${story}&chapter=${chapter}&page=${page}`;
 
     navigator.clipboard.writeText(url)
         .then(() => {

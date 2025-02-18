@@ -105,7 +105,7 @@
         });
 
         const displayHorizontalTags = () => {
-            fetch("https://aspirethought-backend.onrender.com/tag/list/")
+            fetch("https://aspire-thought-backend.vercel.app/tag/list/")
                 .then(res => res.json())
                 .then(tags => {
                     const parent = document.getElementById("horizontal-tags-container");

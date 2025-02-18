@@ -4,7 +4,7 @@ const user_id = localStorage.getItem("user_id");
 const token = localStorage.getItem("token");
 
 const visitProfile = () => {
-    fetch(`https://aspirethought-backend.onrender.com/user/list/?user_id=${author_id}`)
+    fetch(`https://aspire-thought-backend.vercel.app/user/list/?user_id=${author_id}`)
         .then(res => res.json())
         .then(data => {
             if (!data[0]) {
@@ -30,7 +30,7 @@ const visitProfile = () => {
             }
 
             // fetch posts
-            fetch(`https://aspirethought-backend.onrender.com/blog/list/?author_id=${author_id}`)
+            fetch(`https://aspire-thought-backend.vercel.app/blog/list/?author_id=${author_id}`)
                 .then(res => res.json())
                 .then(data => {
                     if (data.results.length > 0) {
@@ -107,7 +107,7 @@ const visitProfile = () => {
 };
 
 const copyPostLink = (slug) => {
-    const url = `https://mdshakib007.github.io/AspireThought_Frontend/single_post.html?slug=${slug}`;
+    const url = `https://aspire-thought.vercel.app/single_post.html?slug=${slug}`;
 
     navigator.clipboard.writeText(url)
         .then(() => {
@@ -135,7 +135,7 @@ const bookmarkPost = (slug) => {
         return;
     }
 
-    fetch("https://aspirethought-backend.onrender.com/user/bookmark/add/", {
+    fetch("https://aspire-thought-backend.vercel.app/user/bookmark/add/", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -187,7 +187,7 @@ const bookmarkPost = (slug) => {
 
 async function redirectToSinglePost(slug) {
     try {
-        await fetch(`https://aspirethought-backend.onrender.com/blog/${slug}/view/`, {
+        await fetch(`https://aspire-thought-backend.vercel.app/blog/${slug}/view/`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -208,7 +208,7 @@ const likePost = (slug) => {
         return;
     }
 
-    fetch(`https://aspirethought-backend.onrender.com/blog/${slug}/like/`, {
+    fetch(`https://aspire-thought-backend.vercel.app/blog/${slug}/like/`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",

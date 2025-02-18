@@ -20,7 +20,7 @@ const handleLogout = (event) => {
         return;
     }
 
-    fetch("https://aspirethought-backend.onrender.com/user/logout/", {
+    fetch("https://aspire-thought-backend.vercel.app/user/logout/", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -60,7 +60,7 @@ const loadNavProfilePicture = () => {
         return;
     }
 
-    fetch(`https://aspirethought-backend.onrender.com/user/list/${user_id}`)
+    fetch(`https://aspire-thought-backend.vercel.app/user/list/${user_id}`)
         .then(res => res.json())
         .then(data => {
             if (data.username) {

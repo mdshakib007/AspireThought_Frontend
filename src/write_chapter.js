@@ -26,7 +26,7 @@ const postChapter = async (event) => {
     formData.append("body", markdown_body);
 
     try {
-        const postResponse = await fetch(`https://aspirethought-backend.onrender.com/blog/stories/${story}/chapters/create/`, {
+        const postResponse = await fetch(`https://aspire-thought-backend.vercel.app/blog/stories/${story}/chapters/create/`, {
             method: "POST",
             headers: {
                 "Authorization": `Token ${token}`,

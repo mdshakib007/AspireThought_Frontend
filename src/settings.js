@@ -11,7 +11,7 @@ const loadUserInformation = () => {
         window.location.href = "./login.html";
     }
 
-    fetch(`https://aspirethought-backend.onrender.com/user/list/?user_id=${user_id}`)
+    fetch(`https://aspire-thought-backend.vercel.app/user/list/?user_id=${user_id}`)
         .then(res => res.json())
         .then(data => {
             if (data.length > 0) {
@@ -67,7 +67,7 @@ const followingTopicList = () => {
         return;
     }
 
-    fetch(`https://aspirethought-backend.onrender.com/user/list/?user_id=${user_id}`)
+    fetch(`https://aspire-thought-backend.vercel.app/user/list/?user_id=${user_id}`)
         .then(res => res.json())
         .then(data => {
             if (data.length > 0) {
@@ -104,7 +104,7 @@ const unfollowTopic = (topic) => {
         return;
     }
 
-    fetch("https://aspirethought-backend.onrender.com/user/following/topic/remove/", {
+    fetch("https://aspire-thought-backend.vercel.app/user/following/topic/remove/", {
         method: "DELETE",
         headers: {
             "Content-Type": "application/json",
@@ -151,7 +151,7 @@ const requestForVerification = () => {
         return;
     }
 
-    fetch("https://aspirethought-backend.onrender.com/user/request-verification/", {
+    fetch("https://aspire-thought-backend.vercel.app/user/request-verification/", {
         method: "POST",
         headers: {
             "Authorization": `Token ${token}`,
@@ -207,7 +207,7 @@ const openUpdateModal = (title, id) => {
     document.getElementById("universal_modal").showModal();
 };
 
-const updateUserInformation = (event) => {
+const updateUserInformation = async (event) => {
     event.preventDefault();
 
     const id = document.getElementById("universal_modal").getAttribute("requested_id");
@@ -258,12 +258,46 @@ const updateUserInformation = (event) => {
             }).showToast();
             return;
         }
-        formData.append(title, fileInput.files[0]);
+
+        let img_url = null;
+        const imageForm = new FormData();
+        imageForm.append("image", fileInput.files[0]);
+        try {
+            const imgResponse = await fetch("https://api.imgbb.com/1/upload?key=a1628c9dacce3ab8a8de3488c32afc47", {
+                method: "POST",
+                body: imageForm,
+            });
+
+            const imgData = await imgResponse.json();
+
+            if (imgData.success) {
+                img_url = imgData.data.display_url;
+            } else {
+                Toastify({
+                    text: `Image upload failed.`,
+                    duration: 3000,
+                    offset: { x: 10, y: 50 },
+                    style: { background: "#22c55e" }
+                }).showToast();
+                return;
+            }
+        } catch (error) {
+            console.error("Image upload error:", error);
+            Toastify({
+                text: `Failed to upload image.`,
+                duration: 3000,
+                offset: { x: 10, y: 50 },
+                style: { background: "#22c55e" }
+            }).showToast();
+            return;
+        }
+        formData.append(title, img_url);
+
     } else {
         formData.append(title, updatedValue);
     }
 
-    fetch("https://aspirethought-backend.onrender.com/user/update/", {
+    fetch("https://aspire-thought-backend.vercel.app/user/update/", {
         method: "POST",
         headers: {
             "Authorization": `Token ${token}`,

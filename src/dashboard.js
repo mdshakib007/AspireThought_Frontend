@@ -7,7 +7,7 @@ const displayInfo = async () => {
         return;
     }
 
-    const dashboardRes = await fetch(`https://aspirethought-backend.onrender.com/user/dashboard/`, {
+    const dashboardRes = await fetch(`https://aspire-thought-backend.vercel.app/user/dashboard/`, {
         method: "GET",
         headers: {
             "Authorization": `Token ${token}`,
@@ -29,7 +29,7 @@ const displayInfo = async () => {
     const tag2 = mostViewedPost.tags[1] ? mostViewedPost.tags[1] : null;
     const post_img = mostViewedPost.image ? mostViewedPost.image : null;
 
-    const authorRes = await fetch(`https://aspirethought-backend.onrender.com/user/list/?user_id=${author_id}`)
+    const authorRes = await fetch(`https://aspire-thought-backend.vercel.app/user/list/?user_id=${author_id}`)
     const authorData = await authorRes.json();
     const author = authorData[0];
     const author_img = author.profile_picture ? author.profile_picture : "./images/nav/default-user.png";
@@ -145,7 +145,7 @@ const likePost = (slug) => {
         return;
     }
 
-    fetch(`https://aspirethought-backend.onrender.com/blog/${slug}/like/`, {
+    fetch(`https://aspire-thought-backend.vercel.app/blog/${slug}/like/`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -184,7 +184,7 @@ const likePost = (slug) => {
 
 async function redirectToSinglePost(slug) {
     try {
-        await fetch(`https://aspirethought-backend.onrender.com/blog/${slug}/view/`, {
+        await fetch(`https://aspire-thought-backend.vercel.app/blog/${slug}/view/`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

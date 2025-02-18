@@ -16,7 +16,7 @@ const handleRegister = (event) => {
     document.getElementById("register-success").innerText = "";
 
     if (password.length >= 8) {
-        fetch("https://aspirethought-backend.onrender.com/user/register/", {
+        fetch("https://aspire-thought-backend.vercel.app/user/register/", {
             method: "POST",
             headers: { "content-type": "application/json" },
             body: JSON.stringify(info),

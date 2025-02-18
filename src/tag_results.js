@@ -13,7 +13,7 @@ const expandTags = () => {
     parent.innerHTML = "";
     parent.classList.add("max-h-72", "overflow-y-scroll", "m-2", "flex", "gap-2", "flex-wrap",);
 
-    fetch("https://aspirethought-backend.onrender.com/tag/list/")
+    fetch("https://aspire-thought-backend.vercel.app/tag/list/")
         .then(res => res.json())
         .then(tags => {
             tags.forEach(tag => {
@@ -33,7 +33,7 @@ const expandTags = () => {
 };
 
 const recommendedPostsFetch = () => {
-    fetch("https://aspirethought-backend.onrender.com/blog/list/")
+    fetch("https://aspire-thought-backend.vercel.app/blog/list/")
         .then(res => res.json())
         .then(data => {
             const title = document.getElementById("recommended-posts-title");
@@ -48,9 +48,9 @@ const fetchTagResult = async (tag_slug) => {
     try {
         // Fetch followers and posts in parallel
         const [followersRes, postsRes, storyRes] = await Promise.all([
-            fetch(`https://aspirethought-backend.onrender.com/tag/list/?slug=${tag_slug}`).then(res => res.json()),
-            fetch(`https://aspirethought-backend.onrender.com/blog/list/?tag_slug=${tag_slug}`).then(res => res.json()),
-            fetch(`https://aspirethought-backend.onrender.com/blog/stories/?tag_slug=${tag_slug}`).then(res => res.json())
+            fetch(`https://aspire-thought-backend.vercel.app/tag/list/?slug=${tag_slug}`).then(res => res.json()),
+            fetch(`https://aspire-thought-backend.vercel.app/blog/list/?tag_slug=${tag_slug}`).then(res => res.json()),
+            fetch(`https://aspire-thought-backend.vercel.app/blog/stories/?tag_slug=${tag_slug}`).then(res => res.json())
         ]);
 
         // Get followers count
@@ -90,7 +90,7 @@ const displayStories = (stories, section) => {
         const div = document.createElement("div");
         div.classList.add("max-w-4xl", "bg-slate-50", "p-3", "mb-5");
 
-        fetch(`https://aspirethought-backend.onrender.com/user/list/?user_id=${story.author}`)
+        fetch(`https://aspire-thought-backend.vercel.app/user/list/?user_id=${story.author}`)
             .then(res => res.json())
             .then(userData => {
                 if (userData.length > 0) {
@@ -143,7 +143,7 @@ const displayPost = (posts, section) => {
         const tag1 = post.tags[0] ? post.tags[0] : null;
         const tag2 = post.tags[1] ? post.tags[1] : null;
 
-        fetch(`https://aspirethought-backend.onrender.com/user/list/?user_id=${post.author}`)
+        fetch(`https://aspire-thought-backend.vercel.app/user/list/?user_id=${post.author}`)
             .then(res => res.json())
             .then(data => {
                 if (data.length > 0) {
@@ -204,7 +204,7 @@ const displayPost = (posts, section) => {
 
 async function redirectToSinglePost(slug) {
     try {
-        await fetch(`https://aspirethought-backend.onrender.com/blog/${slug}/view/`, {
+        await fetch(`https://aspire-thought-backend.vercel.app/blog/${slug}/view/`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -225,7 +225,7 @@ const followTopic = (topic) => {
         return;
     }
 
-    fetch(`https://aspirethought-backend.onrender.com/user/following/topic/add/`, {
+    fetch(`https://aspire-thought-backend.vercel.app/user/following/topic/add/`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -276,7 +276,7 @@ const followStatus = (topic) => {
         return;
     }
 
-    fetch(`https://aspirethought-backend.onrender.com/user/list/?user_id=${user_id}`)
+    fetch(`https://aspire-thought-backend.vercel.app/user/list/?user_id=${user_id}`)
         .then(res => res.json())
         .then(data => {
             if (data.length > 0) {
@@ -301,7 +301,7 @@ const likePost = (slug) => {
         return;
     }
 
-    fetch(`https://aspirethought-backend.onrender.com/blog/${slug}/like/`, {
+    fetch(`https://aspire-thought-backend.vercel.app/blog/${slug}/like/`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -344,7 +344,7 @@ const bookmarkPost = (slug) => {
         return;
     }
 
-    fetch("https://aspirethought-backend.onrender.com/user/bookmark/add/", {
+    fetch("https://aspire-thought-backend.vercel.app/user/bookmark/add/", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -384,7 +384,7 @@ const bookmarkPost = (slug) => {
 
 
 const copyPostLink = (slug) => {
-    const url = `https://mdshakib007.github.io/AspireThought_Frontend/single_post.html?slug=${slug}`;
+    const url = `https://aspire-thought.vercel.app/single_post.html?slug=${slug}`;
 
     navigator.clipboard.writeText(url)
         .then(() => {

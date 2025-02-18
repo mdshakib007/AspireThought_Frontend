@@ -7,7 +7,7 @@ const profileView = async () => {
         return;
     }
 
-    fetch(`https://aspirethought-backend.onrender.com/user/list/?user_id=${user_id}`)
+    fetch(`https://aspire-thought-backend.vercel.app/user/list/?user_id=${user_id}`)
         .then(res => res.json())
         .then(data => {
             if (!data[0]) {
@@ -38,7 +38,7 @@ const profileView = async () => {
             }
 
             // fetch my posts
-            fetch(`https://aspirethought-backend.onrender.com/blog/list/?author_id=${user_id}`)
+            fetch(`https://aspire-thought-backend.vercel.app/blog/list/?author_id=${user_id}`)
                 .then(res => res.json())
                 .then(data => {
                     if (data.results.length > 0) {
@@ -115,7 +115,7 @@ const profileView = async () => {
                 });
         });
 
-    const myStoriesRes = await fetch(`https://aspirethought-backend.onrender.com/blog/stories/?author_id=${user_id}`)
+    const myStoriesRes = await fetch(`https://aspire-thought-backend.vercel.app/blog/stories/?author_id=${user_id}`)
     const myStories = await myStoriesRes.json();
     if (myStories.results.length > 0) {
         displayStories(myStories.results);
@@ -138,7 +138,7 @@ const displayStories = (stories) => {
         const div = document.createElement("div");
         div.classList.add("max-w-4xl", "bg-slate-50", "p-3", "mb-5");
 
-        fetch(`https://aspirethought-backend.onrender.com/user/list/?user_id=${story.author}`)
+        fetch(`https://aspire-thought-backend.vercel.app/user/list/?user_id=${story.author}`)
             .then(res => res.json())
             .then(userData => {
                 if (userData.length > 0) {
@@ -184,7 +184,7 @@ const displayStories = (stories) => {
 };
 
 const copyPostLink = (slug) => {
-    const url = `https://mdshakib007.github.io/AspireThought_Frontend/single_post.html?slug=${slug}`;
+    const url = `https://aspire-thought.vercel.app/single_post.html?slug=${slug}`;
 
     navigator.clipboard.writeText(url)
         .then(() => {
@@ -206,7 +206,7 @@ const copyPostLink = (slug) => {
 };
 
 const copyStoryLink = (slug) => {
-    const url = `https://mdshakib007.github.io/AspireThought_Frontend/story_details.html?story=${slug}`;
+    const url = `https://aspire-thought.vercel.app/story_details.html?story=${slug}`;
 
     navigator.clipboard.writeText(url)
         .then(() => {
@@ -234,7 +234,7 @@ const bookmarkPost = (slug) => {
         return;
     }
 
-    fetch("https://aspirethought-backend.onrender.com/user/bookmark/add/", {
+    fetch("https://aspire-thought-backend.vercel.app/user/bookmark/add/", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -278,7 +278,7 @@ const likePost = (slug) => {
         return;
     }
 
-    fetch(`https://aspirethought-backend.onrender.com/blog/${slug}/like/`, {
+    fetch(`https://aspire-thought-backend.vercel.app/blog/${slug}/like/`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -317,7 +317,7 @@ const likePost = (slug) => {
 
 async function redirectToSinglePost(slug) {
     try {
-        await fetch(`https://aspirethought-backend.onrender.com/blog/${slug}/view/`, {
+        await fetch(`https://aspire-thought-backend.vercel.app/blog/${slug}/view/`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -338,7 +338,7 @@ const redirectToStory = (slug) => {
 
 const deletePost = async (slug) => {
     try {
-        const response = await fetch("https://aspirethought-backend.onrender.com/blog/delete/", {
+        const response = await fetch("https://aspire-thought-backend.vercel.app/blog/delete/", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -386,7 +386,7 @@ const deletePost = async (slug) => {
 
 const deleteStory = async (slug) => {
     try {
-        const response = await fetch(`https://aspirethought-backend.onrender.com/blog/stories/${slug}/delete/`, {
+        const response = await fetch(`https://aspire-thought-backend.vercel.app/blog/stories/${slug}/delete/`, {
             method: "DELETE",
             headers: {
                 "Authorization": `Token ${token}`,

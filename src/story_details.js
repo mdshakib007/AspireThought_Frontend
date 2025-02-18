@@ -8,7 +8,7 @@ const loadStoryDetails = async () => {
         window.location.href = "index.html";
     }
 
-    const storyRes = await fetch(`https://aspirethought-backend.onrender.com/blog/stories/${story_slug}`);
+    const storyRes = await fetch(`https://aspire-thought-backend.vercel.app/blog/stories/${story_slug}`);
     const storyData = await storyRes.json()
 
     // all the variable of story
@@ -20,7 +20,7 @@ const loadStoryDetails = async () => {
     const created = storyData.created_at;
     const chapters = storyData.chapters;
 
-    const userRes = await fetch(`https://aspirethought-backend.onrender.com/user/list/?user_id=${authorId}`);
+    const userRes = await fetch(`https://aspire-thought-backend.vercel.app/user/list/?user_id=${authorId}`);
     const userData = await userRes.json()
     const author = userData[0]
 
@@ -83,7 +83,7 @@ const addToLibrary = () => {
         return;
     }
 
-    fetch("https://aspirethought-backend.onrender.com/user/library/add/", {
+    fetch("https://aspire-thought-backend.vercel.app/user/library/add/", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -127,7 +127,7 @@ const likePost = (slug) => {
         return;
     }
 
-    fetch(`https://aspirethought-backend.onrender.com/blog/${slug}/like/`, {
+    fetch(`https://aspire-thought-backend.vercel.app/blog/${slug}/like/`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -166,7 +166,7 @@ const likePost = (slug) => {
 
 async function redirectToSinglePost(story_slug, slug, page_count) {
     try {
-        await fetch(`https://aspirethought-backend.onrender.com/blog/${slug}/view/`, {
+        await fetch(`https://aspire-thought-backend.vercel.app/blog/${slug}/view/`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

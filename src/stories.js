@@ -7,8 +7,8 @@ const displayInit = async () => {
     }
     document.getElementById("my-info-section").classList.remove("hidden");
 
-    const myUrl = `https://aspirethought-backend.onrender.com/user/list/?user_id=${user_id}`;
-    const myStoriesUrl = `https://aspirethought-backend.onrender.com/blog/stories/?author_id=${user_id}`;
+    const myUrl = `https://aspire-thought-backend.vercel.app/user/list/?user_id=${user_id}`;
+    const myStoriesUrl = `https://aspire-thought-backend.vercel.app/blog/stories/?author_id=${user_id}`;
 
     const myResponse = await fetch(myUrl);
     const me = await myResponse.json();
@@ -54,12 +54,12 @@ const displayInit = async () => {
     document.getElementById("my-name").innerHTML = `${myName} ${verified}`;
     document.getElementById("my-email").innerText = myEmail;
 
-    const allStoryUrl = `https://aspirethought-backend.onrender.com/blog/stories/`;
+    const allStoryUrl = `https://aspire-thought-backend.vercel.app/blog/stories/`;
     const allStoryRes = await fetch(allStoryUrl);
     const allStories = await allStoryRes.json();
     displayStories(allStories.results, "all-stories-section");
 
-    const tagsRes = await fetch(`https://aspirethought-backend.onrender.com/tag/list/`);
+    const tagsRes = await fetch(`https://aspire-thought-backend.vercel.app/tag/list/`);
     const tagsData = await tagsRes.json();
 
     const selectTagsParent = document.getElementById("story-tags-input-div");
@@ -83,7 +83,7 @@ const displayStories = (stories, section) => {
         const div = document.createElement("div");
         div.classList.add("max-w-4xl", "bg-slate-50", "p-3", "mb-5");
 
-        fetch(`https://aspirethought-backend.onrender.com/user/list/?user_id=${story.author}`)
+        fetch(`https://aspire-thought-backend.vercel.app/user/list/?user_id=${story.author}`)
             .then(res => res.json())
             .then(userData => {
                 if (userData.length > 0) {
@@ -122,7 +122,7 @@ const redirectToStory = (slug) => {
     window.location.href = `story_details.html?story=${slug}`;
 };
 
-const CreateStory = () => {
+const CreateStory = async () => {
     if (!user_id || !token) {
         window.location.href = "login.html";
         return;
@@ -152,13 +152,46 @@ const CreateStory = () => {
         return;
     }
 
+    let img_url = null;
+    const imageForm = new FormData();
+    imageForm.append("image", storyImage);
+    try {
+        const imgResponse = await fetch("https://api.imgbb.com/1/upload?key=a1628c9dacce3ab8a8de3488c32afc47", {
+            method: "POST",
+            body: imageForm,
+        });
+
+        const imgData = await imgResponse.json();
+
+        if (imgData.success) {
+            img_url = imgData.data.display_url;
+        } else {
+            Toastify({
+                text: `Image upload failed.`,
+                duration: 3000,
+                offset: { x: 10, y: 50 },
+                style: { background: "#22c55e" }
+            }).showToast();
+            return;
+        }
+    } catch (error) {
+        console.error("Image upload error:", error);
+        Toastify({
+            text: `Failed to upload image.`,
+            duration: 3000,
+            offset: { x: 10, y: 50 },
+            style: { background: "#22c55e" }
+        }).showToast();
+        return;
+    }
+
     const formData = new FormData();
     formData.append("name", storyName);
-    formData.append("cover", storyImage);
+    formData.append("cover", img_url);
     formData.append("summary", summary);
     selectedTags.forEach(tag => formData.append("tags", tag));
 
-    fetch(`https://aspirethought-backend.onrender.com/blog/stories/create/`, {
+    fetch(`https://aspire-thought-backend.vercel.app/blog/stories/create/`, {
         method: "POST",
         headers: {
             "Authorization": `Token ${token}`,
