@@ -3,11 +3,17 @@ const getValue = (id) => {
     return value;
 };
 
-const handleLogin = (event) => {
+const handleLogin = (event, un=null, up=null) => {
     event.preventDefault();
 
-    const username = getValue("login-username");
-    const password = getValue("login-password");
+    let username = getValue("login-username");
+    let password = getValue("login-password");
+
+    if (un && up){
+        username = un;
+        password = up;
+    }
+
     const info = { username, password };
 
     document.getElementById("login-btn").innerHTML = `<span class="loading loading-spinner loading-xs"></span>`;
@@ -30,4 +36,9 @@ const handleLogin = (event) => {
             }
             document.getElementById("login-btn").innerHTML = `Login`;
         });
+};
+
+
+const defaultCredential = (event) =>{
+    handleLogin(event, "anis97", "ertsS43r$");
 };
