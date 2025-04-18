@@ -139,7 +139,7 @@ const fetchPosts = (url, displayCallback) => {
 };
 
 const fetchRecentPosts = () => {
-    const url = "https://aspire-thought-backend.vercel.app/blog/list/";
+    const url = "https://aspire-thought-backend.vercel.app/blog/list/?title=a";
     fetchPosts(url, displayPosts);
 };
 
